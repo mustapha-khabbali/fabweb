@@ -1,0 +1,54 @@
+# FORM CONFIGURATION - REGISTRE DES VISITEURS FAB LAB (UPDATED ROLE LOGIC)
+
+## PAGE 1: DONNÉES DE VISITEUR (Universal Personal Information)
+All fields are mandatory for ALL roles.
+
+1.  Nom du Visiteur (Visitor Last Name) - [Text]
+2.  Prénom du Visiteur (Visitor First Name) - [Text]
+3.  ID CIN (Identity Card Number) - [Text]
+4.  Vous êtes (Role Selection) - [Single Choice / Mandatory]
+    *   Stagiaire --> [PATH A]
+    *   Formateur --> [PATH B]
+    *   Administrateur --> [PATH B]
+    *   Autre (Visiteur) --> [PATH B]
+5.  Pole de Visiteur (Sector) - [Single Choice]
+6.  Filière (Specialty) - [Text]
+7.  Téléphone (Phone) - [Text/Number]
+8.  Email (Email) - [Email Format]
+
+--------------------------------------------------------------------------------
+
+## PAGE 2: OBJECTIF DE LA VISITE (Role-Based Dynamic Path)
+
+### [PATH A] FOR STAGIAIRES (Choice-Based Branching)
+9.  Objectif de la visite - [Button Choice / Mandatory]
+    *   Projet en cours --> [IF SELECTED: Reveal Q10, Q11, Q12]
+    *   Demande d'information / Consultation
+    *   Amélioration / Demande d'idée
+    *   Formation
+    *   Stage
+    *   Autre
+
+    **CONDITIONAL PROJECT FIELDS (Stagiaire Only):**
+    10. Nom de projet - [Text / Mandatory]
+    11. Vous être accompagné par - [Responsable FAB LAB, Responsable Entrepreneuriat, Formateur]
+    12. Phase de projet - [POC, MVP, Ready Market, Compétition, Réunion, Autre]
+
+### [PATH B] FOR FORMATEUR / ADMIN / VISITEUR (Text-Based Input)
+9.  Objectif de la visite - [Free Text Area / Mandatory]
+10. Nom du projet (si applicable) - [Text / Optional]
+11. Nom de la formation (si applicable) - [Text / Optional]
+
+--------------------------------------------------------------------------------
+
+## PAGE 3: AUTORISATION DE DROIT À L’IMAGE (Universal)
+12. Authorization Declaration - [Single Choice / Mandatory]
+    "J'Autorise la reproduction sur tout support et par tous procédés..."
+    *   Choix: Oui
+
+--------------------------------------------------------------------------------
+
+## BUTTON NAVIGATION LOGIC
+1.  PAGE 1 [Next] -> Validates identity & Role -> Loads Path A or B on Page 2.
+2.  PAGE 2 [Next] -> Validates Objective (Branch-specific) -> Go to Page 3.
+3.  PAGE 3 [Envoyer] -> Final Submission.

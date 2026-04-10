@@ -1,0 +1,51 @@
+{
+  "hosting": [
+    {
+      "target": "visitor",
+      "public": ".",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**",
+        "dashboard.html",
+        "*.bat",
+        "*.ps1",
+        "*.xml",
+        "*.txt",
+        "*.sql",
+        "*.rules"
+      ],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ]
+    },
+    {
+      "target": "admin",
+      "public": ".",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**",
+        "index.html",
+        "*.bat",
+        "*.ps1",
+        "*.xml",
+        "*.txt",
+        "*.sql",
+        "*.rules"
+      ],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/dashboard.html"
+        }
+      ]
+    }
+  ],
+  "firestore": {
+    "rules": "firestore.rules"
+  }
+}
