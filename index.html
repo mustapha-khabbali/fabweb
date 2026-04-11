@@ -1132,12 +1132,12 @@
             function showHomeScreen() { setScreen('home-screen'); }
             function showStagiaireScreen() { setScreen('stagiaire-screen'); }
             function showCharteScreen() { setScreen('charte-screen'); }
-            function showCreateAccountScreen() { setScreen('create-account-screen'); }
+
             function showLoginScreen() { setScreen('login-screen'); }
             function showDashboardScreen() { setScreen('dashboard-screen'); }
 
             function setScreen(screenId) {
-                const screens = ['home-screen', 'role-selection-screen', 'stagiaire-screen', 'charte-screen', 'create-account-screen', 'login-screen', 'dashboard-screen'];
+                const screens = ['home-screen', 'role-selection-screen', 'stagiaire-screen', 'charte-screen', 'login-screen', 'dashboard-screen'];
                 screens.forEach(id => {
                     const el = document.getElementById(id);
                     if (id === screenId) {
@@ -1541,8 +1541,8 @@
                                 console.log("Logged in user with profile:", currentUser.email);
 
                                 // Auto-redirect to scan if on an entry screen
-                                const currentScreen = ['home-screen', 'login-screen', 'role-selection-screen', 'stagiaire-screen', 'create-account-screen']
-                                    .find(id => !document.getElementById(id).classList.contains('hidden'));
+                                const currentScreen = ['home-screen', 'login-screen', 'role-selection-screen', 'stagiaire-screen']
+                                    .find(id => document.getElementById(id) && !document.getElementById(id).classList.contains('hidden'));
 
                                 if (currentScreen) {
                                     showDashboardScreen();
