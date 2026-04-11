@@ -256,66 +256,6 @@
         </button>
     </div>
 
-    <!-- Create Account Screen -->
-    <div id="create-account-screen" class="hidden flex flex-col w-full max-w-md mx-auto p-6 space-y-8 opacity-0">
-        <div class="text-left pt-8">
-            <h2 class="text-3xl font-bold text-midnight-blue leading-tight">C'est parti !</h2>
-        </div>
-
-        <div class="space-y-6">
-            <!-- Mot de passe -->
-            <div class="space-y-1.5">
-                <label class="text-sm font-semibold text-midnight-blue px-1">mot de passe</label>
-                <div class="relative">
-                    <input id="password-input" type="password" placeholder="mot de passe"
-                        class="w-full p-4 bg-white border border-gray-300 rounded-xl outline-none focus:border-midnight-blue focus:ring-1 focus:ring-midnight-blue transition-all pr-12">
-                    <button onclick="togglePasswordVisibility('password-input')"
-                        class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-midnight-blue transition-colors">
-                        <svg id="password-eye" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
-                            viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                        </svg>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Confirmation -->
-            <div class="space-y-1.5">
-                <label class="text-sm font-semibold text-midnight-blue px-1">réécrire votre mot de passe</label>
-                <div class="relative">
-                    <input id="confirm-password-input" type="password" placeholder="mot de passe"
-                        class="w-full p-4 bg-white border border-gray-300 rounded-xl outline-none focus:border-midnight-blue focus:ring-1 focus:ring-midnight-blue transition-all pr-12">
-                    <button onclick="togglePasswordVisibility('confirm-password-input')"
-                        class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-midnight-blue transition-colors">
-                        <svg id="confirm-password-eye" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
-                            viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                        </svg>
-                    </button>
-                </div>
-                <p id="password-error" class="hidden text-xs text-red-500 px-1 mt-1 font-medium"></p>
-            </div>
-        </div>
-
-        <div class="pt-8 text-center flex flex-col items-center space-y-6">
-            <button onclick="handleGoogleAuth('signup')"
-                class="w-full max-w-[300px] py-4 bg-white text-midnight-blue font-bold text-lg rounded-xl border border-gray-200 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 active:scale-95 flex items-center justify-center space-x-3">
-                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="w-6 h-6"
-                    alt="Google">
-                <span>Continuer avec Google</span>
-            </button>
-            <button onclick="showStagiaireScreen()"
-                class="text-midnight-blue/60 font-medium hover:text-midnight-blue transition-colors">
-                &larr; Retour
-            </button>
-        </div>
-    </div>
 
     <!-- Charte Screen -->
     <div id="charte-screen" class="hidden flex flex-col w-full max-w-2xl mx-auto p-6 space-y-8 opacity-0">
@@ -1110,7 +1050,7 @@
                 select.innerHTML = '';
             }
 
-            function validateStagiaireForm() {
+            async function validateStagiaireForm() {
                 const prenom = document.querySelector('#stagiaire-screen input[placeholder="Entrez Votre Prenom"]').value;
                 const nom = document.querySelector('#stagiaire-screen input[placeholder="Entrez Votre Nom"]').value;
                 const cin = document.getElementById('cin-signup-input').value;
@@ -1123,20 +1063,49 @@
                 const tel = document.getElementById('tel-input').value;
                 const email = document.getElementById('email-input').value;
 
-                currentUser = { prenom, nom, cin, cef, pole, niveau, filiere, year, option, tel, email };
-                showCreateAccountScreen();
+                if (!prenom || !nom || !email) {
+                    alert("Veuillez remplir les champs obligatoires.");
+                    return;
+                }
+
+                const auth = window.fbAuth;
+                const db = window.fbDb;
+                const { setDoc, doc, serverTimestamp } = window.fbActions;
+
+                if (!auth.currentUser) {
+                    alert("Erreur d'authentification. Veuillez vous reconnecter.");
+                    showHomeScreen();
+                    return;
+                }
+
+                try {
+                    const userData = {
+                        prenom, nom, cin, cef, pole, niveau, filiere, year, option, tel, email,
+                        uid: auth.currentUser.uid,
+                        role: 'stagiaire',
+                        createdAt: serverTimestamp()
+                    };
+
+                    await setDoc(doc(db, "users", auth.currentUser.uid), userData);
+                    currentUser = userData;
+                    
+                    alert("Compte créé avec succès ! Bienvenue au Lab.");
+                    showDashboardScreen();
+                    switchTab('scan');
+                } catch (error) {
+                    alert("Erreur lors de la création du profil : " + error.message);
+                }
             }
 
             function showRoleSelection() { setScreen('role-selection-screen'); }
             function showHomeScreen() { setScreen('home-screen'); }
             function showStagiaireScreen() { setScreen('stagiaire-screen'); }
             function showCharteScreen() { setScreen('charte-screen'); }
-            function showCreateAccountScreen() { setScreen('create-account-screen'); }
             function showLoginScreen() { setScreen('login-screen'); }
             function showDashboardScreen() { setScreen('dashboard-screen'); }
 
             function setScreen(screenId) {
-                const screens = ['home-screen', 'role-selection-screen', 'stagiaire-screen', 'charte-screen', 'create-account-screen', 'login-screen', 'dashboard-screen'];
+                const screens = ['home-screen', 'role-selection-screen', 'stagiaire-screen', 'charte-screen', 'login-screen', 'dashboard-screen'];
                 screens.forEach(id => {
                     const el = document.getElementById(id);
                     if (id === screenId) {
