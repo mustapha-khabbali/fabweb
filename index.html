@@ -310,15 +310,12 @@
             </div>
         </div>
 
-        <div class="pt-8 text-center flex flex-col items-center space-y-4">
-            <button onclick="handleCreateAccount()"
-                class="w-full max-w-[280px] py-4 bg-[#3B5FE6] text-white font-bold text-lg rounded-xl shadow-[0_8px_20px_-5px_rgba(59,95,230,0.4)] hover:shadow-[0_12px_25px_-5px_rgba(59,95,230,0.5)] hover:-translate-y-1 transition-all duration-300 active:scale-95 flex items-center justify-center space-x-2">
-                <span>creer un compte</span>
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                </svg>
+        <div class="pt-8 text-center flex flex-col items-center space-y-6">
+            <button onclick="handleGoogleAuth('signup')"
+                class="w-full max-w-[300px] py-4 bg-white text-midnight-blue font-bold text-lg rounded-xl border border-gray-200 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 active:scale-95 flex items-center justify-center space-x-3">
+                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="w-6 h-6"
+                    alt="Google">
+                <span>Continuer avec Google</span>
             </button>
             <button onclick="showStagiaireScreen()"
                 class="text-midnight-blue/60 font-medium hover:text-midnight-blue transition-colors">
@@ -408,49 +405,19 @@
             <h2 class="text-3xl font-bold text-midnight-blue leading-tight">Fab-Lab CMC BMK</h2>
         </div>
 
-        <div class="space-y-6">
-            <!-- Email/Phone -->
-            <div class="space-y-1.5">
-                <label class="text-sm font-semibold text-midnight-blue px-1">E-mail ou Téléphone</label>
-                <input id="login-identifier" type="text" placeholder="Entrez votre email ou téléphone"
-                    class="w-full p-4 bg-white border border-gray-300 rounded-xl outline-none focus:border-midnight-blue focus:ring-1 focus:ring-midnight-blue transition-all">
-                <p id="login-id-error" class="hidden text-xs text-red-500 px-1 mt-1 font-medium"></p>
-            </div>
-
-            <!-- Mot de passe -->
-            <div class="space-y-1.5">
-                <label class="text-sm font-semibold text-midnight-blue px-1">mot de passe</label>
-                <div class="relative">
-                    <input id="login-password" type="password" placeholder="mot de passe"
-                        class="w-full p-4 bg-white border border-gray-300 rounded-xl outline-none focus:border-midnight-blue focus:ring-1 focus:ring-midnight-blue transition-all pr-12">
-                    <button onclick="togglePasswordVisibility('login-password')"
-                        class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-midnight-blue transition-colors">
-                        <svg id="login-password-eye" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
-                            viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                        </svg>
-                    </button>
-                </div>
-                <p id="login-pass-error" class="hidden text-xs text-red-500 px-1 mt-1 font-medium"></p>
-            </div>
+        <div class="space-y-6 py-4">
+            <button onclick="handleGoogleAuth('login')"
+                class="w-full py-4 bg-white text-midnight-blue font-bold text-lg rounded-[20px] border border-gray-200 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 active:scale-95 flex items-center justify-center space-x-3">
+                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="w-6 h-6"
+                    alt="Google">
+                <span>Continuer avec Google</span>
+            </button>
         </div>
 
-        <div class="pt-8 text-center flex flex-col items-center space-y-4">
-            <button id="main-login-btn" onclick="handleLoginWithFeedback(this)"
-                class="w-full max-w-[280px] py-4 bg-[#3B5FE6] text-white font-bold text-lg rounded-xl shadow-[0_8px_20px_-5px_rgba(59,95,230,0.4)] hover:shadow-[0_12px_25px_-5px_rgba(59,95,230,0.5)] hover:-translate-y-1 transition-all duration-300 active:scale-95 active:bg-green-500 flex items-center justify-center space-x-2">
-                <span>se connecter</span>
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                </svg>
-            </button>
+        <div class="text-center">
             <button onclick="showHomeScreen()"
                 class="text-midnight-blue/60 font-medium hover:text-midnight-blue transition-colors">
-                &larr; Retour à l'accueil
+                &larr; Retour
             </button>
         </div>
     </div>
@@ -907,11 +874,11 @@
     <!-- Firebase SDKs -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getAuth, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDoc, addDoc, collection, serverTimestamp, query, where, orderBy, limit, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         const firebaseConfig = {
-            apiKey: "AIzaSyCTdUIf-eUUXuHVCJOK7R7DG9aToeF-96Y",
+            apiKey: "AIzaSyCTdUif-eUUXuHVCJOK7R7DG9aToeF-96Y",
             authDomain: "fablab-bmk.firebaseapp.com",
             projectId: "fablab-bmk",
             storageBucket: "fablab-bmk.firebasestorage.app",
@@ -927,7 +894,8 @@
         // Expose to window for traditional script access
         window.fbAuth = auth;
         window.fbDb = db;
-        window.fbActions = { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, setDoc, getDoc, addDoc, doc, collection, serverTimestamp, query, where, orderBy, limit, onSnapshot };
+        window.googleProvider = new GoogleAuthProvider();
+        window.fbActions = { onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, setDoc, getDoc, addDoc, doc, collection, serverTimestamp, query, where, orderBy, limit, onSnapshot };
     </script>
 
     <!-- Scan Objective Modal (Stagiaire only) -->
@@ -937,35 +905,49 @@
             id="scan-objective-content">
             <div class="text-center space-y-2">
                 <h3 class="text-2xl font-bold text-midnight-blue">Objectif de la visite</h3>
-                <p class="text-sm text-midnight-blue/60 font-medium leading-relaxed">Pourquoi visitez-vous le Lab aujourd'hui ?</p>
+                <p class="text-sm text-midnight-blue/60 font-medium leading-relaxed">Pourquoi visitez-vous le Lab
+                    aujourd'hui ?</p>
             </div>
 
             <!-- Objective Options -->
             <div class="space-y-2 max-h-[40vh] overflow-y-auto px-1 custom-scrollbar">
-                <button onclick="setScanObjective('Projet en cours', this)" class="scan-obj-btn w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl text-left text-sm font-bold text-midnight-blue hover:border-midnight-blue transition-all">Projet en cours</button>
-                <button onclick="setScanObjective('Demande d\'information', this)" class="scan-obj-btn w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl text-left text-sm font-bold text-midnight-blue hover:border-midnight-blue transition-all">Demande d'information / Consultation</button>
-                <button onclick="setScanObjective('Amélioration', this)" class="scan-obj-btn w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl text-left text-sm font-bold text-midnight-blue hover:border-midnight-blue transition-all">Amélioration / Demande d'idée</button>
-                <button onclick="setScanObjective('Formation', this)" class="scan-obj-btn w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl text-left text-sm font-bold text-midnight-blue hover:border-midnight-blue transition-all">Formation</button>
-                <button onclick="setScanObjective('Stage', this)" class="scan-obj-btn w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl text-left text-sm font-bold text-midnight-blue hover:border-midnight-blue transition-all">Stage</button>
-                <button onclick="setScanObjective('Autre', this)" class="scan-obj-btn w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl text-left text-sm font-bold text-midnight-blue hover:border-midnight-blue transition-all">Autre</button>
+                <button onclick="setScanObjective('Projet en cours', this)"
+                    class="scan-obj-btn w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl text-left text-sm font-bold text-midnight-blue hover:border-midnight-blue transition-all">Projet
+                    en cours</button>
+                <button onclick="setScanObjective('Demande d\'information', this)"
+                    class="scan-obj-btn w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl text-left text-sm font-bold text-midnight-blue hover:border-midnight-blue transition-all">Demande
+                    d'information / Consultation</button>
+                <button onclick="setScanObjective('Amélioration', this)"
+                    class="scan-obj-btn w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl text-left text-sm font-bold text-midnight-blue hover:border-midnight-blue transition-all">Amélioration
+                    / Demande d'idée</button>
+                <button onclick="setScanObjective('Formation', this)"
+                    class="scan-obj-btn w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl text-left text-sm font-bold text-midnight-blue hover:border-midnight-blue transition-all">Formation</button>
+                <button onclick="setScanObjective('Stage', this)"
+                    class="scan-obj-btn w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl text-left text-sm font-bold text-midnight-blue hover:border-midnight-blue transition-all">Stage</button>
+                <button onclick="setScanObjective('Autre', this)"
+                    class="scan-obj-btn w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl text-left text-sm font-bold text-midnight-blue hover:border-midnight-blue transition-all">Autre</button>
 
                 <!-- Conditional Project Branch -->
                 <div id="scan-project-branch" class="hidden space-y-4 pt-4 border-t border-gray-100 mt-4">
                     <div class="space-y-1">
                         <label class="text-[10px] font-bold text-midnight-blue/40 uppercase px-1">Nom de projet</label>
-                        <input id="scan-project-name" type="text" placeholder="Nom du projet" class="w-full p-4 bg-white border border-gray-200 rounded-2xl outline-none focus:border-midnight-blue text-sm font-bold transition-all">
+                        <input id="scan-project-name" type="text" placeholder="Nom du projet"
+                            class="w-full p-4 bg-white border border-gray-200 rounded-2xl outline-none focus:border-midnight-blue text-sm font-bold transition-all">
                     </div>
                     <div class="space-y-1">
                         <label class="text-[10px] font-bold text-midnight-blue/40 uppercase px-1">Accompagné par</label>
-                        <select id="scan-project-companion" class="w-full p-4 bg-white border border-gray-200 rounded-2xl outline-none focus:border-midnight-blue text-sm font-bold transition-all">
+                        <select id="scan-project-companion"
+                            class="w-full p-4 bg-white border border-gray-200 rounded-2xl outline-none focus:border-midnight-blue text-sm font-bold transition-all">
                             <option value="Responsable FAB LAB">Responsable FAB LAB</option>
                             <option value="Responsable Entrepreneuriat">Responsable Entrepreneuriat</option>
                             <option value="Formateur">Formateur</option>
                         </select>
                     </div>
                     <div class="space-y-1">
-                        <label class="text-[10px] font-bold text-midnight-blue/40 uppercase px-1">Phase de projet</label>
-                        <select id="scan-project-phase" class="w-full p-4 bg-white border border-gray-200 rounded-2xl outline-none focus:border-midnight-blue text-sm font-bold transition-all">
+                        <label class="text-[10px] font-bold text-midnight-blue/40 uppercase px-1">Phase de
+                            projet</label>
+                        <select id="scan-project-phase"
+                            class="w-full p-4 bg-white border border-gray-200 rounded-2xl outline-none focus:border-midnight-blue text-sm font-bold transition-all">
                             <option value="Prototypage POC">Prototypage POC</option>
                             <option value="Prototypage MVP">Prototypage MVP</option>
                             <option value="Prototypage READY MARKET">Prototypage READY MARKET</option>
@@ -983,641 +965,579 @@
             </button>
         </div>
 
-    <script>
-        // Global user state
-        let currentUser = {};
-        let isUserInLab = false;
-        let currentRating = 0;
-        let isProfileEditing = false;
+        <script>
+            // Global user state
+            let currentUser = {};
+            let isUserInLab = false;
+            let currentRating = 0;
+            let isProfileEditing = false;
 
-        // Data with options for 2nd year
-        const trainingData = {
-            "digital et intelligence artificiel": {
-                "Technicien Spécialisé": [
-                    { name: "Infrastructure Digitale", options: ["Systèmes et Réseaux", "Cloud Computing", "Cybersécurité"] },
-                    { name: "Développement Digital", options: ["Mobile", "Web Fullstack"] },
-                    { name: "Marketing Digital Et Communication", options: ["Web Marketer"] }
-                ],
-                "Technicien": [{ name: "N", options: [] }],
-                "Qualification": [{ name: "N", options: [] }]
-            },
-            "Agriculture": {
-                "Technicien Spécialisé": [
-                    { name: "Agriculture De Précision", options: ["N"] },
-                    { name: "Management Des Exploitations Agricoles", options: ["Commercialisation des Produits Agricoles (Agrobusiness)", "Gestion des entreprises et Coopératives Agricoles"] },
-                    { name: "Techniques Agricoles", options: ["Agriculture Biologique", "Gestion des Sols et systèmes d'Irrigation", "Production végétale"] }
-                ],
-                "Technicien": [{ name: "N", options: [] }],
-                "Qualification": [{ name: "Opérateur Agricole", options: ["N"] }]
-            },
-            "Agro-Industrie": {
-                "Technicien Spécialisé": [{ name: "Transformation et valorisation des plantes Aromatiques et médicinales", options: ["N"] }],
-                "Technicien": [{ name: "N", options: [] }],
-                "Qualification": [{ name: "N", options: [] }]
-            },
-            "BTP": {
-                "Technicien Spécialisé": [
-                    { name: "Géomètre Topographe", options: ["N"] },
-                    { name: "Génie Civil", options: ["Génie Civil option Travaux Publics", "Génie Civil option Laboratoire BTP"] }
-                ],
-                "Technicien": [{ name: "Dessinateur Projeteur En Bâtiment", options: ["Bâtiment option Métreur", "Bâtiment option Projeteur"] }],
-                "Qualification": [{ name: "N", options: [] }]
-            },
-            "Industrie": {
-                "Technicien Spécialisé": [
-                    { name: "Diagnostic Et Électronique Embarquée Automobile", options: ["N"] },
-                    { name: "Qualité Hygiène Sécurité Et Environnement (Qhse)", options: ["N"] }
-                ],
-                "Technicien": [{ name: "Electromécanique des engins motorisés", options: ["Electromécanique des engins motorisés option Machinisme agricole", "Electromécanique des engins motorisés option Automobile"] }],
-                "Qualification": [{ name: "N", options: [] }]
-            },
-            "Tourisme Hôtellerie Restauration": {
-                "Technicien Spécialisé": [
-                    { name: "Management Touristique", options: ["E-Travel Agency", "Management des destinations durables"] },
-                    { name: "Management hôtelier", options: ["Hébergement et Réception"] }
-                ],
-                "Technicien": [
-                    { name: "Arts culinaires", options: ["Cuisine Gastronomique", "Pâtisserie-Chocolaterie"] },
-                    { name: "Service de Restauration ''Arts de table''", options: ["N"] }
-                ],
-                "Qualification": [{ name: "N", options: [] }]
-            },
-            "Logistique et Transport": {
-                "Technicien Spécialisé": [{ name: "Exploitation", options: ["Logistique", "Transport"] }],
-                "Technicien": [
-                    { name: "Moniteur Auto-Ecole", options: ["N"] },
-                    { name: "Logistique", options: ["N"] }
-                ],
-                "Qualification": [{ name: "N", options: [] }]
-            },
-            "Gestion et Commerce": {
-                "Technicien Spécialisé": [{ name: "Gestion des Entreprises", options: ["Comptabilité et Finance", "Commerce et Marketing", "Ressources Humaines"] }],
-                "Technicien": [{ name: "Assistant Administratif", options: ["Comptabilité", "Commerce", "Gestion"] }],
-                "Qualification": [{ name: "N", options: [] }]
-            },
-            "Artisanat": {
-                "Technicien Spécialisé": [{ name: "N", options: [] }],
-                "Technicien": [
-                    { name: "Menuiserie D'Art", options: ["N"] },
-                    { name: "Tapisserie", options: ["N"] }
-                ],
-                "Qualification": [
-                    { name: "Couture traditionnelle", options: ["N"] },
-                    { name: "Tissage Traditionnel", options: ["N"] }
-                ]
-            },
-            "AIG": {
-                "Technicien Spécialisé": [{ name: "infographie prépresse", options: ["N"] }],
-                "Technicien": [{ name: "N", options: [] }],
-                "Qualification": [{ name: "N", options: [] }]
-            }
-        };
+            // Data with options for 2nd year
+            const trainingData = {
+                "digital et intelligence artificiel": {
+                    "Technicien Spécialisé": [
+                        { name: "Infrastructure Digitale", options: ["Systèmes et Réseaux", "Cloud Computing", "Cybersécurité"] },
+                        { name: "Développement Digital", options: ["Mobile", "Web Fullstack"] },
+                        { name: "Marketing Digital Et Communication", options: ["Web Marketer"] }
+                    ],
+                    "Technicien": [{ name: "N", options: [] }],
+                    "Qualification": [{ name: "N", options: [] }]
+                },
+                "Agriculture": {
+                    "Technicien Spécialisé": [
+                        { name: "Agriculture De Précision", options: ["N"] },
+                        { name: "Management Des Exploitations Agricoles", options: ["Commercialisation des Produits Agricoles (Agrobusiness)", "Gestion des entreprises et Coopératives Agricoles"] },
+                        { name: "Techniques Agricoles", options: ["Agriculture Biologique", "Gestion des Sols et systèmes d'Irrigation", "Production végétale"] }
+                    ],
+                    "Technicien": [{ name: "N", options: [] }],
+                    "Qualification": [{ name: "Opérateur Agricole", options: ["N"] }]
+                },
+                "Agro-Industrie": {
+                    "Technicien Spécialisé": [{ name: "Transformation et valorisation des plantes Aromatiques et médicinales", options: ["N"] }],
+                    "Technicien": [{ name: "N", options: [] }],
+                    "Qualification": [{ name: "N", options: [] }]
+                },
+                "BTP": {
+                    "Technicien Spécialisé": [
+                        { name: "Géomètre Topographe", options: ["N"] },
+                        { name: "Génie Civil", options: ["Génie Civil option Travaux Publics", "Génie Civil option Laboratoire BTP"] }
+                    ],
+                    "Technicien": [{ name: "Dessinateur Projeteur En Bâtiment", options: ["Bâtiment option Métreur", "Bâtiment option Projeteur"] }],
+                    "Qualification": [{ name: "N", options: [] }]
+                },
+                "Industrie": {
+                    "Technicien Spécialisé": [
+                        { name: "Diagnostic Et Électronique Embarquée Automobile", options: ["N"] },
+                        { name: "Qualité Hygiène Sécurité Et Environnement (Qhse)", options: ["N"] }
+                    ],
+                    "Technicien": [{ name: "Electromécanique des engins motorisés", options: ["Electromécanique des engins motorisés option Machinisme agricole", "Electromécanique des engins motorisés option Automobile"] }],
+                    "Qualification": [{ name: "N", options: [] }]
+                },
+                "Tourisme Hôtellerie Restauration": {
+                    "Technicien Spécialisé": [
+                        { name: "Management Touristique", options: ["E-Travel Agency", "Management des destinations durables"] },
+                        { name: "Management hôtelier", options: ["Hébergement et Réception"] }
+                    ],
+                    "Technicien": [
+                        { name: "Arts culinaires", options: ["Cuisine Gastronomique", "Pâtisserie-Chocolaterie"] },
+                        { name: "Service de Restauration ''Arts de table''", options: ["N"] }
+                    ],
+                    "Qualification": [{ name: "N", options: [] }]
+                },
+                "Logistique et Transport": {
+                    "Technicien Spécialisé": [{ name: "Exploitation", options: ["Logistique", "Transport"] }],
+                    "Technicien": [
+                        { name: "Moniteur Auto-Ecole", options: ["N"] },
+                        { name: "Logistique", options: ["N"] }
+                    ],
+                    "Qualification": [{ name: "N", options: [] }]
+                },
+                "Gestion et Commerce": {
+                    "Technicien Spécialisé": [{ name: "Gestion des Entreprises", options: ["Comptabilité et Finance", "Commerce et Marketing", "Ressources Humaines"] }],
+                    "Technicien": [{ name: "Assistant Administratif", options: ["Comptabilité", "Commerce", "Gestion"] }],
+                    "Qualification": [{ name: "N", options: [] }]
+                },
+                "Artisanat": {
+                    "Technicien Spécialisé": [{ name: "N", options: [] }],
+                    "Technicien": [
+                        { name: "Menuiserie D'Art", options: ["N"] },
+                        { name: "Tapisserie", options: ["N"] }
+                    ],
+                    "Qualification": [
+                        { name: "Couture traditionnelle", options: ["N"] },
+                        { name: "Tissage Traditionnel", options: ["N"] }
+                    ]
+                },
+                "AIG": {
+                    "Technicien Spécialisé": [{ name: "infographie prépresse", options: ["N"] }],
+                    "Technicien": [{ name: "N", options: [] }],
+                    "Qualification": [{ name: "N", options: [] }]
+                }
+            };
 
 
-        function updateFiliereOptions() {
-            const pole = document.getElementById('pole-select').value;
-            const niveau = document.getElementById('niveau-select').value;
-            const filiereSelect = document.getElementById('filiere-select');
+            function updateFiliereOptions() {
+                const pole = document.getElementById('pole-select').value;
+                const niveau = document.getElementById('niveau-select').value;
+                const filiereSelect = document.getElementById('filiere-select');
 
-            filiereSelect.innerHTML = '';
+                filiereSelect.innerHTML = '';
 
-            if (pole && niveau && trainingData[pole] && trainingData[pole][niveau]) {
-                const filieres = trainingData[pole][niveau];
-                const placeholder = document.createElement('option');
-                placeholder.value = "";
-                placeholder.innerText = "Sélectionner votre filière";
-                placeholder.disabled = true;
-                placeholder.selected = true;
-                placeholder.hidden = true;
-                filiereSelect.appendChild(placeholder);
+                if (pole && niveau && trainingData[pole] && trainingData[pole][niveau]) {
+                    const filieres = trainingData[pole][niveau];
+                    const placeholder = document.createElement('option');
+                    placeholder.value = "";
+                    placeholder.innerText = "Sélectionner votre filière";
+                    placeholder.disabled = true;
+                    placeholder.selected = true;
+                    placeholder.hidden = true;
+                    filiereSelect.appendChild(placeholder);
 
-                filieres.forEach(f => {
-                    const opt = document.createElement('option');
-                    opt.value = f.name;
-                    opt.innerText = (f.name === "N" ? "Aucune filière disponible" : f.name);
-                    filiereSelect.appendChild(opt);
-                });
-            } else {
-                const opt = document.createElement('option');
-                opt.value = "";
-                opt.innerText = "selectionner votre pole";
-                opt.disabled = true;
-                opt.selected = true;
-                filiereSelect.appendChild(opt);
-            }
-            toggleOptionField();
-        }
-
-        function toggleOptionField() {
-            const pole = document.getElementById('pole-select').value;
-            const niveau = document.getElementById('niveau-select').value;
-            const filiereName = document.getElementById('filiere-select').value;
-            const year = document.getElementById('year-select').value;
-
-            const container = document.getElementById('option-container');
-            const select = document.getElementById('option-select');
-
-            if (year === "2ème année" && pole && niveau && filiereName) {
-                const filiere = trainingData[pole][niveau].find(f => f.name === filiereName);
-                if (filiere && filiere.options && filiere.options.length > 0) {
-                    select.innerHTML = '<option value="" disabled selected hidden>Sélectionner une option</option>';
-                    filiere.options.forEach(o => {
+                    filieres.forEach(f => {
                         const opt = document.createElement('option');
-                        opt.value = o;
-                        opt.innerText = o;
-                        select.appendChild(opt);
+                        opt.value = f.name;
+                        opt.innerText = (f.name === "N" ? "Aucune filière disponible" : f.name);
+                        filiereSelect.appendChild(opt);
                     });
-                    container.classList.remove('hidden');
-                    return;
-                }
-            }
-            container.classList.add('hidden');
-            select.innerHTML = '';
-        }
-
-        function validateStagiaireForm() {
-            const prenom = document.querySelector('#stagiaire-screen input[placeholder="Entrez Votre Prenom"]').value;
-            const nom = document.querySelector('#stagiaire-screen input[placeholder="Entrez Votre Nom"]').value;
-            const cin = document.getElementById('cin-signup-input').value;
-            const cef = document.getElementById('cef-signup-input').value;
-            const pole = document.getElementById('pole-select').value;
-            const niveau = document.getElementById('niveau-select').value;
-            const filiere = document.getElementById('filiere-select').value;
-            const year = document.getElementById('year-select').value;
-            const option = document.getElementById('option-select').value;
-            const tel = document.getElementById('tel-input').value;
-            const email = document.getElementById('email-input').value;
-
-            currentUser = { prenom, nom, cin, cef, pole, niveau, filiere, year, option, tel, email };
-            showCreateAccountScreen();
-        }
-
-        function showRoleSelection() { setScreen('role-selection-screen'); }
-        function showHomeScreen() { setScreen('home-screen'); }
-        function showStagiaireScreen() { setScreen('stagiaire-screen'); }
-        function showCharteScreen() { setScreen('charte-screen'); }
-        function showCreateAccountScreen() { setScreen('create-account-screen'); }
-        function showLoginScreen() { setScreen('login-screen'); }
-        function showDashboardScreen() { setScreen('dashboard-screen'); }
-
-        function setScreen(screenId) {
-            const screens = ['home-screen', 'role-selection-screen', 'stagiaire-screen', 'charte-screen', 'create-account-screen', 'login-screen', 'dashboard-screen'];
-            screens.forEach(id => {
-                const el = document.getElementById(id);
-                if (id === screenId) {
-                    el.classList.remove('hidden');
-                    el.classList.add('flex');
-                    setTimeout(() => {
-                        el.classList.remove('opacity-0');
-                        el.classList.add('opacity-100');
-                    }, 10);
                 } else {
-                    el.classList.add('opacity-0');
-                    el.classList.remove('opacity-100');
-                    setTimeout(() => {
-                        if (el.classList.contains('opacity-0')) {
-                            el.classList.add('hidden');
-                            el.classList.remove('flex');
-                        }
-                    }, 300);
+                    const opt = document.createElement('option');
+                    opt.value = "";
+                    opt.innerText = "selectionner votre pole";
+                    opt.disabled = true;
+                    opt.selected = true;
+                    filiereSelect.appendChild(opt);
                 }
-            });
-        }
-
-        function showLoginScreenWithFeedback(btn) {
-            btn.classList.add('bg-green-500');
-            setTimeout(() => {
-                btn.classList.remove('bg-green-500');
-                showLoginScreen();
-            }, 150);
-        }
-
-        function togglePasswordVisibility(inputId) {
-            const input = document.getElementById(inputId);
-            const eye = document.getElementById(inputId + '-eye');
-            if (input.type === 'password') {
-                input.type = 'text';
-                eye.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a9.97 9.97 0 011.563-3.04m4.066-1.56a10.048 10.048 0 014.113-1.012c4.478 0 8.268 2.943 9.542 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21m-2.102-2.102L3 3m5.356 5.356a3 3 0 104.288 4.288" />';
-            } else {
-                input.type = 'password';
-                eye.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />';
-            }
-        }
-
-        async function handleCreateAccount() {
-            const password = document.getElementById('password-input').value;
-            const confirm = document.getElementById('confirm-password-input').value;
-            const errorEl = document.getElementById('password-error');
-
-            errorEl.classList.add('hidden');
-            let error = '';
-
-            if (password.length < 8) {
-                error = 'Minimum 8 caractères';
-            } else if (!/[0-9]/.test(password)) {
-                error = 'Doit contenir au moins un chiffre';
-            } else if (password !== confirm) {
-                error = 'Les mots de passe ne correspondent pas';
+                toggleOptionField();
             }
 
-            if (error) {
-                errorEl.innerText = error;
-                errorEl.classList.remove('hidden');
-                return;
+            function toggleOptionField() {
+                const pole = document.getElementById('pole-select').value;
+                const niveau = document.getElementById('niveau-select').value;
+                const filiereName = document.getElementById('filiere-select').value;
+                const year = document.getElementById('year-select').value;
+
+                const container = document.getElementById('option-container');
+                const select = document.getElementById('option-select');
+
+                if (year === "2ème année" && pole && niveau && filiereName) {
+                    const filiere = trainingData[pole][niveau].find(f => f.name === filiereName);
+                    if (filiere && filiere.options && filiere.options.length > 0) {
+                        select.innerHTML = '<option value="" disabled selected hidden>Sélectionner une option</option>';
+                        filiere.options.forEach(o => {
+                            const opt = document.createElement('option');
+                            opt.value = o;
+                            opt.innerText = o;
+                            select.appendChild(opt);
+                        });
+                        container.classList.remove('hidden');
+                        return;
+                    }
+                }
+                container.classList.add('hidden');
+                select.innerHTML = '';
             }
 
-            try {
-                const { createUserWithEmailAndPassword, setDoc, doc, serverTimestamp } = window.fbActions;
-                const auth = window.fbAuth;
-                const db = window.fbDb;
+            function validateStagiaireForm() {
+                const prenom = document.querySelector('#stagiaire-screen input[placeholder="Entrez Votre Prenom"]').value;
+                const nom = document.querySelector('#stagiaire-screen input[placeholder="Entrez Votre Nom"]').value;
+                const cin = document.getElementById('cin-signup-input').value;
+                const cef = document.getElementById('cef-signup-input').value;
+                const pole = document.getElementById('pole-select').value;
+                const niveau = document.getElementById('niveau-select').value;
+                const filiere = document.getElementById('filiere-select').value;
+                const year = document.getElementById('year-select').value;
+                const option = document.getElementById('option-select').value;
+                const tel = document.getElementById('tel-input').value;
+                const email = document.getElementById('email-input').value;
 
-                // Create Firebase Auth account
-                const userCredential = await createUserWithEmailAndPassword(auth, currentUser.email, password);
-                const user = userCredential.user;
+                currentUser = { prenom, nom, cin, cef, pole, niveau, filiere, year, option, tel, email };
+                showCreateAccountScreen();
+            }
 
-                // Save extended profile to Firestore
-                await setDoc(doc(db, "users", user.uid), {
-                    ...currentUser,
-                    uid: user.uid,
-                    role: 'stagiaire',
-                    createdAt: serverTimestamp()
+            function showRoleSelection() { setScreen('role-selection-screen'); }
+            function showHomeScreen() { setScreen('home-screen'); }
+            function showStagiaireScreen() { setScreen('stagiaire-screen'); }
+            function showCharteScreen() { setScreen('charte-screen'); }
+            function showCreateAccountScreen() { setScreen('create-account-screen'); }
+            function showLoginScreen() { setScreen('login-screen'); }
+            function showDashboardScreen() { setScreen('dashboard-screen'); }
+
+            function setScreen(screenId) {
+                const screens = ['home-screen', 'role-selection-screen', 'stagiaire-screen', 'charte-screen', 'create-account-screen', 'login-screen', 'dashboard-screen'];
+                screens.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (id === screenId) {
+                        el.classList.remove('hidden');
+                        el.classList.add('flex');
+                        setTimeout(() => {
+                            el.classList.remove('opacity-0');
+                            el.classList.add('opacity-100');
+                        }, 10);
+                    } else {
+                        el.classList.add('opacity-0');
+                        el.classList.remove('opacity-100');
+                        setTimeout(() => {
+                            if (el.classList.contains('opacity-0')) {
+                                el.classList.add('hidden');
+                                el.classList.remove('flex');
+                            }
+                        }, 300);
+                    }
+                });
+            }
+
+            function showLoginScreenWithFeedback(btn) {
+                btn.classList.add('bg-green-500');
+                setTimeout(() => {
+                    btn.classList.remove('bg-green-500');
+                    showLoginScreen();
+                }, 150);
+            }
+
+            async function handleGoogleAuth(mode = 'login') {
+                try {
+                    const { signInWithRedirect } = window.fbActions;
+                    const auth = window.fbAuth;
+                    const provider = window.googleProvider;
+
+                    // Save mode to session storage so we know what to do after redirect
+                    sessionStorage.setItem('auth_mode', mode);
+
+                    await signInWithRedirect(auth, provider);
+                    // Page will redirect...
+                } catch (err) {
+                    console.error("Google Auth Error:", err);
+                    alert("Erreur d'authentification : " + err.message);
+                }
+            }
+
+            function switchTab(tabId) {
+                document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+                document.querySelectorAll('.nav-item').forEach(el => {
+                    el.classList.remove('text-[#3B5FE6]');
+                    el.classList.add('text-midnight-blue/40');
                 });
 
-                alert("Compte créé avec succès ! Veuillez vous connecter.");
-                showLoginScreen();
-            } catch (err) {
-                errorEl.innerText = "Erreur: " + err.message;
-                errorEl.classList.remove('hidden');
-            }
-        }
-
-        function handleLoginWithFeedback(btn) {
-            btn.classList.add('!bg-green-500');
-            setTimeout(() => {
-                btn.classList.remove('!bg-green-500');
-                handleLogin();
-            }, 150);
-        }
-
-        async function handleLogin() {
-            const identifier = document.getElementById('login-identifier').value.trim();
-            const password = document.getElementById('login-password').value;
-            const idError = document.getElementById('login-id-error');
-            const passError = document.getElementById('login-pass-error');
-
-            idError.classList.add('hidden');
-            passError.classList.add('hidden');
-
-            let isValid = true;
-
-            if (!identifier) {
-                idError.innerText = 'Veuillez entrer votre email ou téléphone';
-                idError.classList.remove('hidden');
-                isValid = false;
-            }
-
-            if (!password) {
-                passError.innerText = 'Veuillez entrer votre mot de passe';
-                passError.classList.remove('hidden');
-                isValid = false;
-            }
-
-            if (isValid) {
-                try {
-                    const { signInWithEmailAndPassword } = window.fbActions;
-                    const auth = window.fbAuth;
-                    
-                    // Simple email login. If it's a phone, it would need more logic.
-                    await signInWithEmailAndPassword(auth, identifier, password);
-                    // onAuthStateChanged will handle redirection to dashboard
-                } catch (err) {
-                    passError.innerText = "Erreur de connexion : " + err.message;
-                    passError.classList.remove('hidden');
-                }
-            }
-        }
-
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            document.querySelectorAll('.nav-item').forEach(el => {
-                el.classList.remove('text-[#3B5FE6]');
-                el.classList.add('text-midnight-blue/40');
-            });
-
-            document.getElementById('tab-' + tabId).classList.remove('hidden');
-            if (tabId === 'scan') {
-                document.getElementById('tab-' + tabId).classList.add('flex');
-                startScanner();
-            } else {
-                stopScanner();
-            }
-            if (tabId === 'my-project') {
-                document.getElementById('tab-' + tabId).classList.add('flex');
-            }
-            if (tabId === 'profile') {
-                document.getElementById('tab-' + tabId).classList.add('flex');
-                updateProfileView();
-            }
-
-            document.getElementById('nav-' + tabId).classList.add('text-[#3B5FE6]');
-            document.getElementById('nav-' + tabId).classList.remove('text-midnight-blue/40');
-        }
-
-        let html5QrCode = null;
-
-        function startScanner() {
-            if (html5QrCode && html5QrCode.isScanning) return;
-
-            const placeholder = document.getElementById('scanner-placeholder');
-            const config = { fps: 10, qrbox: { width: 250, height: 250 } };
-
-            if (!html5QrCode) {
-                html5QrCode = new Html5Qrcode("reader");
-            }
-
-            html5QrCode.start(
-                { facingMode: "environment" },
-                config,
-                onScanSuccess
-            ).then(() => {
-                placeholder.classList.add('hidden');
-            }).catch(err => {
-                console.error("Scanner error:", err);
-                placeholder.classList.remove('hidden');
-                placeholder.innerHTML = `<p class="text-white text-xs px-6 text-center">Erreur caméra : ${err}</p>`;
-            });
-        }
-
-        function stopScanner() {
-            if (html5QrCode && html5QrCode.isScanning) {
-                html5QrCode.stop().then(() => {
-                    document.getElementById('scanner-placeholder').classList.remove('hidden');
-                }).catch(err => console.error("Stop error:", err));
-            }
-        }
-
-        function onScanSuccess(decodedText, decodedResult) {
-            stopScanner();
-
-            if (!isUserInLab) {
-                if (currentUser.role === 'stagiaire') {
-                    showScanObjectiveModal();
+                document.getElementById('tab-' + tabId).classList.remove('hidden');
+                if (tabId === 'scan') {
+                    document.getElementById('tab-' + tabId).classList.add('flex');
+                    startScanner();
                 } else {
-                    isUserInLab = true;
-                    updateScanUI();
-                    alert("ENTRÉE RÉUSSIE ! Bienvenue dans le Lab.");
-                    switchTab('my-project');
+                    stopScanner();
                 }
-            } else {
-                showFeedbackModal();
-            }
-        }
-
-        let scanSelectedObjective = '';
-
-        function showScanObjectiveModal() {
-            const modal = document.getElementById('scan-objective-modal');
-            const content = document.getElementById('scan-objective-content');
-            modal.classList.remove('hidden');
-            setTimeout(() => {
-                modal.classList.remove('opacity-0');
-                content.classList.remove('scale-95');
-                content.classList.add('scale-100');
-            }, 10);
-        }
-
-        function setScanObjective(val, btn) {
-            scanSelectedObjective = val;
-            
-            // UI feedback
-            document.querySelectorAll('.scan-obj-btn').forEach(b => {
-                b.classList.remove('border-midnight-blue', 'bg-blue-50', 'ring-1', 'ring-midnight-blue');
-                b.classList.add('border-gray-100', 'bg-gray-50');
-            });
-            btn.classList.add('border-midnight-blue', 'bg-blue-50', 'ring-1', 'ring-midnight-blue');
-            btn.classList.remove('border-gray-100', 'bg-gray-50');
-
-            // Branching
-            const branch = document.getElementById('scan-project-branch');
-            if (val === 'Projet en cours') {
-                branch.classList.remove('hidden');
-            } else {
-                branch.classList.add('hidden');
-            }
-        }
-
-        async function finalizeScanIn() {
-            if (!scanSelectedObjective) {
-                alert("Veuillez sélectionner un objectif.");
-                return;
-            }
-
-            try {
-                const { addDoc, collection, serverTimestamp } = window.fbActions;
-                const db = window.fbDb;
-
-                const logEntry = {
-                    userId: currentUser.uid || 'guest',
-                    userName: `${currentUser.firstName || ''} ${currentUser.lastName || ''}`.trim(),
-                    type: 'in',
-                    objective: scanSelectedObjective,
-                    timestamp: serverTimestamp()
-                };
-
-                if (scanSelectedObjective === 'Projet en cours') {
-                    logEntry.project = document.getElementById('scan-project-name').value;
-                    logEntry.companion = document.getElementById('scan-project-companion').value;
-                    logEntry.phase = document.getElementById('scan-project-phase').value;
-                    
-                    // Update user's active context
-                    currentUser.activeProject = logEntry.project;
-                    currentUser.activeCompanion = logEntry.companion;
-                    currentUser.activePhase = logEntry.phase;
+                if (tabId === 'my-project') {
+                    document.getElementById('tab-' + tabId).classList.add('flex');
+                }
+                if (tabId === 'profile') {
+                    document.getElementById('tab-' + tabId).classList.add('flex');
+                    updateProfileView();
                 }
 
-                await addDoc(collection(db, "attendance"), logEntry);
+                document.getElementById('nav-' + tabId).classList.add('text-[#3B5FE6]');
+                document.getElementById('nav-' + tabId).classList.remove('text-midnight-blue/40');
+            }
 
-                // UI Update
-                isUserInLab = true;
-                updateScanUI();
-                
+            let html5QrCode = null;
+
+            function startScanner() {
+                if (html5QrCode && html5QrCode.isScanning) return;
+
+                const placeholder = document.getElementById('scanner-placeholder');
+                const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+
+                if (!html5QrCode) {
+                    html5QrCode = new Html5Qrcode("reader");
+                }
+
+                html5QrCode.start(
+                    { facingMode: "environment" },
+                    config,
+                    onScanSuccess
+                ).then(() => {
+                    placeholder.classList.add('hidden');
+                }).catch(err => {
+                    console.error("Scanner error:", err);
+                    placeholder.classList.remove('hidden');
+                    placeholder.innerHTML = `<p class="text-white text-xs px-6 text-center">Erreur caméra : ${err}</p>`;
+                });
+            }
+
+            function stopScanner() {
+                if (html5QrCode && html5QrCode.isScanning) {
+                    html5QrCode.stop().then(() => {
+                        document.getElementById('scanner-placeholder').classList.remove('hidden');
+                    }).catch(err => console.error("Stop error:", err));
+                }
+            }
+
+            function onScanSuccess(decodedText, decodedResult) {
+                stopScanner();
+
+                if (!isUserInLab) {
+                    if (currentUser.role === 'stagiaire') {
+                        showScanObjectiveModal();
+                    } else {
+                        isUserInLab = true;
+                        updateScanUI();
+                        alert("ENTRÉE RÉUSSIE ! Bienvenue dans le Lab.");
+                        switchTab('my-project');
+                    }
+                } else {
+                    showFeedbackModal();
+                }
+            }
+
+            let scanSelectedObjective = '';
+
+            function showScanObjectiveModal() {
                 const modal = document.getElementById('scan-objective-modal');
                 const content = document.getElementById('scan-objective-content');
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    modal.classList.remove('opacity-0');
+                    content.classList.remove('scale-95');
+                    content.classList.add('scale-100');
+                }, 10);
+            }
+
+            function setScanObjective(val, btn) {
+                scanSelectedObjective = val;
+
+                // UI feedback
+                document.querySelectorAll('.scan-obj-btn').forEach(b => {
+                    b.classList.remove('border-midnight-blue', 'bg-blue-50', 'ring-1', 'ring-midnight-blue');
+                    b.classList.add('border-gray-100', 'bg-gray-50');
+                });
+                btn.classList.add('border-midnight-blue', 'bg-blue-50', 'ring-1', 'ring-midnight-blue');
+                btn.classList.remove('border-gray-100', 'bg-gray-50');
+
+                // Branching
+                const branch = document.getElementById('scan-project-branch');
+                if (val === 'Projet en cours') {
+                    branch.classList.remove('hidden');
+                } else {
+                    branch.classList.add('hidden');
+                }
+            }
+
+            async function finalizeScanIn() {
+                if (!scanSelectedObjective) {
+                    alert("Veuillez sélectionner un objectif.");
+                    return;
+                }
+
+                try {
+                    const { addDoc, collection, serverTimestamp } = window.fbActions;
+                    const db = window.fbDb;
+
+                    const logEntry = {
+                        userId: currentUser.uid || 'guest',
+                        userName: `${currentUser.firstName || ''} ${currentUser.lastName || ''}`.trim(),
+                        type: 'in',
+                        objective: scanSelectedObjective,
+                        timestamp: serverTimestamp()
+                    };
+
+                    if (scanSelectedObjective === 'Projet en cours') {
+                        logEntry.project = document.getElementById('scan-project-name').value;
+                        logEntry.companion = document.getElementById('scan-project-companion').value;
+                        logEntry.phase = document.getElementById('scan-project-phase').value;
+
+                        // Update user's active context
+                        currentUser.activeProject = logEntry.project;
+                        currentUser.activeCompanion = logEntry.companion;
+                        currentUser.activePhase = logEntry.phase;
+                    }
+
+                    await addDoc(collection(db, "attendance"), logEntry);
+
+                    // UI Update
+                    isUserInLab = true;
+                    updateScanUI();
+
+                    const modal = document.getElementById('scan-objective-modal');
+                    const content = document.getElementById('scan-objective-content');
+                    modal.classList.add('opacity-0');
+                    content.classList.add('scale-95');
+
+                    setTimeout(() => {
+                        modal.classList.add('hidden');
+                        alert("ENTRÉE RÉUSSIE ! Bienvenue dans le Lab.");
+                        switchTab('my-project');
+                    }, 300);
+                } catch (error) {
+                    alert("Scan-in error: " + error.message);
+                }
+            }
+
+            function updateScanUI() {
+                const banner = document.getElementById('scan-status-banner');
+                const statusText = document.getElementById('scan-status-text');
+
+                if (isUserInLab) {
+                    banner.classList.remove('bg-green-500');
+                    banner.classList.add('bg-red-500');
+                    statusText.innerText = 'SORTIE (SCAN OUT)';
+                } else {
+                    banner.classList.remove('bg-red-500');
+                    banner.classList.add('bg-green-500');
+                    statusText.innerText = 'ENTRÉE (SCAN IN)';
+                }
+            }
+
+            function showFeedbackModal() {
+                const modal = document.getElementById('feedback-modal');
+                const content = document.getElementById('feedback-content');
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    modal.classList.remove('opacity-0');
+                    content.classList.remove('scale-95');
+                    content.classList.add('scale-100');
+                }, 10);
+            }
+
+            function setRating(rating) {
+                currentRating = rating;
+                const stars = document.querySelectorAll('.star-btn');
+                stars.forEach((star, index) => {
+                    if (index < rating) {
+                        star.classList.remove('text-gray-300');
+                        star.classList.add('text-yellow-400');
+                    } else {
+                        star.classList.remove('text-yellow-400');
+                        star.classList.add('text-gray-300');
+                    }
+                });
+            }
+
+            function submitFeedback() {
+                if (currentRating === 0) {
+                    alert("Veuillez donner une note de 1 à 5 étoiles.");
+                    return;
+                }
+
+                alert("Merci pour votre feedback ! À bientôt.");
+
+                isUserInLab = false;
+                updateScanUI();
+
+                const modal = document.getElementById('feedback-modal');
+                const content = document.getElementById('feedback-content');
                 modal.classList.add('opacity-0');
                 content.classList.add('scale-95');
-                
                 setTimeout(() => {
                     modal.classList.add('hidden');
-                    alert("ENTRÉE RÉUSSIE ! Bienvenue dans le Lab.");
-                    switchTab('my-project');
+                    currentRating = 0;
+                    setRating(0);
+                    document.getElementById('feedback-note').value = '';
+                    switchTab('scan');
                 }, 300);
-            } catch (error) {
-                alert("Scan-in error: " + error.message);
             }
-        }
 
-        function updateScanUI() {
-            const banner = document.getElementById('scan-status-banner');
-            const statusText = document.getElementById('scan-status-text');
+            function updateProfileView() {
+                if (!currentUser.prenom) return;
 
-            if (isUserInLab) {
-                banner.classList.remove('bg-green-500');
-                banner.classList.add('bg-red-500');
-                statusText.innerText = 'SORTIE (SCAN OUT)';
-            } else {
-                banner.classList.remove('bg-red-500');
-                banner.classList.add('bg-green-500');
-                statusText.innerText = 'ENTRÉE (SCAN IN)';
+                // Header: Name + Level
+                document.getElementById('profile-display-name').innerText = `${currentUser.prenom} ${currentUser.nom}`;
+                document.getElementById('profile-level-label').innerText = currentUser.niveau || 'Stagiaire';
+
+                // Bio
+                document.getElementById('view-bio').innerText = currentUser.bio || "Passionné par le Fab Lab et l'innovation technologique.";
+                document.getElementById('edit-bio').value = currentUser.bio || "";
+
+                // Academic
+                document.getElementById('view-pole').innerText = currentUser.pole || '-';
+                document.getElementById('view-niveau').innerText = currentUser.niveau || '-';
+                document.getElementById('view-filiere').innerText = currentUser.filiere || '-';
+                document.getElementById('view-year').innerText = currentUser.year || '-';
+                document.getElementById('view-option').innerText = currentUser.option && currentUser.option !== 'N' ? currentUser.option : 'Non applicable';
+
+                document.getElementById('edit-pole').value = currentUser.pole || '';
+                document.getElementById('edit-niveau').value = currentUser.niveau || '';
+                document.getElementById('edit-filiere').value = currentUser.filiere || '';
+                document.getElementById('edit-year').value = currentUser.year || '';
+                document.getElementById('edit-option').value = currentUser.option || '';
+
+                document.getElementById('card-option').classList.toggle('hidden', !currentUser.option || currentUser.option === 'N');
+
+                // Identity
+                document.getElementById('view-cin').innerText = currentUser.cin || '-';
+                document.getElementById('view-cef').innerText = currentUser.cef || '-';
+
+                document.getElementById('edit-cin').value = currentUser.cin || '';
+                document.getElementById('edit-cef').value = currentUser.cef || '';
+
+                // Contact
+                document.getElementById('view-email').innerText = currentUser.email || '-';
+                document.getElementById('view-tel').innerText = currentUser.tel || '-';
+
+                document.getElementById('edit-email').value = currentUser.email || '';
+                document.getElementById('edit-tel').value = currentUser.tel || '';
             }
-        }
 
-        function showFeedbackModal() {
-            const modal = document.getElementById('feedback-modal');
-            const content = document.getElementById('feedback-content');
-            modal.classList.remove('hidden');
-            setTimeout(() => {
-                modal.classList.remove('opacity-0');
-                content.classList.remove('scale-95');
-                content.classList.add('scale-100');
-            }, 10);
-        }
+            function toggleProfileEdit() {
+                isProfileEditing = !isProfileEditing;
 
-        function setRating(rating) {
-            currentRating = rating;
-            const stars = document.querySelectorAll('.star-btn');
-            stars.forEach((star, index) => {
-                if (index < rating) {
-                    star.classList.remove('text-gray-300');
-                    star.classList.add('text-yellow-400');
-                } else {
-                    star.classList.remove('text-yellow-400');
-                    star.classList.add('text-gray-300');
+                const viewIds = ['view-bio', 'view-pole', 'view-niveau', 'view-filiere', 'view-year', 'view-option', 'view-cin', 'view-cef', 'view-email', 'view-tel'];
+                const editIds = ['edit-bio', 'edit-pole', 'edit-niveau', 'edit-filiere', 'edit-year', 'edit-option', 'edit-cin', 'edit-cef', 'edit-email', 'edit-tel'];
+
+                viewIds.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.classList.toggle('hidden', isProfileEditing);
+                });
+                editIds.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.classList.toggle('hidden', !isProfileEditing);
+                });
+
+                document.getElementById('profile-edit-btn').classList.toggle('hidden', isProfileEditing);
+                document.getElementById('profile-save-btn').classList.toggle('hidden', !isProfileEditing);
+            }
+
+            function saveProfileChanges() {
+                currentUser.bio = document.getElementById('edit-bio').value;
+                currentUser.pole = document.getElementById('edit-pole').value;
+                currentUser.niveau = document.getElementById('edit-niveau').value;
+                currentUser.filiere = document.getElementById('edit-filiere').value;
+                currentUser.year = document.getElementById('edit-year').value;
+                currentUser.option = document.getElementById('edit-option').value;
+                currentUser.cin = document.getElementById('edit-cin').value;
+                currentUser.cef = document.getElementById('edit-cef').value;
+                currentUser.email = document.getElementById('edit-email').value;
+                currentUser.tel = document.getElementById('edit-tel').value;
+
+                updateProfileView();
+                toggleProfileEdit();
+                alert("Profil mis à jour avec succès !");
+            }
+
+            // --- AUTH STATE PERSISTENCE ---
+            const initAuth = async () => {
+                const auth = window.fbAuth;
+                const db = window.fbDb;
+                if (!auth || !db) {
+                    setTimeout(initAuth, 100);
+                    return;
                 }
-            });
-        }
 
-        function submitFeedback() {
-            if (currentRating === 0) {
-                alert("Veuillez donner une note de 1 à 5 étoiles.");
-                return;
+            const { onAuthStateChanged, getDoc, doc, getRedirectResult, setDoc, serverTimestamp } = window.fbActions;
+
+            // --- HANDLE GOOGLE REDIRECT RESULT ---
+            try {
+                const result = await getRedirectResult(auth);
+                if (result && result.user) {
+                    const user = result.user;
+                    const mode = sessionStorage.getItem('auth_mode');
+                    const userSnap = await getDoc(doc(db, "users", user.uid));
+                    
+                    if (!userSnap.exists() && mode === 'signup' && currentUser.prenom) {
+                        // User coming from registration flow: save profile
+                        await setDoc(doc(db, "users", user.uid), {
+                            ...currentUser,
+                            email: user.email,
+                            uid: user.uid,
+                            role: 'stagiaire',
+                            createdAt: serverTimestamp()
+                        });
+                        alert("Compte créé avec succès ! Bienvenue au Lab.");
+                    }
+                    sessionStorage.removeItem('auth_mode');
+                }
+            } catch (err) {
+                console.error("Redirect Result Error:", err);
             }
 
-            alert("Merci pour votre feedback ! À bientôt.");
-
-            isUserInLab = false;
-            updateScanUI();
-
-            const modal = document.getElementById('feedback-modal');
-            const content = document.getElementById('feedback-content');
-            modal.classList.add('opacity-0');
-            content.classList.add('scale-95');
-            setTimeout(() => {
-                modal.classList.add('hidden');
-                currentRating = 0;
-                setRating(0);
-                document.getElementById('feedback-note').value = '';
-                switchTab('scan');
-            }, 300);
-        }
-
-        function updateProfileView() {
-            if (!currentUser.prenom) return;
-
-            // Header: Name + Level
-            document.getElementById('profile-display-name').innerText = `${currentUser.prenom} ${currentUser.nom}`;
-            document.getElementById('profile-level-label').innerText = currentUser.niveau || 'Stagiaire';
-
-            // Bio
-            document.getElementById('view-bio').innerText = currentUser.bio || "Passionné par le Fab Lab et l'innovation technologique.";
-            document.getElementById('edit-bio').value = currentUser.bio || "";
-
-            // Academic
-            document.getElementById('view-pole').innerText = currentUser.pole || '-';
-            document.getElementById('view-niveau').innerText = currentUser.niveau || '-';
-            document.getElementById('view-filiere').innerText = currentUser.filiere || '-';
-            document.getElementById('view-year').innerText = currentUser.year || '-';
-            document.getElementById('view-option').innerText = currentUser.option && currentUser.option !== 'N' ? currentUser.option : 'Non applicable';
-
-            document.getElementById('edit-pole').value = currentUser.pole || '';
-            document.getElementById('edit-niveau').value = currentUser.niveau || '';
-            document.getElementById('edit-filiere').value = currentUser.filiere || '';
-            document.getElementById('edit-year').value = currentUser.year || '';
-            document.getElementById('edit-option').value = currentUser.option || '';
-
-            document.getElementById('card-option').classList.toggle('hidden', !currentUser.option || currentUser.option === 'N');
-
-            // Identity
-            document.getElementById('view-cin').innerText = currentUser.cin || '-';
-            document.getElementById('view-cef').innerText = currentUser.cef || '-';
-
-            document.getElementById('edit-cin').value = currentUser.cin || '';
-            document.getElementById('edit-cef').value = currentUser.cef || '';
-
-            // Contact
-            document.getElementById('view-email').innerText = currentUser.email || '-';
-            document.getElementById('view-tel').innerText = currentUser.tel || '-';
-
-            document.getElementById('edit-email').value = currentUser.email || '';
-            document.getElementById('edit-tel').value = currentUser.tel || '';
-        }
-
-        function toggleProfileEdit() {
-            isProfileEditing = !isProfileEditing;
-
-            const viewIds = ['view-bio', 'view-pole', 'view-niveau', 'view-filiere', 'view-year', 'view-option', 'view-cin', 'view-cef', 'view-email', 'view-tel'];
-            const editIds = ['edit-bio', 'edit-pole', 'edit-niveau', 'edit-filiere', 'edit-year', 'edit-option', 'edit-cin', 'edit-cef', 'edit-email', 'edit-tel'];
-
-            viewIds.forEach(id => {
-                const el = document.getElementById(id);
-                if (el) el.classList.toggle('hidden', isProfileEditing);
-            });
-            editIds.forEach(id => {
-                const el = document.getElementById(id);
-                if (el) el.classList.toggle('hidden', !isProfileEditing);
-            });
-
-            document.getElementById('profile-edit-btn').classList.toggle('hidden', isProfileEditing);
-            document.getElementById('profile-save-btn').classList.toggle('hidden', !isProfileEditing);
-        }
-
-        function saveProfileChanges() {
-            currentUser.bio = document.getElementById('edit-bio').value;
-            currentUser.pole = document.getElementById('edit-pole').value;
-            currentUser.niveau = document.getElementById('edit-niveau').value;
-            currentUser.filiere = document.getElementById('edit-filiere').value;
-            currentUser.year = document.getElementById('edit-year').value;
-            currentUser.option = document.getElementById('edit-option').value;
-            currentUser.cin = document.getElementById('edit-cin').value;
-            currentUser.cef = document.getElementById('edit-cef').value;
-            currentUser.email = document.getElementById('edit-email').value;
-            currentUser.tel = document.getElementById('edit-tel').value;
-
-            updateProfileView();
-            toggleProfileEdit();
-            alert("Profil mis à jour avec succès !");
-        }
-
-        // --- AUTH STATE PERSISTENCE ---
-        const initAuth = async () => {
-            const auth = window.fbAuth;
-            const db = window.fbDb;
-            if (!auth || !db) {
-                setTimeout(initAuth, 100);
-                return;
-            }
-
-            const { onAuthStateChanged, getDoc, doc } = window.fbActions;
-
+            // --- LISTEN FOR AUTH STATE CHANGES ---
             onAuthStateChanged(auth, async (user) => {
                 if (user) {
                     try {
                         const userSnap = await getDoc(doc(db, "users", user.uid));
                         if (userSnap.exists()) {
                             currentUser = userSnap.data();
-                            console.log("User logged in:", currentUser);
+                            console.log("Logged in user with profile:", currentUser.email);
                             
-                            // Auto-redirect if on Home, Login, or Role Selection screens
-                            const currentScreen = ['home-screen', 'login-screen', 'role-selection-screen', 'stagiaire-screen']
+                            // Auto-redirect to scan if on an entry screen
+                            const currentScreen = ['home-screen', 'login-screen', 'role-selection-screen', 'stagiaire-screen', 'create-account-screen']
                                 .find(id => !document.getElementById(id).classList.contains('hidden'));
                             
                             if (currentScreen) {
@@ -1625,55 +1545,57 @@
                                 switchTab('scan');
                             }
                         } else {
-                            console.warn("User authenticated but no Firestore profile found.");
+                            // AUTHENTICATED BUT NO PROFILE: Redirect to Role Selection
+                            console.warn("User signed in but has no profile yet.");
+                            showRoleSelection();
                         }
                     } catch (err) {
-                        console.error("Auth sync error:", err);
+                        console.error("Auth status sync error:", err);
                     }
                 } else {
                     currentUser = {};
                     isUserInLab = false;
-                    // If we were on dashboard, go home
-                    if (!document.getElementById('dashboard-screen').classList.contains('hidden')) {
+                    const dashboard = document.getElementById('dashboard-screen');
+                    if (dashboard && !dashboard.classList.contains('hidden')) {
                         showHomeScreen();
                     }
                 }
             });
-        };
+            };
 
-        window.addEventListener('load', initAuth);
+            window.addEventListener('load', initAuth);
 
-        function handleProjectImages(input) {
-            const previewContainer = document.getElementById('project-images-preview');
-            const files = input.files;
+            function handleProjectImages(input) {
+                const previewContainer = document.getElementById('project-images-preview');
+                const files = input.files;
 
-            if (files.length > 2) {
-                alert("Maximum 2 images autorisées.");
-                input.value = "";
-                return;
+                if (files.length > 2) {
+                    alert("Maximum 2 images autorisées.");
+                    input.value = "";
+                    return;
+                }
+
+                previewContainer.innerHTML = '';
+
+                Array.from(files).forEach(file => {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const div = document.createElement('div');
+                        div.className = "rounded-2xl overflow-hidden shadow-md h-full";
+                        div.innerHTML = `<img src="${e.target.result}" class="w-full h-full object-cover">`;
+                        previewContainer.appendChild(div);
+                    };
+                    reader.readAsDataURL(file);
+                });
+
+                if (files.length === 1) {
+                    const placeholder = document.createElement('div');
+                    placeholder.className = "border-2 border-dashed border-midnight-blue/10 bg-midnight-blue/5 rounded-2xl flex items-center justify-center text-midnight-blue/20 h-full";
+                    placeholder.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>`;
+                    previewContainer.appendChild(placeholder);
+                }
             }
-
-            previewContainer.innerHTML = '';
-
-            Array.from(files).forEach(file => {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    const div = document.createElement('div');
-                    div.className = "rounded-2xl overflow-hidden shadow-md h-full";
-                    div.innerHTML = `<img src="${e.target.result}" class="w-full h-full object-cover">`;
-                    previewContainer.appendChild(div);
-                };
-                reader.readAsDataURL(file);
-            });
-
-            if (files.length === 1) {
-                const placeholder = document.createElement('div');
-                placeholder.className = "border-2 border-dashed border-midnight-blue/10 bg-midnight-blue/5 rounded-2xl flex items-center justify-center text-midnight-blue/20 h-full";
-                placeholder.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>`;
-                previewContainer.appendChild(placeholder);
-            }
-        }
-    </script>
+        </script>
 </body>
 
 </html>
