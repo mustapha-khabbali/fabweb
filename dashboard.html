@@ -321,10 +321,99 @@
         .journal-entry:last-child {
             border-bottom: none;
         }
+        /* ── Login Overlay ── */
+        #admin-login-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: #060B28 radial-gradient(ellipse at 50% 0%, rgba(0, 117, 255, 0.2) 0%, transparent 70%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(20px);
+        }
+
+        .login-card {
+            background: rgba(17, 28, 68, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            width: 100%;
+            max-width: 400px;
+            padding: 40px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+
+        .login-input {
+            width: 100%;
+            background: rgba(6, 11, 40, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 14px 16px;
+            color: white;
+            font-size: 14px;
+            margin-bottom: 20px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .login-input:focus {
+            border-color: #0075FF;
+            box-shadow: 0 0 15px rgba(0, 117, 255, 0.2);
+        }
+
+        .login-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #0075FF 0%, #4318FF 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 14px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 117, 255, 0.4);
+        }
+
+        .login-btn:active {
+            transform: scale(0.98);
+        }
     </style>
 </head>
 
 <body class="flex h-screen font-inter text-white">
+
+    <!-- ═══════════════ LOGIN OVERLAY ═══════════════ -->
+    <div id="admin-login-overlay">
+        <div class="login-card animate-fade-in">
+            <div class="flex flex-col items-center mb-8">
+                <div class="w-16 h-16 rounded-2xl flex items-center justify-center bg-gradient-to-br from-accent-brand to-accent-purple shadow-lg mb-4 p-2">
+                    <img src="fablab.webp" alt="Logo" class="w-full h-full object-contain" />
+                </div>
+                <h2 class="text-2xl font-bold tracking-tight">Espace Admin</h2>
+                <p class="text-white/40 text-xs mt-1 uppercase tracking-widest">Identification requise</p>
+            </div>
+
+            <div class="text-left">
+                <label class="text-[10px] font-bold text-white/40 uppercase tracking-widest ml-1 mb-2 block">Identifiant</label>
+                <input type="text" id="admin-username" class="login-input" placeholder="SARA-LADOUY">
+                
+                <label class="text-[10px] font-bold text-white/40 uppercase tracking-widest ml-1 mb-2 block">Mot de passe</label>
+                <input type="password" id="admin-password" class="login-input" placeholder="••••••••">
+            </div>
+
+            <button onclick="checkCustomAuth()" class="login-btn mt-4">Se connecter</button>
+            <p id="login-error" class="text-accent-red text-[11px] font-bold mt-4 opacity-0 transition-opacity">Identifiants incorrects</p>
+        </div>
+    </div>
 
     <!-- ═══════════════ SIDEBAR ═══════════════ -->
     <aside class="sidebar w-[275px] flex flex-col shrink-0 z-50 px-4 py-8 relative">
@@ -716,31 +805,53 @@
         const db = getFirestore(app);
         const auth = getAuth(app);
 
-        // Security Gate: Check if user is an admin
-        onAuthStateChanged(auth, async (user) => {
-            if (!user) {
-                // Not logged in, go to home
-                window.location.href = "https://fablab-bmk.web.app";
-                return;
+        // Security Gate Function
+        window.checkAuthState = () => {
+            onAuthStateChanged(auth, async (user) => {
+                if (!user) {
+                    window.location.href = "https://fablab-bmk.web.app";
+                    return;
+                }
+
+                const userSnap = await getDoc(doc(db, "users", user.uid));
+                if (!userSnap.exists() || userSnap.data().role !== 'admin') {
+                    alert("Accès refusé. Réservé aux administrateurs.");
+                    window.location.href = "https://fablab-bmk.web.app";
+                    return;
+                }
+
+                // Show content and start listeners
+                document.body.style.display = 'flex';
+                window.initRealtimeListeners();
+            });
+        };
+
+        // Custom Credentials Auth
+        window.checkCustomAuth = () => {
+            const user = document.getElementById('admin-username').value;
+            const pass = document.getElementById('admin-password').value;
+            const error = document.getElementById('login-error');
+
+            if (user === 'SARA-LADOUY' && pass === 'saracmc2025') {
+                sessionStorage.setItem('admin_authenticated', 'true');
+                document.getElementById('admin-login-overlay').style.display = 'none';
+                window.checkAuthState();
+            } else {
+                error.style.opacity = '1';
+                setTimeout(() => error.style.opacity = '0', 3000);
             }
+        };
 
-            // Check role in Firestore
-            const userSnap = await getDoc(doc(db, "users", user.uid));
-            if (!userSnap.exists() || userSnap.data().role !== 'admin') {
-                alert("Accès refusé. Réservé aux administrateurs.");
-                window.location.href = "https://fablab-bmk.web.app";
-                return;
-            }
+        // Initial Security Check
+        const savedAuth = sessionStorage.getItem('admin_authenticated');
+        if (savedAuth === 'true') {
+            document.getElementById('admin-login-overlay').style.display = 'none';
+            window.checkAuthState();
+        } else {
+            document.body.style.display = 'flex'; // Show body so overlay is visible
+            // The overlay is shown by default, keep body/sidebar hidden via overlay's z-index
+        }
 
-            // User is authorized, show content and init listeners
-            document.body.style.display = 'flex';
-            window.initRealtimeListeners();
-        });
-
-        // Hide body by default for security
-        document.body.style.display = 'none';
-
-        // Expose functions to window for the non-module script parts
         window.initRealtimeListeners = () => {
             const startOfDay = new Date();
             startOfDay.setHours(0,0,0,0);
@@ -753,7 +864,7 @@
 
             onSnapshot(q, (snapshot) => {
                 const logs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                renderFirebaseDashboard(logs);
+                if (window.renderFirebaseDashboard) window.renderFirebaseDashboard(logs);
             });
         };
     </script>
