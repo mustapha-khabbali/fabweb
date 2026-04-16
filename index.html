@@ -1180,13 +1180,18 @@
 
             async function handleAdminLogin() {
                 try {
-                    const { signInWithPopup, getDoc, doc } = window.fbActions;
+                    const { signInWithRedirect } = window.fbActions;
                     const auth = window.fbAuth;
-                    const db = window.fbDb;
                     const provider = window.googleProvider;
 
-                    const result = await signInWithPopup(auth, provider);
-                    const user = result.user;
+                    // Set mode for redirect
+                    sessionStorage.setItem('auth_mode', 'admin_login');
+                    await signInWithRedirect(auth, provider);
+                } catch (err) {
+                    console.error("Admin Auth Error:", err);
+                    alert("Erreur d'authentification : " + err.message);
+                }
+            }
 
                     // Verify if user exists in Firestore and has admin role
                     const userSnap = await getDoc(doc(db, "users", user.uid));
@@ -1209,9 +1214,8 @@
 
             async function handleGoogleAuth(mode = 'login') {
                 try {
-                    const { signInWithPopup, getDoc, doc, setDoc, serverTimestamp } = window.fbActions;
+                    const { signInWithRedirect } = window.fbActions;
                     const auth = window.fbAuth;
-                    const db = window.fbDb;
                     const provider = window.googleProvider;
 
                     // Check if running from file://
@@ -1220,23 +1224,18 @@
                         return;
                     }
 
-                    const result = await signInWithPopup(auth, provider);
-                    const user = result.user;
-
-                    if (mode === 'signup' && currentUser.prenom) {
-                        const userSnap = await getDoc(doc(db, "users", user.uid));
-                        if (!userSnap.exists()) {
-                            await setDoc(doc(db, "users", user.uid), {
-                                ...currentUser,
-                                email: user.email,
-                                uid: user.uid,
-                                role: 'stagiaire',
-                                createdAt: serverTimestamp()
-                            });
-                            alert("Compte créé avec succès ! Bienvenue au Lab.");
-                        }
-                    }
+                    // Save mode to session storage so we know what to do after redirect
+                    sessionStorage.setItem('auth_mode', mode);
+                    await signInWithRedirect(auth, provider);
                 } catch (err) {
+                    console.error("Google Auth Error:", err);
+                    if (err.code === 'auth/unauthorized-domain') {
+                        alert("Erreur : Ce domaine n'est pas autorisé dans Firebase Console. Si vous testez localement, utilisez localhost.");
+                    } else {
+                        alert("Erreur d'authentification : " + err.message);
+                    }
+                }
+            }
                     console.error("Google Auth Error:", err);
                     if (err.code === 'auth/unauthorized-domain') {
                         alert("Erreur : Ce domaine n'est pas autorisé dans Firebase Console. Si vous testez localement, utilisez localhost.");
@@ -1556,6 +1555,40 @@
                 }
 
                 const { onAuthStateChanged, getDoc, doc, getRedirectResult, setDoc, serverTimestamp } = window.fbActions;
+
+                // --- HANDLE GOOGLE REDIRECT RESULT ---
+                try {
+                    const result = await getRedirectResult(auth);
+                    if (result && result.user) {
+                        const user = result.user;
+                        const mode = sessionStorage.getItem('auth_mode');
+                        const userSnap = await getDoc(doc(db, "users", user.uid));
+
+                        if (mode === 'admin_login') {
+                            if (userSnap.exists() && userSnap.data().role === 'admin') {
+                                window.location.href = "https://fablab-cmc.web.app";
+                                return;
+                            } else {
+                                alert("Accès refusé. Vous n'avez pas les droits d'administrateur.");
+                                await auth.signOut();
+                                showRoleSelectionScreen();
+                            }
+                        } else if (!userSnap.exists() && mode === 'signup' && currentUser.prenom) {
+                            // User coming from registration flow: save profile
+                            await setDoc(doc(db, "users", user.uid), {
+                                ...currentUser,
+                                email: user.email,
+                                uid: user.uid,
+                                role: 'stagiaire',
+                                createdAt: serverTimestamp()
+                            });
+                            alert("Compte créé avec succès ! Bienvenue au Lab.");
+                        }
+                        sessionStorage.removeItem('auth_mode');
+                    }
+                } catch (err) {
+                    console.error("Redirect Result Error:", err);
+                }
 
                 // --- AUTH STATE CHANGES HANDLE PROFILE SYNC ---
 
