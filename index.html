@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Youth 5.0 | Fab Lab</title>
+    <title>Fab Lab</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/html5-qrcode"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -47,12 +47,12 @@
 
         <!-- Logo -->
         <div class="w-32 sm:w-40 md:w-48 lg:w-56">
-            <img src="youth.png" alt="Youth 5.0 Logo" class="w-full h-auto object-contain">
+            <img src="youth.webp" alt="Youth 5.0 Logo" class="w-full h-auto object-contain">
         </div>
 
         <!-- Hero Illustration -->
         <div class="w-full max-w-[280px] sm:max-w-sm md:max-w-md lg:max-w-lg">
-            <img src="intro.png" alt="Innovation Illustration" class="w-full h-auto object-contain drop-shadow-xl">
+            <img src="intro.webp" alt="Innovation Illustration" class="w-full h-auto object-contain drop-shadow-xl">
         </div>
 
         <!-- Typography -->
@@ -93,7 +93,7 @@
                 class="w-full py-4 bg-midnight-blue text-white font-bold text-lg rounded-xl shadow-lg hover:brightness-110 hover:-translate-y-1 transition-all duration-300 active:scale-95">
                 Formateur
             </button>
-            <button
+            <button onclick="handleAdminLogin()"
                 class="w-full py-4 bg-midnight-blue text-white font-bold text-lg rounded-xl shadow-lg hover:brightness-110 hover:-translate-y-1 transition-all duration-300 active:scale-95">
                 Administrateur
             </button>
@@ -1178,20 +1178,71 @@
                 }, 150);
             }
 
-            async function handleGoogleAuth(mode = 'login') {
+            async function handleAdminLogin() {
                 try {
-                    const { signInWithRedirect } = window.fbActions;
+                    const { signInWithPopup, getDoc, doc } = window.fbActions;
                     const auth = window.fbAuth;
+                    const db = window.fbDb;
                     const provider = window.googleProvider;
 
-                    // Save mode to session storage so we know what to do after redirect
-                    sessionStorage.setItem('auth_mode', mode);
+                    const result = await signInWithPopup(auth, provider);
+                    const user = result.user;
 
-                    await signInWithRedirect(auth, provider);
-                    // Page will redirect...
+                    // Verify if user exists in Firestore and has admin role
+                    const userSnap = await getDoc(doc(db, "users", user.uid));
+                    
+                    if (userSnap.exists() && userSnap.data().role === 'admin') {
+                        // User is authorized admin, redirect to admin dashboard
+                        // Note: fablab-cmc.web.app is the hosted admin target
+                        window.location.href = "https://fablab-cmc.web.app";
+                    } else {
+                        // Not an admin or not registered
+                        alert("Accès refusé. Vous n'avez pas les droits d'administrateur.");
+                        await auth.signOut();
+                        showRoleSelectionScreen();
+                    }
+                } catch (err) {
+                    console.error("Admin Auth Error:", err);
+                    alert("Erreur d'authentification : " + err.message);
+                }
+            }
+
+            async function handleGoogleAuth(mode = 'login') {
+                try {
+                    const { signInWithPopup, getDoc, doc, setDoc, serverTimestamp } = window.fbActions;
+                    const auth = window.fbAuth;
+                    const db = window.fbDb;
+                    const provider = window.googleProvider;
+
+                    // Check if running from file://
+                    if (window.location.protocol === 'file:') {
+                        alert("Attention : Google Authentication ne fonctionne pas avec le protocole 'file://'. Veuillez utiliser un serveur local (ex: http://localhost:3000).");
+                        return;
+                    }
+
+                    const result = await signInWithPopup(auth, provider);
+                    const user = result.user;
+
+                    if (mode === 'signup' && currentUser.prenom) {
+                        const userSnap = await getDoc(doc(db, "users", user.uid));
+                        if (!userSnap.exists()) {
+                            await setDoc(doc(db, "users", user.uid), {
+                                ...currentUser,
+                                email: user.email,
+                                uid: user.uid,
+                                role: 'stagiaire',
+                                createdAt: serverTimestamp()
+                            });
+                            alert("Compte créé avec succès ! Bienvenue au Lab.");
+                        }
+                    }
                 } catch (err) {
                     console.error("Google Auth Error:", err);
-                    alert("Erreur d'authentification : " + err.message);
+                    if (err.code === 'auth/unauthorized-domain') {
+                        alert("Erreur : Ce domaine n'est pas autorisé dans Firebase Console. Si vous testez localement, utilisez localhost.");
+                    } else {
+                        alert("Erreur d'authentification : " + err.message);
+                    }
                 }
             }
 
@@ -1506,30 +1557,7 @@
 
                 const { onAuthStateChanged, getDoc, doc, getRedirectResult, setDoc, serverTimestamp } = window.fbActions;
 
-                // --- HANDLE GOOGLE REDIRECT RESULT ---
-                try {
-                    const result = await getRedirectResult(auth);
-                    if (result && result.user) {
-                        const user = result.user;
-                        const mode = sessionStorage.getItem('auth_mode');
-                        const userSnap = await getDoc(doc(db, "users", user.uid));
-
-                        if (!userSnap.exists() && mode === 'signup' && currentUser.prenom) {
-                            // User coming from registration flow: save profile
-                            await setDoc(doc(db, "users", user.uid), {
-                                ...currentUser,
-                                email: user.email,
-                                uid: user.uid,
-                                role: 'stagiaire',
-                                createdAt: serverTimestamp()
-                            });
-                            alert("Compte créé avec succès ! Bienvenue au Lab.");
-                        }
-                        sessionStorage.removeItem('auth_mode');
-                    }
-                } catch (err) {
-                    console.error("Redirect Result Error:", err);
-                }
+                // --- AUTH STATE CHANGES HANDLE PROFILE SYNC ---
 
                 // --- LISTEN FOR AUTH STATE CHANGES ---
                 onAuthStateChanged(auth, async (user) => {
