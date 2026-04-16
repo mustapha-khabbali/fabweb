@@ -789,7 +789,7 @@
     <!-- ═══════════════ JAVASCRIPT ═══════════════ -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getAuth, onAuthStateChanged, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         import { getFirestore, collection, query, where, orderBy, onSnapshot, getDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         const firebaseConfig = {
@@ -805,37 +805,43 @@
         const db = getFirestore(app);
         const auth = getAuth(app);
 
-        // Security Gate Function
+        // Security Gate Function (STANDALONE VERSION - No Google redirected)
         window.checkAuthState = () => {
-            onAuthStateChanged(auth, async (user) => {
-                if (!user) {
-                    window.location.href = "https://fablab-bmk.web.app";
-                    return;
-                }
+            // We just need to ensure we have an auth token (anonymous is enough)
+            // and that the password was entered correctly.
+            const savedAuth = sessionStorage.getItem('admin_authenticated');
+            if (savedAuth !== 'true') return;
 
-                const userSnap = await getDoc(doc(db, "users", user.uid));
-                if (!userSnap.exists() || userSnap.data().role !== 'admin') {
-                    alert("Accès refusé. Réservé aux administrateurs.");
-                    window.location.href = "https://fablab-bmk.web.app";
-                    return;
+            // If we have a Firebase user (any kind), reveal dashboard
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    document.body.style.display = 'flex';
+                    window.initRealtimeListeners();
                 }
-
-                // Show content and start listeners
-                document.body.style.display = 'flex';
-                window.initRealtimeListeners();
             });
         };
 
         // Custom Credentials Auth
-        window.checkCustomAuth = () => {
+        window.checkCustomAuth = async () => {
             const user = document.getElementById('admin-username').value;
             const pass = document.getElementById('admin-password').value;
             const error = document.getElementById('login-error');
 
             if (user === 'SARA-LADOUY' && pass === 'saracmc2025') {
-                sessionStorage.setItem('admin_authenticated', 'true');
-                document.getElementById('admin-login-overlay').style.display = 'none';
-                window.checkAuthState();
+                try {
+                    // Step 1: Sign in anonymously to get a token for Firestore
+                    await signInAnonymously(auth);
+                    
+                    // Step 2: Mark as session authenticated
+                    sessionStorage.setItem('admin_authenticated', 'true');
+                    
+                    // Step 3: Hide overlay and reveal content
+                    document.getElementById('admin-login-overlay').style.display = 'none';
+                    window.checkAuthState();
+                } catch (err) {
+                    console.error("Auth Error:", err);
+                    alert("Erreur technique de connexion au serveur.");
+                }
             } else {
                 error.style.opacity = '1';
                 setTimeout(() => error.style.opacity = '0', 3000);
@@ -849,7 +855,6 @@
             window.checkAuthState();
         } else {
             document.body.style.display = 'flex'; // Show body so overlay is visible
-            // The overlay is shown by default, keep body/sidebar hidden via overlay's z-index
         }
 
         window.initRealtimeListeners = () => {
