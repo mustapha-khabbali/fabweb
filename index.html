@@ -37,17 +37,23 @@
             background: linear-gradient(to bottom, #BDE3F2 0%, #E2F1F8 40%, #FFFFFF 100%);
         }
 
-        #home-screen {
-            scrollbar-width: none; /* Firefox */
-            -ms-overflow-style: none; /* IE/Edge */
+        /* KILL THE STICK GLOBALLY */
+        html,
+        body {
+            scrollbar-width: none !important;
+            /* Firefox */
+            -ms-overflow-style: none !important;
+            /* IE/Edge */
         }
-        #home-screen::-webkit-scrollbar {
-            display: none; /* Chrome/Safari */
+
+        ::-webkit-scrollbar {
+            display: none !important;
+            /* Chrome/Safari/Opera */
         }
     </style>
 </head>
 
-<body class="main-container min-h-screen flex flex-col items-center justify-center p-0 md:p-12 overflow-x-hidden">
+<body class="main-container h-screen flex flex-col items-center justify-center p-0 md:p-12 overflow-hidden">
 
     <!-- Home Screen -->
     <div id="home-screen"
