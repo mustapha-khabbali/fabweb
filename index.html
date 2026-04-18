@@ -36,6 +36,14 @@
         .main-container {
             background: linear-gradient(to bottom, #BDE3F2 0%, #E2F1F8 40%, #FFFFFF 100%);
         }
+
+        #home-screen {
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE/Edge */
+        }
+        #home-screen::-webkit-scrollbar {
+            display: none; /* Chrome/Safari */
+        }
     </style>
 </head>
 
@@ -43,13 +51,12 @@
 
     <!-- Home Screen -->
     <div id="home-screen"
-        class="flex flex-col items-center text-center w-full max-w-sm md:max-w-xl lg:max-w-2xl space-y-5 opacity-100 overflow-hidden">
-    </div>
+        class="flex flex-col items-center text-center w-full max-w-sm md:max-w-xl lg:max-w-2xl space-y-5 opacity-100 overflow-hidden max-h-screen">
 
-    <!-- Logo -->
-    <div class="w-32 sm:w-40 md:w-48 lg:w-56 -mt-30">
-        <img src="youth.webp" alt="Youth 5.0 Logo" class="w-full h-auto object-contain">
-    </div>
+        <!-- Logo -->
+        <div class="w-32 sm:w-40 md:w-48 lg:w-56 -mt-30">
+            <img src="youth.webp" alt="Youth 5.0 Logo" class="w-full h-auto object-contain">
+        </div>
 
     <!-- Hero Illustration -->
     <div class="w-full max-w-[280px] sm:max-w-sm md:max-w-md lg:max-w-lg">
