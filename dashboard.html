@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Youth5 Admin | Fab-Lab CMC BMK</title>
-    <meta name="description" content="Youth5 Fab Lab Admin Dashboard — Suivi en temps réel, QR Codes, Rapports">
+    <title>Admin | Fab-Lab CMC BMK</title>
+    <meta name="description" content="Fab Lab Admin Dashboard — Suivi en temps réel, QR Codes, Rapports">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
@@ -321,6 +321,7 @@
         .journal-entry:last-child {
             border-bottom: none;
         }
+
         /* ── Login Overlay ── */
         #admin-login-overlay {
             position: fixed;
@@ -395,7 +396,8 @@
     <div id="admin-login-overlay">
         <div class="login-card animate-fade-in">
             <div class="flex flex-col items-center mb-8">
-                <div class="w-16 h-16 rounded-2xl flex items-center justify-center bg-gradient-to-br from-accent-brand to-accent-purple shadow-lg mb-4 p-2">
+                <div
+                    class="w-16 h-16 rounded-2xl flex items-center justify-center bg-gradient-to-br from-accent-brand to-accent-purple shadow-lg mb-4 p-2">
                     <img src="fablab.webp" alt="Logo" class="w-full h-full object-contain" />
                 </div>
                 <h2 class="text-2xl font-bold tracking-tight">Espace Admin</h2>
@@ -403,15 +405,18 @@
             </div>
 
             <div class="text-left">
-                <label class="text-[10px] font-bold text-white/40 uppercase tracking-widest ml-1 mb-2 block">Identifiant</label>
+                <label
+                    class="text-[10px] font-bold text-white/40 uppercase tracking-widest ml-1 mb-2 block">Identifiant</label>
                 <input type="text" id="admin-username" class="login-input" placeholder="SARA-LADOUY">
-                
-                <label class="text-[10px] font-bold text-white/40 uppercase tracking-widest ml-1 mb-2 block">Mot de passe</label>
+
+                <label class="text-[10px] font-bold text-white/40 uppercase tracking-widest ml-1 mb-2 block">Mot de
+                    passe</label>
                 <input type="password" id="admin-password" class="login-input" placeholder="••••••••">
             </div>
 
             <button onclick="checkCustomAuth()" class="login-btn mt-4">Se connecter</button>
-            <p id="login-error" class="text-accent-red text-[11px] font-bold mt-4 opacity-0 transition-opacity">Identifiants incorrects</p>
+            <p id="login-error" class="text-accent-red text-[11px] font-bold mt-4 opacity-0 transition-opacity">
+                Identifiants incorrects</p>
         </div>
     </div>
 
@@ -431,8 +436,10 @@
                 <img src="fablab.webp" alt="FabLab Logo" class="w-full h-full object-contain" />
             </div>
             <div class="flex flex-col justify-center translate-y-0.5">
-                <h1 class="text-[18px] font-bold text-white tracking-[2.6px] uppercase leading-none font-recta">FAB LAB</h1>
-                <p class="text-[8px] font-medium text-white/50 mb-1 mt-1 uppercase tracking-widest font-recta">cmc bmk</p>
+                <h1 class="text-[18px] font-bold text-white tracking-[2.6px] uppercase leading-none font-recta">FAB LAB
+                </h1>
+                <p class="text-[8px] font-medium text-white/50 mb-1 mt-1 uppercase tracking-widest font-recta">cmc bmk
+                </p>
             </div>
         </a>
 
@@ -491,8 +498,10 @@
                 class="nav-item w-full flex items-center space-x-4 px-4 py-3 text-left">
                 <div class="icon-box">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.35r-3.97 5.02a7 7 0 1010.58 0L12 4.35zM12 11a2 2 0 100-4 2 2 0 000 4z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M16 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M12 4.35r-3.97 5.02a7 7 0 1010.58 0L12 4.35zM12 11a2 2 0 100-4 2 2 0 000 4z" />
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M16 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
                     </svg>
                 </div>
                 <span class="nav-label font-medium text-[13px] text-white/50">Users</span>
@@ -502,7 +511,8 @@
                 class="nav-item w-full flex items-center space-x-4 px-4 py-3 text-left">
                 <div class="icon-box">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                     </svg>
                 </div>
                 <span class="nav-label font-medium text-[13px] text-white/50">Projects</span>
@@ -831,10 +841,10 @@
                 try {
                     // Step 1: Sign in anonymously to get a token for Firestore
                     await signInAnonymously(auth);
-                    
+
                     // Step 2: Mark as session authenticated
                     sessionStorage.setItem('admin_authenticated', 'true');
-                    
+
                     // Step 3: Hide overlay and reveal content
                     document.getElementById('admin-login-overlay').style.display = 'none';
                     window.checkAuthState();
@@ -859,7 +869,7 @@
 
         window.initRealtimeListeners = () => {
             const startOfDay = new Date();
-            startOfDay.setHours(0,0,0,0);
+            startOfDay.setHours(0, 0, 0, 0);
 
             const q = query(
                 collection(db, "attendance"),
@@ -909,11 +919,11 @@
         // ── Render Dashboard (Firebase) ──
         function renderFirebaseDashboard(logs) {
             const now = new Date();
-            const startOfDay = new Date(now.setHours(0,0,0,0));
-            
+            const startOfDay = new Date(now.setHours(0, 0, 0, 0));
+
             const entries = logs.filter(l => l.type === 'in');
             const exits = logs.filter(l => l.type === 'out');
-            
+
             const userStatus = {};
             logs.slice().reverse().forEach(log => {
                 userStatus[log.userId] = log.type;
@@ -926,13 +936,13 @@
 
             const jl = document.getElementById('journal-list');
             document.getElementById('journal-count').textContent = `${logs.length} événement(s)`;
-            
+
             if (logs.length === 0) {
                 jl.innerHTML = `<div class="px-7 py-10 text-center"><p class="text-[13px] text-white/30 italic">Aucune activité aujourd'hui</p></div>`;
             } else {
                 jl.innerHTML = `<div class="max-h-[350px] overflow-y-auto">` + logs.map(l => {
                     const isIn = l.type === 'in';
-                    const time = l.timestamp ? new Date(l.timestamp.seconds * 1000).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : '--:--';
+                    const time = l.timestamp ? new Date(l.timestamp.seconds * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '--:--';
                     return `
                     <div class="journal-entry flex items-center px-7 py-3.5 trow">
                         <div class="w-8 h-8 ${isIn ? 'bg-accent-green/10' : 'bg-accent-red/10'} rounded-lg flex items-center justify-center mr-4 shrink-0">
@@ -958,7 +968,7 @@
                 pl.innerHTML = presentUsers.map(uid => {
                     const lastLog = logs.find(l => l.userId === uid && l.type === 'in');
                     const userName = lastLog ? lastLog.userName : 'Stagiaire';
-                    const time = lastLog && lastLog.timestamp ? new Date(lastLog.timestamp.seconds * 1000).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : '--:--';
+                    const time = lastLog && lastLog.timestamp ? new Date(lastLog.timestamp.seconds * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '--:--';
                     return `
                     <div class="presence-item flex items-center px-7 py-4">
                         <div class="w-10 h-10 bg-accent-green/10 rounded-full flex items-center justify-center text-[11px] font-bold text-accent-green mr-4 shrink-0">

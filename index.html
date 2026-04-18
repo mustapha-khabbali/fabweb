@@ -72,6 +72,14 @@
                     alt="Google">
                 <span>Continuer avec Google</span>
             </button>
+
+            <!-- Continue with Outlook Button -->
+            <button onclick="handleOutlookAuth('login')"
+                class="w-full py-4 bg-white text-midnight-blue font-bold text-lg rounded-xl border border-gray-200 shadow-[0_8px_20px_-5px_rgba(0,0,0,0.1)] hover:shadow-[0_12px_25px_-5px_rgba(0,0,0,0.15)] hover:-translate-y-1 transition-all duration-300 active:scale-95 flex items-center justify-center space-x-3">
+                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/microsoft.svg" class="w-6 h-6"
+                    alt="Microsoft">
+                <span>Continuer avec Outlook</span>
+            </button>
         </div>
 
     </div>
@@ -311,6 +319,14 @@
                     alt="Google">
                 <span>Continuer avec Google</span>
             </button>
+
+            <!-- Continue with Outlook Button -->
+            <button onclick="handleOutlookAuth('signup')"
+                class="w-full max-w-[300px] py-4 bg-white text-midnight-blue font-bold text-lg rounded-xl border border-gray-200 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 active:scale-95 flex items-center justify-center space-x-3">
+                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/microsoft.svg" class="w-6 h-6"
+                    alt="Microsoft">
+                <span>Continuer avec Outlook</span>
+            </button>
             <button onclick="showStagiaireScreen()"
                 class="text-midnight-blue/60 font-medium hover:text-midnight-blue transition-colors">
                 &larr; Retour
@@ -405,6 +421,14 @@
                 <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="w-6 h-6"
                     alt="Google">
                 <span>Continuer avec Google</span>
+            </button>
+
+            <!-- Continue with Outlook Button -->
+            <button onclick="handleOutlookAuth('login')"
+                class="w-full py-4 bg-white text-midnight-blue font-bold text-lg rounded-[20px] border border-gray-200 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 active:scale-95 flex items-center justify-center space-x-3">
+                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/microsoft.svg" class="w-6 h-6"
+                    alt="Microsoft">
+                <span>Continuer avec Outlook</span>
             </button>
         </div>
 
@@ -868,7 +892,7 @@
     <!-- Firebase SDKs -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getAuth, onAuthStateChanged, signOut, GoogleAuthProvider, OAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDoc, addDoc, collection, serverTimestamp, query, where, orderBy, limit, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         const firebaseConfig = {
@@ -889,7 +913,8 @@
         window.fbAuth = auth;
         window.fbDb = db;
         window.googleProvider = new GoogleAuthProvider();
-        window.fbActions = { onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, setDoc, getDoc, addDoc, doc, collection, serverTimestamp, query, where, orderBy, limit, onSnapshot };
+        window.microsoftProvider = new OAuthProvider('microsoft.com');
+        window.fbActions = { onAuthStateChanged, signOut, GoogleAuthProvider, OAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, setDoc, getDoc, addDoc, doc, collection, serverTimestamp, query, where, orderBy, limit, onSnapshot };
     </script>
 
     <!-- Scan Objective Modal (Stagiaire only) -->
@@ -1209,6 +1234,25 @@
                 } catch (err) {
                     console.error("Admin Auth Error:", err);
                     alert("Erreur d'authentification : " + err.message);
+                }
+            }
+
+            async function handleOutlookAuth(mode = 'login') {
+                try {
+                    const { signInWithRedirect } = window.fbActions;
+                    const auth = window.fbAuth;
+                    const provider = window.microsoftProvider;
+
+                    if (window.location.protocol === 'file:') {
+                        alert("Attention : Outlook Authentication ne fonctionne pas avec le protocole 'file://'.");
+                        return;
+                    }
+
+                    sessionStorage.setItem('auth_mode', mode);
+                    await signInWithRedirect(auth, provider);
+                } catch (err) {
+                    console.error("Outlook Auth Error:", err);
+                    alert("Erreur d'authentification Microsoft : " + err.message);
                 }
             }
 
