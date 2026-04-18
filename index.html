@@ -510,7 +510,7 @@
             <div id="tab-my-project" class="tab-content hidden flex-col p-6 space-y-6 overflow-y-auto custom-scrollbar">
                 <h2 class="text-2xl font-bold text-midnight-blue px-2 pt-4">Mon Projet</h2>
 
-                <div class="bg-white/60 backdrop-blur-md rounded-3xl p-6 border border-white/50 shadow-sm space-y-5">
+                <div class="bg-white/60 backdrop-blur-md rounded-3xl p-6 border border-white/50 shadow-sm space-y-2">
                     <div class="space-y-4">
                         <div class="space-y-1.5">
                             <label class="text-xs font-bold text-midnight-blue/40 uppercase px-1">Titre du
@@ -1218,23 +1218,23 @@
                 }
             }
 
-                    // Verify if user exists in Firestore and has admin role
-                    const userSnap = await getDoc(doc(db, "users", user.uid));
-                    
-                    if (userSnap.exists() && userSnap.data().role === 'admin') {
-                        // User is authorized admin, redirect to admin dashboard
-                        // Note: fablab-cmc.web.app is the hosted admin target
-                        window.location.href = "https://fablab-cmc.web.app";
-                    } else {
-                        // Not an admin or not registered
-                        alert("Accès refusé. Vous n'avez pas les droits d'administrateur.");
-                        await auth.signOut();
-                        showRoleSelectionScreen();
-                    }
+            // Verify if user exists in Firestore and has admin role
+            const userSnap = await getDoc(doc(db, "users", user.uid));
+
+            if (userSnap.exists() && userSnap.data().role === 'admin') {
+                // User is authorized admin, redirect to admin dashboard
+                // Note: fablab-cmc.web.app is the hosted admin target
+                window.location.href = "https://fablab-cmc.web.app";
+            } else {
+                // Not an admin or not registered
+                alert("Accès refusé. Vous n'avez pas les droits d'administrateur.");
+                await auth.signOut();
+                showRoleSelectionScreen();
+            }
                 } catch (err) {
-                    console.error("Admin Auth Error:", err);
-                    alert("Erreur d'authentification : " + err.message);
-                }
+                console.error("Admin Auth Error:", err);
+                alert("Erreur d'authentification : " + err.message);
+            }
             }
 
             async function handleOutlookAuth(mode = 'login') {
@@ -1280,12 +1280,12 @@
                     }
                 }
             }
-                    console.error("Google Auth Error:", err);
-                    if (err.code === 'auth/unauthorized-domain') {
-                        alert("Erreur : Ce domaine n'est pas autorisé dans Firebase Console. Si vous testez localement, utilisez localhost.");
-                    } else {
-                        alert("Erreur d'authentification : " + err.message);
-                    }
+            console.error("Google Auth Error:", err);
+            if (err.code === 'auth/unauthorized-domain') {
+                alert("Erreur : Ce domaine n'est pas autorisé dans Firebase Console. Si vous testez localement, utilisez localhost.");
+            } else {
+                alert("Erreur d'authentification : " + err.message);
+            }
                 }
             }
 
