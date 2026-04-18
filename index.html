@@ -56,46 +56,39 @@
 <body class="main-container h-screen flex flex-col items-center justify-center p-0 md:p-12 overflow-hidden">
 
     <!-- Home Screen -->
-    <div id="home-screen"
-        class="flex flex-col items-center text-center w-full max-w-sm md:max-w-xl lg:max-w-2xl space-y-5 opacity-100 overflow-hidden max-h-screen">
+    <div id="home-screen" class="flex flex-col items-center justify-center min-h-screen w-full p-6 transition-all duration-500">
+        
+        <div class="w-full max-w-[340px] sm:max-w-[400px] md:max-w-[450px] flex flex-col items-center space-y-6">
+            
+            <div class="w-1/2 sm:w-3/5">
+                <img src="youth.webp" alt="Youth 5.0 Logo" class="w-full h-auto object-contain">
+            </div>
 
-        <!-- Logo -->
-        <div class="w-32 sm:w-40 md:w-48 lg:w-56 -mt-30">
-            <img src="youth.webp" alt="Youth 5.0 Logo" class="w-full h-auto object-contain">
+            <div class="w-full drop-shadow-2xl">
+                <img src="intro.webp" alt="Innovation Illustration" class="w-full h-auto object-contain">
+            </div>
+
+            <div class="text-center">
+                <h1 class="text-2xl sm:text-3xl font-semibold text-midnight-blue leading-tight tracking-tight">
+                    From Imagination <br> to Prototype.
+                </h1>
+            </div>
+
+            <div class="w-full flex flex-col space-y-4 pt-4">
+                <button onclick="handleGoogleAuth('login')"
+                    class="w-full py-4 bg-white text-midnight-blue font-bold text-lg rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-all active:scale-95 flex items-center justify-center space-x-3">
+                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="w-6 h-6" alt="Google">
+                    <span>Continuer avec Google</span>
+                </button>
+
+                <button onclick="handleOutlookAuth('login')"
+                    class="w-full py-4 bg-white text-midnight-blue font-bold text-lg rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-all active:scale-95 flex items-center justify-center space-x-3">
+                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/microsoft.svg" class="w-6 h-6" alt="Microsoft">
+                    <span>Continuer avec Outlook</span>
+                </button>
+            </div>
+
         </div>
-
-        <!-- Hero Illustration -->
-        <div class="w-full max-w-[280px] sm:max-w-sm md:max-w-md lg:max-w-lg">
-            <img src="intro.webp" alt="Innovation Illustration" class="w-full h-auto object-contain drop-shadow-xl">
-        </div>
-
-        <!-- Typography -->
-        <div class="px-4">
-            <h1
-                class="text-2xl sm:text-2xl md:text-3xl lg:text-4xl font-medium text-midnight-blue leading-tight tracking-tight">
-                From Imagination <br> to Prototype.
-            </h1>
-        </div>
-
-        <!-- Actions -->
-        <div class="pt-4 md:pt-8 w-full max-w-[280px] sm:max-w-xs flex flex-col space-y-4">
-            <!-- Continue with Google Button -->
-            <button onclick="handleGoogleAuth('login')"
-                class="w-full py-4 bg-white text-midnight-blue font-bold text-lg rounded-xl border border-gray-200 shadow-[0_8px_20px_-5px_rgba(0,0,0,0.1)] hover:shadow-[0_12px_25px_-5px_rgba(0,0,0,0.15)] hover:-translate-y-1 transition-all duration-300 active:scale-95 flex items-center justify-center space-x-3">
-                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="w-6 h-6"
-                    alt="Google">
-                <span>Continuer avec Google</span>
-            </button>
-
-            <!-- Continue with Outlook Button -->
-            <button onclick="handleOutlookAuth('login')"
-                class="w-full py-4 bg-white text-midnight-blue font-bold text-lg rounded-xl border border-gray-200 shadow-[0_8px_20px_-5px_rgba(0,0,0,0.1)] hover:shadow-[0_12px_25px_-5px_rgba(0,0,0,0.15)] hover:-translate-y-1 transition-all duration-300 active:scale-95 flex items-center justify-center space-x-3">
-                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/microsoft.svg" class="w-6 h-6"
-                    alt="Microsoft">
-                <span>Continuer avec Outlook</span>
-            </button>
-        </div>
-
     </div>
 
     <!-- Role Selection Screen -->
