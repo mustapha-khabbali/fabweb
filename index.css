@@ -2,32 +2,29 @@ body {
     font-family: 'Montserrat', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #F8FAFC;
-}
-
-.main-container {
-    min-height: 100vh;
-    min-height: 100dvh;
-    position: relative;
+    background-color: #EDF2F7; /* Slightly darker to distinguish from blank white */
     background-image: radial-gradient(circle at 100% 100%, #E2E8F0 0%, transparent 50%),
                       radial-gradient(circle at 0% 0%, #E2E8F0 0%, transparent 50%);
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
 }
 
 /* --- PHONE STYLES --- */
 @media screen and (max-width: 767px) {
     .mobile-padding {
         padding: 1.5rem !important;
-        margin-top: 0 !important;
     }
 
     .illustration-container {
-        max-width: 280px !important;
+        max-width: 250px !important;
         margin: 10px 0 !important;
     }
 
     .logo-header {
-        width: 180px !important;
-        margin-bottom: -20px !important;
+        width: 160px !important;
+        margin-bottom: -10px !important;
     }
 }
 
@@ -39,6 +36,22 @@ body {
 .illustration-container {
     max-width: 380px;
     margin: 20px 0;
+}
+
+/* Ensure screens fill the space correctly */
+.screen-container {
+    display: flex;
+    flex-direction: column;
+    items-center;
+    justify-content: center;
+    width: 100%;
+    min-height: 100dvh;
+    position: relative;
+    z-index: 10;
+}
+
+.hidden {
+    display: none !important;
 }
 
 /* Custom Scrollbar */
