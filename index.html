@@ -1190,6 +1190,7 @@
                 const email = document.getElementById('email-input').value;
 
                 currentUser = { prenom, nom, cin, cef, pole, niveau, filiere, year, option, tel, email };
+                localStorage.setItem('temp_registration_data', JSON.stringify(currentUser));
                 showCreateAccountScreen();
             }
 
@@ -1602,18 +1603,28 @@
                 // --- HANDLE GOOGLE REDIRECT RESULT ---
                 try {
                     const result = await getRedirectResult(auth);
+                    const mode = sessionStorage.getItem('auth_mode');
+
                     if (result && result.user) {
                         const user = result.user;
                         const userSnap = await getDoc(doc(db, "users", user.uid));
-                        // User coming from registration flow: save profile
-                        await setDoc(doc(db, "users", user.uid), {
-                            ...currentUser,
-                            email: user.email,
-                            uid: user.uid,
-                            role: 'stagiaire',
-                            createdAt: serverTimestamp()
-                        });
-                        alert("Compte créé avec succès ! Bienvenue au Lab.");
+                        
+                        // ONLY create profile if we are in signup mode AND have the temp data
+                        if (mode === 'signup' && !userSnap.exists()) {
+                            const rawData = localStorage.getItem('temp_registration_data');
+                            if (rawData) {
+                                const savedData = JSON.parse(rawData);
+                                await setDoc(doc(db, "users", user.uid), {
+                                    ...savedData,
+                                    email: user.email,
+                                    uid: user.uid,
+                                    role: 'stagiaire',
+                                    createdAt: serverTimestamp()
+                                });
+                                localStorage.removeItem('temp_registration_data');
+                                alert("Compte créé avec succès ! Bienvenue au Lab.");
+                            }
+                        }
                     }
                     sessionStorage.removeItem('auth_mode');
                 } catch (err) {
