@@ -1254,22 +1254,40 @@
                     alert("Erreur d'authentification : " + err.message);
                 }
             }
+
+            window.handleGoogleAuth = async function(mode = 'login') {
+                try {
+                    if (!window.fbActions) {
+                        console.warn("Firebase not ready yet, retrying...");
+                        setTimeout(() => window.handleGoogleAuth(mode), 100);
+                        return;
+                    }
+                    const { signInWithRedirect } = window.fbActions;
+                    const auth = window.fbAuth;
+                    const provider = window.googleProvider;
+
+                    if (window.location.protocol === 'file:') {
+                        alert("Attention : Google Authentication ne fonctionne pas avec le protocole 'file://'.");
+                        return;
+                    }
+
+                    sessionStorage.setItem('auth_mode', mode);
+                    await signInWithRedirect(auth, provider);
                 } catch (err) {
-                    console.error("Admin Auth Error:", err);
+                    console.error("Google Auth Error:", err);
                     alert("Erreur d'authentification : " + err.message);
                 }
             }
 
-            async function handleOutlookAuth(mode = 'login') {
+            window.handleOutlookAuth = async function(mode = 'login') {
                 try {
+                    if (!window.fbActions) {
+                        setTimeout(() => window.handleOutlookAuth(mode), 100);
+                        return;
+                    }
                     const { signInWithRedirect } = window.fbActions;
                     const auth = window.fbAuth;
                     const provider = window.microsoftProvider;
-
-                    if (window.location.protocol === 'file:') {
-                        alert("Attention : Outlook Authentication ne fonctionne pas avec le protocole 'file://'.");
-                        return;
-                    }
 
                     sessionStorage.setItem('auth_mode', mode);
                     await signInWithRedirect(auth, provider);
@@ -1279,32 +1297,7 @@
                 }
             }
 
-            async function handleGoogleAuth(mode = 'login') {
-                try {
-                    const { signInWithRedirect } = window.fbActions;
-                    const auth = window.fbAuth;
-                    const provider = window.googleProvider;
 
-                    // Check if running from file://
-                    if (window.location.protocol === 'file:') {
-                        alert("Attention : Google Authentication ne fonctionne pas avec le protocole 'file://'. Veuillez utiliser un serveur local (ex: http://localhost:3000).");
-                        return;
-                    }
-
-                    // Save mode to session storage so we know what to do after redirect
-                    sessionStorage.setItem('auth_mode', mode);
-                    await signInWithRedirect(auth, provider);
-                } catch (err) {
-                    console.error("Google Auth Error:", err);
-                    if (err.code === 'auth/unauthorized-domain') {
-                        alert("Erreur : Ce domaine n'est pas autorisé dans Firebase Console. Si vous testez localement, utilisez localhost.");
-                    } else {
-                        alert("Erreur d'authentification : " + err.message);
-                    }
-                }
-            }
-                }
-            }
 
             function switchTab(tabId) {
                 document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
