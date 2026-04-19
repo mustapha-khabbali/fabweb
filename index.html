@@ -44,26 +44,25 @@
     <div id="role-selection-screen" class="hidden screen-container px-6 opacity-0 transition-opacity duration-300">
         <div class="w-full max-w-sm flex flex-col items-center text-center space-y-8">
             <h2 class="text-2xl sm:text-3xl font-semibold text-midnight-blue">Hi there who are you?</h2>
-            <div class="flex flex-col space-y-4 w-full">
-                <button onclick="showStagiaireScreen()" class="w-full py-4 bg-midnight-blue text-white font-bold text-lg rounded-xl shadow-lg hover:brightness-110 active:scale-95 transition-all">Stagiaire</button>
-                <button class="w-full py-4 bg-midnight-blue text-white font-bold text-lg rounded-xl shadow-lg hover:brightness-110 active:scale-95 transition-all">Formateur</button>
-                <button onclick="handleAdminLogin()" class="w-full py-4 bg-midnight-blue text-white font-bold text-lg rounded-xl shadow-lg hover:brightness-110 active:scale-95 transition-all">Administrateur</button>
-                <button class="w-full py-4 bg-midnight-blue text-white font-bold text-lg rounded-xl shadow-lg hover:brightness-110 active:scale-95 transition-all">Visiteur</button>
+            <div class="flex flex-col space-y-4 w-full px-6">
+                <button onclick="showStagiaireScreen()" class="w-full py-4 bg-midnight-blue text-white font-bold text-lg rounded-xl shadow-lg hover:brightness-110 hover:-translate-y-1 transition-all duration-300 active:scale-95">Stagiaire</button>
+                <button class="w-full py-4 bg-midnight-blue text-white font-bold text-lg rounded-xl shadow-lg hover:brightness-110 hover:-translate-y-1 transition-all duration-300 active:scale-95">Formateur</button>
+                <button onclick="handleAdminLogin()" class="w-full py-4 bg-midnight-blue text-white font-bold text-lg rounded-xl shadow-lg hover:brightness-110 hover:-translate-y-1 transition-all duration-300 active:scale-95">Administrateur</button>
+                <button class="w-full py-4 bg-midnight-blue text-white font-bold text-lg rounded-xl shadow-lg hover:brightness-110 hover:-translate-y-1 transition-all duration-300 active:scale-95">Visiteur</button>
             </div>
-            <button onclick="showHomeScreen()" class="pt-4 text-midnight-blue/60 font-medium hover:text-midnight-blue transition-colors">&larr; Back to Home</button>
+            <button onclick="showHomeScreen()" class="pt-8 text-midnight-blue/60 font-medium hover:text-midnight-blue transition-colors">&larr; Back to Home</button>
         </div>
     </div>
 
     <!-- Stagiaire Registration Screen -->
     <div id="stagiaire-screen" class="hidden screen-container px-6 opacity-0">
         <div class="w-full max-w-md mx-auto p-6 space-y-6">
-            <div class="text-center"><h2 class="text-2xl font-bold text-midnight-blue">Welcome Stagiaire</h2></div>
+            <div class="text-center mb-0"><h2 class="text-2xl font-bold text-midnight-blue">Welcome Stagiaire</h2></div>
             <div class="space-y-4 overflow-y-auto max-h-[60vh] px-2 custom-scrollbar">
-                <div class="space-y-1.5"><label class="text-xs font-bold text-midnight-blue uppercase opacity-30 px-1">Prenom</label><input type="text" placeholder="Entrez Votre Prenom" class="w-full p-4 bg-white border border-gray-100 rounded-xl outline-none focus:border-midnight-blue"></div>
-                <div class="space-y-1.5"><label class="text-xs font-bold text-midnight-blue uppercase opacity-30 px-1">Nom</label><input type="text" placeholder="Entrez Votre Nom" class="w-full p-4 bg-white border border-gray-100 rounded-xl outline-none focus:border-midnight-blue"></div>
-                <div class="space-y-1.5"><label class="text-xs font-bold text-midnight-blue uppercase opacity-30 px-1">CIN</label><input type="text" id="cin-signup-input" placeholder="Ex: AB123456" class="w-full p-4 bg-white border border-gray-100 rounded-xl outline-none focus:border-midnight-blue"></div>
-                <div class="space-y-1.5"><label class="text-xs font-bold text-midnight-blue uppercase opacity-30 px-1">CEF</label><input type="text" id="cef-signup-input" placeholder="Code E-Formation" class="w-full p-4 bg-white border border-gray-100 rounded-xl outline-none focus:border-midnight-blue"></div>
-                <!-- ... other inputs ... -->
+                <div class="space-y-1.5"><label class="text-sm font-semibold text-midnight-blue px-1">Prenom</label><input type="text" placeholder="Entrez Votre Prenom" class="w-full p-4 bg-white border border-gray-300 rounded-xl outline-none focus:border-midnight-blue transition-all"></div>
+                <div class="space-y-1.5"><label class="text-sm font-semibold text-midnight-blue px-1">Nom</label><input type="text" placeholder="Entrez Votre Nom" class="w-full p-4 bg-white border border-gray-300 rounded-xl outline-none focus:border-midnight-blue transition-all"></div>
+                <div class="space-y-1.5"><label class="text-sm font-semibold text-midnight-blue px-1">CIN</label><input type="text" id="cin-signup-input" placeholder="Ex: AB123456" class="w-full p-4 bg-white border border-gray-300 rounded-xl outline-none focus:border-midnight-blue transition-all"></div>
+                <!-- Other registration fields... -->
             </div>
             <button onclick="validateStagiaireForm()" class="w-full py-4 bg-midnight-blue text-white font-bold text-lg rounded-2xl shadow-xl hover:brightness-110 active:scale-95 transition-all">Suivant</button>
             <button onclick="showRoleSelection()" class="text-midnight-blue/60 font-medium hover:text-midnight-blue transition-colors text-center w-full block">&larr; Back to Selection</button>
@@ -82,17 +81,9 @@
         </div>
     </div>
 
-    <!-- Dashboard/App Section -->
+    <!-- Dashboard -->
     <div id="dashboard-screen" class="hidden flex flex-col w-full h-full bg-white opacity-0 transition-opacity duration-300">
-        <div id="tab-scan" class="tab-content flex-1 flex flex-col items-center">
-            <header class="w-full p-6 flex justify-between items-center bg-white"><div class="flex flex-col"><h1 class="text-2xl font-bold text-midnight-blue">Scan Access</h1><p class="text-[10px] font-bold text-midnight-blue/40 uppercase tracking-[0.2em]" id="welcome-text">WELCOME TO THE LAB</p></div></header>
-            <div class="flex-1 w-full flex flex-col items-center justify-center px-6"><div class="relative w-full max-w-[280px] aspect-square rounded-[40px] overflow-hidden shadow-2xl border border-gray-100 bg-black"><div id="reader" class="w-full h-full"></div></div><div class="mt-8 text-center space-y-3"><div id="scan-status-banner" class="px-4 py-1.5 bg-green-500 text-white rounded-full text-[10px] font-extrabold tracking-widest inline-block shadow-lg shadow-green-100" id="scan-status-text">ENTRÉE (SCAN IN)</div><h2 class="text-xl font-bold text-midnight-blue">Scanner le QR Code</h2></div></div>
-        </div>
-        <!-- ... other tabs ... -->
-        <div class="bg-white border-t border-gray-100 flex items-center justify-around py-3">
-            <button onclick="switchTab('scan')" id="nav-scan" class="nav-item flex flex-col items-center space-y-1 text-[#3B5FE6]"><svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" /></svg></button>
-            <button onclick="switchTab('profile')" id="nav-profile" class="nav-item flex flex-col items-center space-y-1 text-midnight-blue/40"><svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg></button>
-        </div>
+        <!-- Dashboard scan, project and profile tabs... -->
     </div>
 
     <script type="module" src="index.js"></script>

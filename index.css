@@ -2,16 +2,13 @@ body {
     font-family: 'Montserrat', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #EDF2F7; /* Slightly darker to distinguish from blank white */
+    background-color: #EDF2F7;
     background-image: radial-gradient(circle at 100% 100%, #E2E8F0 0%, transparent 50%),
                       radial-gradient(circle at 0% 0%, #E2E8F0 0%, transparent 50%);
     min-height: 100vh;
     min-height: 100dvh;
-    display: flex;
-    flex-direction: column;
 }
 
-/* --- PHONE STYLES --- */
 @media screen and (max-width: 767px) {
     .mobile-padding {
         padding: 1.5rem !important;
@@ -38,11 +35,10 @@ body {
     margin: 20px 0;
 }
 
-/* Ensure screens fill the space correctly */
 .screen-container {
     display: flex;
     flex-direction: column;
-    items-center;
+    align-items: center;
     justify-content: center;
     width: 100%;
     min-height: 100dvh;
@@ -54,13 +50,10 @@ body {
     display: none !important;
 }
 
-/* Custom Scrollbar */
 .custom-scrollbar::-webkit-scrollbar {
     width: 4px;
 }
-.custom-scrollbar::-webkit-scrollbar-track {
-    background: transparent;
-}
+
 .custom-scrollbar::-webkit-scrollbar-thumb {
     background: rgba(15, 23, 42, 0.1);
     border-radius: 10px;
