@@ -37,18 +37,43 @@
             background: linear-gradient(to bottom, #BDE3F2 0%, #E2F1F8 40%, #FFFFFF 100%);
         }
 
-        /* KILL THE STICK GLOBALLY */
+        /* --- PHONE STYLES --- */
+        @media screen and (max-width: 767px) {
+            .mobile-padding {
+                padding: 1rem !important;
+            }
+
+            .illustration-container {
+                margin-top: 10vh !important;
+            }
+
+            .logo-header {
+                margin-top: -2rem !important;
+                width: 120px !important;
+            }
+        }
+
+        /* --- DESKTOP STYLES --- */
+        @media screen and (min-width: 768px) {
+            .illustration-container {
+                margin-top: 0 !important;
+            }
+
+            .logo-header {
+                margin-top: -2rem !important;
+                width: 160px !important;
+            }
+        }
+
+        /* KILL THE SCROLLBAR GLOBALLY */
         html,
         body {
             scrollbar-width: none !important;
-            /* Firefox */
             -ms-overflow-style: none !important;
-            /* IE/Edge */
         }
 
         ::-webkit-scrollbar {
             display: none !important;
-            /* Chrome/Safari/Opera */
         }
     </style>
 </head>
@@ -57,15 +82,15 @@
 
     <!-- Home Screen -->
     <div id="home-screen"
-        class="flex flex-col items-center justify-center min-h-screen w-full p-1 transition-all duration-500">
+        class="flex flex-col items-center justify-center min-h-screen w-full transition-all duration-500 mobile-padding">
 
         <div class="w-full max-w-[340px] sm:max-w-[400px] md:max-w-[450px] flex flex-col items-center space-y-0">
 
-            <div class="w-[120px] sm:w-[160px] flex-shrink-0 -mt-8">
+            <div class="flex-shrink-0 logo-header">
                 <img src="youth.webp" alt="Youth 5.0 Logo" class="w-full h-auto object-contain">
             </div>
 
-            <div class="w-full drop-shadow-2xl mt-[10vh] md:mt-0">
+            <div class="w-full drop-shadow-2xl illustration-container">
                 <img src="intro.webp" alt="Innovation Illustration" class="w-full h-auto object-contain">
             </div>
 
