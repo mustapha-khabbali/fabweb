@@ -815,20 +815,13 @@
         const db = getFirestore(app);
         const auth = getAuth(app);
 
-        // Security Gate Function (STANDALONE VERSION - No Google redirected)
         window.checkAuthState = () => {
-            // We just need to ensure we have an auth token (anonymous is enough)
-            // and that the password was entered correctly.
             const savedAuth = sessionStorage.getItem('admin_authenticated');
             if (savedAuth !== 'true') return;
 
-            // If we have a Firebase user (any kind), reveal dashboard
-            onAuthStateChanged(auth, (user) => {
-                if (user) {
-                    document.body.style.display = 'flex';
-                    window.initRealtimeListeners();
-                }
-            });
+            // Reveal dashboard and start listeners without needing a Firebase user session
+            document.body.style.display = 'flex';
+            window.initRealtimeListeners();
         };
 
         // Custom Credentials Auth
@@ -838,20 +831,15 @@
             const error = document.getElementById('login-error');
 
             if (user === 'SARA-LADOUY' && pass === 'saracmc2025') {
-                try {
-                    // Step 1: Sign in anonymously to get a token for Firestore
-                    await signInAnonymously(auth);
+                // Since we opened the Database rules to public, we no longer need the 
+                // Anonymous sign-in "bridge" which was causing the restricted-operation error.
+                
+                // Mark as session authenticated
+                sessionStorage.setItem('admin_authenticated', 'true');
 
-                    // Step 2: Mark as session authenticated
-                    sessionStorage.setItem('admin_authenticated', 'true');
-
-                    // Step 3: Hide overlay and reveal content
-                    document.getElementById('admin-login-overlay').style.display = 'none';
-                    window.checkAuthState();
-                } catch (err) {
-                    console.error("Auth Error:", err);
-                    alert("Erreur Firebase (" + err.code + "): " + err.message);
-                }
+                // Hide overlay and reveal content
+                document.getElementById('admin-login-overlay').style.display = 'none';
+                window.checkAuthState();
             } else {
                 error.style.opacity = '1';
                 setTimeout(() => error.style.opacity = '0', 3000);
