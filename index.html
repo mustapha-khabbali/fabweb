@@ -1244,7 +1244,7 @@
             }
 
 
-            window.handleGoogleAuth = async function(mode = 'login') {
+            window.handleGoogleAuth = async function (mode = 'login') {
                 try {
                     if (!window.fbActions) {
                         console.warn("Firebase not ready yet, retrying...");
@@ -1268,7 +1268,7 @@
                 }
             }
 
-            window.handleOutlookAuth = async function(mode = 'login') {
+            window.handleOutlookAuth = async function (mode = 'login') {
                 try {
                     if (!window.fbActions) {
                         setTimeout(() => window.handleOutlookAuth(mode), 100);
@@ -1605,58 +1605,57 @@
                     if (result && result.user) {
                         const user = result.user;
                         const userSnap = await getDoc(doc(db, "users", user.uid));
-                            // User coming from registration flow: save profile
-                            await setDoc(doc(db, "users", user.uid), {
-                                ...currentUser,
-                                email: user.email,
-                                uid: user.uid,
-                                role: 'stagiaire',
-                                createdAt: serverTimestamp()
-                            });
-                            alert("Compte créé avec succès ! Bienvenue au Lab.");
-                        }
-                        sessionStorage.removeItem('auth_mode');
+                        // User coming from registration flow: save profile
+                        await setDoc(doc(db, "users", user.uid), {
+                            ...currentUser,
+                            email: user.email,
+                            uid: user.uid,
+                            role: 'stagiaire',
+                            createdAt: serverTimestamp()
+                        });
+                        alert("Compte créé avec succès ! Bienvenue au Lab.");
                     }
+                    sessionStorage.removeItem('auth_mode');
                 } catch (err) {
                     console.error("Redirect Result Error:", err);
                 }
 
-                // --- AUTH STATE CHANGES HANDLE PROFILE SYNC ---
+            // --- AUTH STATE CHANGES HANDLE PROFILE SYNC ---
 
-                // --- LISTEN FOR AUTH STATE CHANGES ---
-                onAuthStateChanged(auth, async (user) => {
-                    if (user) {
-                        try {
-                            const userSnap = await getDoc(doc(db, "users", user.uid));
-                            if (userSnap.exists()) {
-                                currentUser = userSnap.data();
-                                console.log("Logged in user with profile:", currentUser.email);
+            // --- LISTEN FOR AUTH STATE CHANGES ---
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    try {
+                        const userSnap = await getDoc(doc(db, "users", user.uid));
+                        if (userSnap.exists()) {
+                            currentUser = userSnap.data();
+                            console.log("Logged in user with profile:", currentUser.email);
 
-                                // Auto-redirect to scan if on an entry screen
-                                const currentScreen = ['home-screen', 'login-screen', 'role-selection-screen', 'stagiaire-screen']
-                                    .find(id => document.getElementById(id) && !document.getElementById(id).classList.contains('hidden'));
+                            // Auto-redirect to scan if on an entry screen
+                            const currentScreen = ['home-screen', 'login-screen', 'role-selection-screen', 'stagiaire-screen']
+                                .find(id => document.getElementById(id) && !document.getElementById(id).classList.contains('hidden'));
 
-                                if (currentScreen) {
-                                    showDashboardScreen();
-                                    switchTab('scan');
-                                }
-                            } else {
-                                // AUTHENTICATED BUT NO PROFILE: Redirect to Role Selection
-                                console.warn("User signed in but has no profile yet.");
-                                showRoleSelection();
+                            if (currentScreen) {
+                                showDashboardScreen();
+                                switchTab('scan');
                             }
-                        } catch (err) {
-                            console.error("Auth status sync error:", err);
+                        } else {
+                            // AUTHENTICATED BUT NO PROFILE: Redirect to Role Selection
+                            console.warn("User signed in but has no profile yet.");
+                            showRoleSelection();
                         }
-                    } else {
-                        currentUser = {};
-                        isUserInLab = false;
-                        const dashboard = document.getElementById('dashboard-screen');
-                        if (dashboard && !dashboard.classList.contains('hidden')) {
-                            showHomeScreen();
-                        }
+                    } catch (err) {
+                        console.error("Auth status sync error:", err);
                     }
-                });
+                } else {
+                    currentUser = {};
+                    isUserInLab = false;
+                    const dashboard = document.getElementById('dashboard-screen');
+                    if (dashboard && !dashboard.classList.contains('hidden')) {
+                        showHomeScreen();
+                    }
+                }
+            });
             };
 
             window.addEventListener('load', initAuth);
