@@ -31,10 +31,36 @@
     <style>
         body {
             font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(to bottom, #BDE3F2 0%, #E2F1F8 40%, #FFFFFF 100%);
         }
 
-        .main-container {
-            background: linear-gradient(to bottom, #BDE3F2 0%, #E2F1F8 40%, #FFFFFF 100%);
+        /* --- SCREEN TRANSITION SYSTEM --- */
+        .screen-transition {
+            transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 10;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .screen-transition.hidden {
+            display: none !important;
+        }
+
+        .screen-transition.opacity-0 {
+            opacity: 0;
+            transform: scale(0.98);
+            pointer-events: none;
+        }
+
+        .screen-transition.opacity-100 {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
         }
 
         /* --- PHONE STYLES --- */
@@ -42,7 +68,6 @@
             .mobile-padding {
                 padding: 1rem !important;
                 margin-top: -5vh !important;
-                /* This moves the ENTIRE home screen contents up */
             }
 
             .illustration-container {
@@ -52,6 +77,25 @@
             .logo-header {
                 margin-top: -2rem !important;
                 width: 110px !important;
+            }
+
+            /* Custom Mobile Popover Style */
+            #stagiaire-screen select {
+                background-color: rgba(255, 255, 255, 0.8) !important;
+                border: 1px solid #133853 !important;
+                border-radius: 12px !important;
+                color: #133853 !important;
+                font-weight: 600 !important;
+                height: 56px !important;
+                padding-left: 1.25rem !important;
+                appearance: none !important;
+                -webkit-appearance: none !important;
+            }
+
+            #stagiaire-screen select:focus {
+                outline: none !important;
+                border-color: #2B7FFF !important;
+                box-shadow: 0 0 0 2px rgba(43, 127, 255, 0.2);
             }
         }
 
@@ -67,11 +111,12 @@
             }
         }
 
-        /* KILL THE SCROLLBAR GLOBALLY */
+        /* SCROLLBAR SUPPRESSION */
         html,
         body {
             scrollbar-width: none !important;
             -ms-overflow-style: none !important;
+            overflow: hidden;
         }
 
         ::-webkit-scrollbar {
@@ -123,35 +168,37 @@
 
     <!-- Role Selection Screen -->
     <div id="role-selection-screen"
-        class="hidden flex flex-col items-center text-center w-full max-w-sm md:max-w-md space-y-8 opacity-0">
+        class="hidden flex flex-col items-center md:justify-center text-center w-full h-full opacity-0 mt-[15vh] md:mt-0">
 
-        <h2 class="text-2xl sm:text-3xl font-semibold text-midnight-blue mb-4">
-            Hi there are you?
-        </h2>
+        <div class="w-full max-w-sm md:max-w-md flex flex-col items-center space-y-8">
+            <h2 class="text-2xl sm:text-3xl font-semibold text-midnight-blue mb-4">
+                Hi there are you?
+            </h2>
 
-        <div class="flex flex-col space-y-4 w-full px-6">
-            <button onclick="showStagiaireScreen()"
-                class="w-full py-4 bg-midnight-blue text-white font-bold text-lg rounded-xl shadow-lg hover:brightness-110 hover:-translate-y-1 transition-all duration-300 active:scale-95">
-                Stagiaire
-            </button>
-            <button
-                class="w-full py-4 bg-midnight-blue text-white font-bold text-lg rounded-xl shadow-lg hover:brightness-110 hover:-translate-y-1 transition-all duration-300 active:scale-95">
-                Formateur
-            </button>
-            <button
-                class="w-full py-4 bg-midnight-blue text-white font-bold text-lg rounded-xl shadow-lg hover:brightness-110 hover:-translate-y-1 transition-all duration-300 active:scale-95">
-                Administrateur
-            </button>
-            <button
-                class="w-full py-4 bg-midnight-blue text-white font-bold text-lg rounded-xl shadow-lg hover:brightness-110 hover:-translate-y-1 transition-all duration-300 active:scale-95">
-                Visiteur
+            <div class="flex flex-col space-y-4 w-full px-6">
+                <button onclick="showStagiaireScreen()"
+                    class="w-full py-4 bg-midnight-blue text-white font-bold text-lg rounded-xl shadow-lg hover:brightness-110 hover:-translate-y-1 transition-all duration-300 active:scale-95">
+                    Stagiaire
+                </button>
+                <button
+                    class="w-full py-4 bg-midnight-blue text-white font-bold text-lg rounded-xl shadow-lg hover:brightness-110 hover:-translate-y-1 transition-all duration-300 active:scale-95">
+                    Formateur
+                </button>
+                <button
+                    class="w-full py-4 bg-midnight-blue text-white font-bold text-lg rounded-xl shadow-lg hover:brightness-110 hover:-translate-y-1 transition-all duration-300 active:scale-95">
+                    Administrateur
+                </button>
+                <button
+                    class="w-full py-4 bg-midnight-blue text-white font-bold text-lg rounded-xl shadow-lg hover:brightness-110 hover:-translate-y-1 transition-all duration-300 active:scale-95">
+                    Visiteur
+                </button>
+            </div>
+
+            <button onclick="showHomeScreen()"
+                class="pt-8 text-midnight-blue/60 font-medium hover:text-midnight-blue transition-colors">
+                &larr; Back to Home
             </button>
         </div>
-
-        <button onclick="showHomeScreen()"
-            class="pt-8 text-midnight-blue/60 font-medium hover:text-midnight-blue transition-colors">
-            &larr; Back to Home
-        </button>
     </div>
 
     <!-- Stagiaire Registration Screen -->
@@ -183,71 +230,102 @@
                     class="w-full p-4 bg-white border border-gray-300 rounded-xl outline-none focus:border-midnight-blue focus:ring-1 focus:ring-midnight-blue transition-all">
             </div>
 
-            <!-- ID CEF -->
-            <div class="space-y-1.5">
-                <label class="text-sm font-semibold text-midnight-blue px-1">ID CEF</label>
-                <input id="cef-signup-input" type="text" placeholder="Entrez Votre CEF"
-                    class="w-full p-4 bg-white border border-gray-300 rounded-xl outline-none focus:border-midnight-blue focus:ring-1 focus:ring-midnight-blue transition-all">
-            </div>
 
             <!-- POLE -->
             <div class="space-y-1.5">
-                <label class="text-sm font-semibold text-midnight-blue px-1">POLE</label>
-                <select id="pole-select" onchange="updateFiliereOptions()"
-                    class="w-full p-4 bg-white border border-gray-300 rounded-xl outline-none focus:border-midnight-blue focus:ring-1 focus:ring-midnight-blue transition-all cursor-pointer">
-                    <option value="" disabled selected hidden>selectionner votre pole</option>
-                    <option value="digital et intelligence artificiel">digital et intelligence artificiel</option>
-                    <option value="Agriculture">Agriculture</option>
-                    <option value="Agro-Industrie">Agro-Industrie</option>
-                    <option value="BTP">BTP</option>
-                    <option value="Industrie">Industrie</option>
-                    <option value="Tourisme Hôtellerie Restauration">Tourisme Hôtellerie Restauration</option>
-                    <option value="Logistique et Transport">Logistique et Transport</option>
-                    <option value="Gestion et Commerce">Gestion et Commerce</option>
-                    <option value="Artisanat">Artisanat</option>
-                    <option value="AIG">AIG</option>
-                </select>
+                <label class="text-[10px] font-bold text-midnight-blue/40 uppercase px-1">POLE</label>
+                <div class="relative">
+                    <select id="pole-select" onchange="updateFiliereOptions()"
+                        class="w-full p-4 bg-white/80 border border-midnight-blue/20 rounded-xl outline-none focus:border-midnight-blue transition-all cursor-pointer appearance-none">
+                        <option value="" disabled selected hidden>selectionner votre pole</option>
+                        <option value="digital et intelligence artificiel">digital et intelligence artificiel</option>
+                        <option value="Agriculture">Agriculture</option>
+                        <option value="Agro-Industrie">Agro-Industrie</option>
+                        <option value="BTP">BTP</option>
+                        <option value="Industrie">Industrie</option>
+                        <option value="Tourisme Hôtellerie Restauration">Tourisme Hôtellerie Restauration</option>
+                        <option value="Logistique et Transport">Logistique et Transport</option>
+                        <option value="Gestion et Commerce">Gestion et Commerce</option>
+                        <option value="Artisanat">Artisanat</option>
+                        <option value="AIG">AIG</option>
+                    </select>
+                    <div
+                        class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none block md:hidden lg:hidden">
+                        <svg class="w-4 h-4 text-midnight-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </div>
+                </div>
             </div>
 
             <!-- Niveau (Q, T, TS) -->
             <div class="space-y-1.5">
-                <label class="text-sm font-semibold text-midnight-blue px-1">Niveau</label>
-                <select id="niveau-select" onchange="updateFiliereOptions()"
-                    class="w-full p-4 bg-white border border-gray-300 rounded-xl outline-none focus:border-midnight-blue focus:ring-1 focus:ring-midnight-blue transition-all cursor-pointer">
-                    <option value="" disabled selected hidden>selectionner votre niveau</option>
-                    <option value="Technicien Spécialisé">Technicien Spécialisé (TS)</option>
-                    <option value="Technicien">Technicien (T)</option>
-                    <option value="Qualification">Qualification (Q)</option>
-                </select>
+                <label class="text-[10px] font-bold text-midnight-blue/40 uppercase px-1">Niveau</label>
+                <div class="relative">
+                    <select id="niveau-select" onchange="updateFiliereOptions()"
+                        class="w-full p-4 bg-white/80 border border-midnight-blue/20 rounded-xl outline-none focus:border-midnight-blue transition-all cursor-pointer appearance-none">
+                        <option value="" disabled selected hidden>selectionner votre niveau</option>
+                        <option value="Technicien Spécialisé">Technicien Spécialisé (TS)</option>
+                        <option value="Technicien">Technicien (T)</option>
+                        <option value="Qualification">Qualification (Q)</option>
+                    </select>
+                    <div
+                        class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none block md:hidden lg:hidden">
+                        <svg class="w-4 h-4 text-midnight-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </div>
+                </div>
             </div>
 
             <!-- Filière (Dynamic) -->
             <div class="space-y-1.5">
-                <label class="text-sm font-semibold text-midnight-blue px-1">Filière</label>
-                <select id="filiere-select" onchange="toggleOptionField()"
-                    class="w-full p-4 bg-white border border-gray-300 rounded-xl outline-none focus:border-midnight-blue focus:ring-1 focus:ring-midnight-blue transition-all cursor-pointer">
-                    <option value="" disabled selected hidden>selectionner votre pole</option>
-                </select>
+                <label class="text-[10px] font-bold text-midnight-blue/40 uppercase px-1">Filière</label>
+                <div class="relative">
+                    <select id="filiere-select" onchange="toggleOptionField()"
+                        class="w-full p-4 bg-white/80 border border-midnight-blue/20 rounded-xl outline-none focus:border-midnight-blue transition-all cursor-pointer appearance-none">
+                        <option value="" disabled selected hidden>selectionner votre filière</option>
+                    </select>
+                    <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none bloc md:hidden lg:hidden">
+                        <svg class="w-4 h-4 text-midnight-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </div>
+                </div>
             </div>
 
             <!-- Année -->
             <div class="space-y-1.5">
-                <label class="text-sm font-semibold text-midnight-blue px-1">Année</label>
-                <select id="year-select" onchange="toggleOptionField()"
-                    class="w-full p-4 bg-white border border-gray-300 rounded-xl outline-none focus:border-midnight-blue focus:ring-1 focus:ring-midnight-blue transition-all cursor-pointer">
-                    <option value="" disabled selected hidden>Sélectionner l'année</option>
-                    <option value="1ère année">1ère année</option>
-                    <option value="2ème année">2ème année</option>
-                </select>
+                <label class="text-[10px] font-bold text-midnight-blue/40 uppercase px-1">Année</label>
+                <div class="relative">
+                    <select id="year-select" onchange="toggleOptionField()"
+                        class="w-full p-4 bg-white/80 border border-midnight-blue/20 rounded-xl outline-none focus:border-midnight-blue transition-all cursor-pointer appearance-none">
+                        <option value="" disabled selected hidden>Sélectionner l'année</option>
+                        <option value="1ère année">1ère année</option>
+                        <option value="2ème année">2ème année</option>
+                    </select>
+                    <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none bloc md:hidden lg:hidden">
+                        <svg class="w-4 h-4 text-midnight-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </div>
+                </div>
             </div>
 
             <!-- Options (Conditional) -->
             <div id="option-container" class="hidden space-y-1.5">
-                <label class="text-sm font-semibold text-midnight-blue px-1">Option</label>
-                <select id="option-select"
-                    class="w-full p-4 bg-white border border-gray-300 rounded-xl outline-none focus:border-midnight-blue focus:ring-1 focus:ring-midnight-blue transition-all cursor-pointer">
-                    <option value="" disabled selected hidden>Sélectionner une option</option>
-                </select>
+                <label class="text-[10px] font-bold text-midnight-blue/40 uppercase px-1">Option</label>
+                <div class="relative">
+                    <select id="option-select"
+                        class="w-full p-4 bg-white/80 border border-midnight-blue/20 rounded-xl outline-none focus:border-midnight-blue transition-all cursor-pointer appearance-none">
+                        <option value="" disabled selected hidden>Sélectionner une option</option>
+                    </select>
+                    <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none bloc md:hidden lg:hidden">
+                        <svg class="w-4 h-4 text-midnight-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </div>
+                </div>
             </div>
 
             <!-- Téléphone -->
@@ -1025,13 +1103,7 @@
         </div>
 
         <script>
-            // Global user state
-            let currentUser = {};
-            let isUserInLab = false;
-            let currentRating = 0;
-            let isProfileEditing = false;
-
-            // Data with options for 2nd year
+            // --- STAGIAIRE LOGIC & DATA ---
             const trainingData = {
                 "digital et intelligence artificiel": {
                     "Technicien Spécialisé": [
@@ -1114,37 +1186,24 @@
                 }
             };
 
-
             function updateFiliereOptions() {
                 const pole = document.getElementById('pole-select').value;
                 const niveau = document.getElementById('niveau-select').value;
                 const filiereSelect = document.getElementById('filiere-select');
-
+                if (!filiereSelect) return;
                 filiereSelect.innerHTML = '';
-
                 if (pole && niveau && trainingData[pole] && trainingData[pole][niveau]) {
                     const filieres = trainingData[pole][niveau];
                     const placeholder = document.createElement('option');
-                    placeholder.value = "";
-                    placeholder.innerText = "Sélectionner votre filière";
-                    placeholder.disabled = true;
-                    placeholder.selected = true;
-                    placeholder.hidden = true;
+                    placeholder.value = ""; placeholder.innerText = "Sélectionner votre filière";
+                    placeholder.disabled = true; placeholder.selected = true; placeholder.hidden = true;
                     filiereSelect.appendChild(placeholder);
-
                     filieres.forEach(f => {
                         const opt = document.createElement('option');
                         opt.value = f.name;
                         opt.innerText = (f.name === "N" ? "Aucune filière disponible" : f.name);
                         filiereSelect.appendChild(opt);
                     });
-                } else {
-                    const opt = document.createElement('option');
-                    opt.value = "";
-                    opt.innerText = "selectionner votre pole";
-                    opt.disabled = true;
-                    opt.selected = true;
-                    filiereSelect.appendChild(opt);
                 }
                 toggleOptionField();
             }
@@ -1154,9 +1213,9 @@
                 const niveau = document.getElementById('niveau-select').value;
                 const filiereName = document.getElementById('filiere-select').value;
                 const year = document.getElementById('year-select').value;
-
                 const container = document.getElementById('option-container');
                 const select = document.getElementById('option-select');
+                if (!container || !select) return;
 
                 if (year === "2ème année" && pole && niveau && filiereName) {
                     const filiere = trainingData[pole][niveau].find(f => f.name === filiereName);
@@ -1164,8 +1223,7 @@
                         select.innerHTML = '<option value="" disabled selected hidden>Sélectionner une option</option>';
                         filiere.options.forEach(o => {
                             const opt = document.createElement('option');
-                            opt.value = o;
-                            opt.innerText = o;
+                            opt.value = o; opt.innerText = o;
                             select.appendChild(opt);
                         });
                         container.classList.remove('hidden');
@@ -1176,49 +1234,24 @@
                 select.innerHTML = '';
             }
 
-            function validateStagiaireForm() {
-                const prenom = document.querySelector('#stagiaire-screen input[placeholder="Entrez Votre Prenom"]').value;
-                const nom = document.querySelector('#stagiaire-screen input[placeholder="Entrez Votre Nom"]').value;
-                const cin = document.getElementById('cin-signup-input').value;
-                const cef = document.getElementById('cef-signup-input').value;
-                const pole = document.getElementById('pole-select').value;
-                const niveau = document.getElementById('niveau-select').value;
-                const filiere = document.getElementById('filiere-select').value;
-                const year = document.getElementById('year-select').value;
-                const option = document.getElementById('option-select').value;
-                const tel = document.getElementById('tel-input').value;
-                const email = document.getElementById('email-input').value;
+            // --- PREMIUM UI PROTOTYPE LOGIC ---
 
-                currentUser = { prenom, nom, cin, cef, pole, niveau, filiere, year, option, tel, email };
-                localStorage.setItem('temp_registration_data', JSON.stringify(currentUser));
-                showCreateAccountScreen();
-            }
-
-            function showRoleSelection() { setScreen('role-selection-screen'); }
-            function showHomeScreen() { setScreen('home-screen'); }
-            function showStagiaireScreen() { setScreen('stagiaire-screen'); }
-            function showCharteScreen() { setScreen('charte-screen'); }
-
-            function showLoginScreen() { setScreen('login-screen'); }
-            function showDashboardScreen() { setScreen('dashboard-screen'); }
-
-            let isNavigating = false;
             function setScreen(screenId) {
-                console.log("Navigating to:", screenId);
-                if (window.fbAuth && window.fbAuth.currentUser && screenId === 'home-screen') {
-                    console.warn("Blocked redirect to home while logged in.");
-                    return;
-                }
-
                 const screens = ['home-screen', 'role-selection-screen', 'stagiaire-screen', 'charte-screen', 'login-screen', 'dashboard-screen'];
+
                 screens.forEach(id => {
                     const el = document.getElementById(id);
                     if (!el) return;
 
+                    // Apply transition class if not present
+                    if (!el.classList.contains('screen-transition')) {
+                        el.classList.add('screen-transition');
+                    }
+
                     if (id === screenId) {
                         el.classList.remove('hidden');
                         el.classList.add('flex');
-                        // Use a smaller timeout for opacity to ensure it's visible before transition
+
                         setTimeout(() => {
                             el.classList.remove('opacity-0');
                             el.classList.add('opacity-100');
@@ -1226,79 +1259,57 @@
                     } else {
                         el.classList.add('opacity-0');
                         el.classList.remove('opacity-100');
-                        // Use a safe hide transition that only hides if it's still supposed to be hidden
+
                         setTimeout(() => {
                             if (el.classList.contains('opacity-0')) {
                                 el.classList.add('hidden');
                                 el.classList.remove('flex');
                             }
-                        }, 400); 
+                        }, 500);
                     }
                 });
             }
 
-            // --- SCREEN NAVIGATION ---
-            function selectRole(role) {
-                sessionStorage.setItem('pending_role', role);
-                // Removed automatic home redirect
-            }
+            // Mock Auth with "Premium Delay"
+            window.handleGoogleAuth = function () {
+                // Add a "Thinking" effect
+                const btn = event.currentTarget;
+                const originalContent = btn.innerHTML;
+                btn.innerHTML = '<span>Patientez...</span>';
+                btn.classList.add('opacity-50');
 
-            function showHomeScreen() {
-                setScreen('home-screen');
-            }
-
-            function showLoginScreenWithFeedback(btn) {
-                btn.classList.add('bg-green-500');
                 setTimeout(() => {
-                    btn.classList.remove('bg-green-500');
-                    showLoginScreen();
-                }, 150);
+                    btn.innerHTML = originalContent;
+                    btn.classList.remove('opacity-50');
+                    showRoleSelection();
+                }, 800);
+            };
+
+            window.handleOutlookAuth = function () {
+                const btn = event.currentTarget;
+                const originalContent = btn.innerHTML;
+                btn.innerHTML = '<span>Connexion...</span>';
+                btn.classList.add('opacity-50');
+
+                setTimeout(() => {
+                    btn.innerHTML = originalContent;
+                    btn.classList.remove('opacity-50');
+                    showRoleSelection();
+                }, 800);
+            };
+
+            // Navigation Helpers
+            function showRoleSelection() { setScreen('role-selection-screen'); }
+            function showHomeScreen() { setScreen('home-screen'); }
+            function showStagiaireScreen() { setScreen('stagiaire-screen'); }
+            function showCharteScreen() { setScreen('charte-screen'); }
+            function showLoginScreen() { setScreen('login-screen'); }
+            function showDashboardScreen() { setScreen('dashboard-screen'); }
+
+            function validateStagiaireForm() {
+                // Collect basic data for the prototype "feel"
+                setScreen('create-account-screen');
             }
-
-
-            window.handleGoogleAuth = async function (mode = 'login') {
-                try {
-                    if (!window.fbActions) {
-                        console.warn("Firebase not ready yet, retrying...");
-                        setTimeout(() => window.handleGoogleAuth(mode), 100);
-                        return;
-                    }
-                    const { signInWithRedirect } = window.fbActions;
-                    const auth = window.fbAuth;
-                    const provider = window.googleProvider;
-
-                    if (window.location.protocol === 'file:') {
-                        alert("Attention : Google Authentication ne fonctionne pas avec le protocole 'file://'.");
-                        return;
-                    }
-
-                    sessionStorage.setItem('auth_mode', mode);
-                    await signInWithRedirect(auth, provider);
-                } catch (err) {
-                    console.error("Google Auth Error:", err);
-                    alert("Erreur d'authentification : " + err.message);
-                }
-            }
-
-            window.handleOutlookAuth = async function (mode = 'login') {
-                try {
-                    if (!window.fbActions) {
-                        setTimeout(() => window.handleOutlookAuth(mode), 100);
-                        return;
-                    }
-                    const { signInWithRedirect } = window.fbActions;
-                    const auth = window.fbAuth;
-                    const provider = window.microsoftProvider;
-
-                    sessionStorage.setItem('auth_mode', mode);
-                    await signInWithRedirect(auth, provider);
-                } catch (err) {
-                    console.error("Outlook Auth Error:", err);
-                    alert("Erreur d'authentification Microsoft : " + err.message);
-                }
-            }
-
-
 
             function switchTab(tabId) {
                 document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
@@ -1307,419 +1318,26 @@
                     el.classList.add('text-midnight-blue/40');
                 });
 
-                document.getElementById('tab-' + tabId).classList.remove('hidden');
-                if (tabId === 'scan') {
-                    document.getElementById('tab-' + tabId).classList.add('flex');
-                    startScanner();
-                } else {
-                    stopScanner();
-                }
-                if (tabId === 'my-project') {
-                    document.getElementById('tab-' + tabId).classList.add('flex');
-                }
-                if (tabId === 'profile') {
-                    document.getElementById('tab-' + tabId).classList.add('flex');
-                    updateProfileView();
+                const targetTab = document.getElementById('tab-' + tabId);
+                if (targetTab) {
+                    targetTab.classList.remove('hidden');
+                    targetTab.classList.add('flex');
                 }
 
-                document.getElementById('nav-' + tabId).classList.add('text-[#3B5FE6]');
-                document.getElementById('nav-' + tabId).classList.remove('text-midnight-blue/40');
-            }
-
-            let html5QrCode = null;
-
-            function startScanner() {
-                if (html5QrCode && html5QrCode.isScanning) return;
-
-                const placeholder = document.getElementById('scanner-placeholder');
-                const config = { fps: 10, qrbox: { width: 250, height: 250 } };
-
-                if (!html5QrCode) {
-                    html5QrCode = new Html5Qrcode("reader");
-                }
-
-                html5QrCode.start(
-                    { facingMode: "environment" },
-                    config,
-                    onScanSuccess
-                ).then(() => {
-                    placeholder.classList.add('hidden');
-                }).catch(err => {
-                    console.error("Scanner error:", err);
-                    placeholder.classList.remove('hidden');
-                    placeholder.innerHTML = `<p class="text-white text-xs px-6 text-center">Erreur caméra : ${err}</p>`;
-                });
-            }
-
-            function stopScanner() {
-                if (html5QrCode && html5QrCode.isScanning) {
-                    html5QrCode.stop().then(() => {
-                        document.getElementById('scanner-placeholder').classList.remove('hidden');
-                    }).catch(err => console.error("Stop error:", err));
+                const navItem = document.getElementById('nav-' + tabId);
+                if (navItem) {
+                    navItem.classList.add('text-[#3B5FE6]');
+                    navItem.classList.remove('text-midnight-blue/40');
                 }
             }
 
-            function onScanSuccess(decodedText, decodedResult) {
-                stopScanner();
-
-                if (!isUserInLab) {
-                    if (currentUser.role === 'stagiaire') {
-                        showScanObjectiveModal();
-                    } else {
-                        isUserInLab = true;
-                        updateScanUI();
-                        alert("ENTRÉE RÉUSSIE ! Bienvenue dans le Lab.");
-                        switchTab('my-project');
-                    }
-                } else {
-                    showFeedbackModal();
-                }
+            function togglePasswordVisibility(id) {
+                const input = document.getElementById(id);
+                if (input) input.type = input.type === 'password' ? 'text' : 'password';
             }
 
-            let scanSelectedObjective = '';
-
-            function showScanObjectiveModal() {
-                const modal = document.getElementById('scan-objective-modal');
-                const content = document.getElementById('scan-objective-content');
-                modal.classList.remove('hidden');
-                setTimeout(() => {
-                    modal.classList.remove('opacity-0');
-                    content.classList.remove('scale-95');
-                    content.classList.add('scale-100');
-                }, 10);
-            }
-
-            function setScanObjective(val, btn) {
-                scanSelectedObjective = val;
-
-                // UI feedback
-                document.querySelectorAll('.scan-obj-btn').forEach(b => {
-                    b.classList.remove('border-midnight-blue', 'bg-blue-50', 'ring-1', 'ring-midnight-blue');
-                    b.classList.add('border-gray-100', 'bg-gray-50');
-                });
-                btn.classList.add('border-midnight-blue', 'bg-blue-50', 'ring-1', 'ring-midnight-blue');
-                btn.classList.remove('border-gray-100', 'bg-gray-50');
-
-                // Branching
-                const branch = document.getElementById('scan-project-branch');
-                if (val === 'Projet en cours') {
-                    branch.classList.remove('hidden');
-                } else {
-                    branch.classList.add('hidden');
-                }
-            }
-
-            async function finalizeScanIn() {
-                if (!scanSelectedObjective) {
-                    alert("Veuillez sélectionner un objectif.");
-                    return;
-                }
-
-                try {
-                    const { addDoc, collection, serverTimestamp } = window.fbActions;
-                    const db = window.fbDb;
-
-                    const logEntry = {
-                        userId: currentUser.uid || 'guest',
-                        userName: `${currentUser.firstName || ''} ${currentUser.lastName || ''}`.trim(),
-                        type: 'in',
-                        objective: scanSelectedObjective,
-                        timestamp: serverTimestamp()
-                    };
-
-                    if (scanSelectedObjective === 'Projet en cours') {
-                        logEntry.project = document.getElementById('scan-project-name').value;
-                        logEntry.companion = document.getElementById('scan-project-companion').value;
-                        logEntry.phase = document.getElementById('scan-project-phase').value;
-
-                        // Update user's active context
-                        currentUser.activeProject = logEntry.project;
-                        currentUser.activeCompanion = logEntry.companion;
-                        currentUser.activePhase = logEntry.phase;
-                    }
-
-                    await addDoc(collection(db, "attendance"), logEntry);
-
-                    // UI Update
-                    isUserInLab = true;
-                    updateScanUI();
-
-                    const modal = document.getElementById('scan-objective-modal');
-                    const content = document.getElementById('scan-objective-content');
-                    modal.classList.add('opacity-0');
-                    content.classList.add('scale-95');
-
-                    setTimeout(() => {
-                        modal.classList.add('hidden');
-                        alert("ENTRÉE RÉUSSIE ! Bienvenue dans le Lab.");
-                        switchTab('my-project');
-                    }, 300);
-                } catch (error) {
-                    alert("Scan-in error: " + error.message);
-                }
-            }
-
-            function updateScanUI() {
-                const banner = document.getElementById('scan-status-banner');
-                const statusText = document.getElementById('scan-status-text');
-
-                if (isUserInLab) {
-                    banner.classList.remove('bg-green-500');
-                    banner.classList.add('bg-red-500');
-                    statusText.innerText = 'SORTIE (SCAN OUT)';
-                } else {
-                    banner.classList.remove('bg-red-500');
-                    banner.classList.add('bg-green-500');
-                    statusText.innerText = 'ENTRÉE (SCAN IN)';
-                }
-            }
-
-            function showFeedbackModal() {
-                const modal = document.getElementById('feedback-modal');
-                const content = document.getElementById('feedback-content');
-                modal.classList.remove('hidden');
-                setTimeout(() => {
-                    modal.classList.remove('opacity-0');
-                    content.classList.remove('scale-95');
-                    content.classList.add('scale-100');
-                }, 10);
-            }
-
-            function setRating(rating) {
-                currentRating = rating;
-                const stars = document.querySelectorAll('.star-btn');
-                stars.forEach((star, index) => {
-                    if (index < rating) {
-                        star.classList.remove('text-gray-300');
-                        star.classList.add('text-yellow-400');
-                    } else {
-                        star.classList.remove('text-yellow-400');
-                        star.classList.add('text-gray-300');
-                    }
-                });
-            }
-
-            function submitFeedback() {
-                if (currentRating === 0) {
-                    alert("Veuillez donner une note de 1 à 5 étoiles.");
-                    return;
-                }
-
-                alert("Merci pour votre feedback ! À bientôt.");
-
-                isUserInLab = false;
-                updateScanUI();
-
-                const modal = document.getElementById('feedback-modal');
-                const content = document.getElementById('feedback-content');
-                modal.classList.add('opacity-0');
-                content.classList.add('scale-95');
-                setTimeout(() => {
-                    modal.classList.add('hidden');
-                    currentRating = 0;
-                    setRating(0);
-                    document.getElementById('feedback-note').value = '';
-                    switchTab('scan');
-                }, 300);
-            }
-
-            function updateProfileView() {
-                if (!currentUser.prenom) return;
-
-                // Header: Name + Level
-                document.getElementById('profile-display-name').innerText = `${currentUser.prenom} ${currentUser.nom}`;
-                document.getElementById('profile-level-label').innerText = currentUser.niveau || 'Stagiaire';
-
-                // Bio
-                document.getElementById('view-bio').innerText = currentUser.bio || "Passionné par le Fab Lab et l'innovation technologique.";
-                document.getElementById('edit-bio').value = currentUser.bio || "";
-
-                // Academic
-                document.getElementById('view-pole').innerText = currentUser.pole || '-';
-                document.getElementById('view-niveau').innerText = currentUser.niveau || '-';
-                document.getElementById('view-filiere').innerText = currentUser.filiere || '-';
-                document.getElementById('view-year').innerText = currentUser.year || '-';
-                document.getElementById('view-option').innerText = currentUser.option && currentUser.option !== 'N' ? currentUser.option : 'Non applicable';
-
-                document.getElementById('edit-pole').value = currentUser.pole || '';
-                document.getElementById('edit-niveau').value = currentUser.niveau || '';
-                document.getElementById('edit-filiere').value = currentUser.filiere || '';
-                document.getElementById('edit-year').value = currentUser.year || '';
-                document.getElementById('edit-option').value = currentUser.option || '';
-
-                document.getElementById('card-option').classList.toggle('hidden', !currentUser.option || currentUser.option === 'N');
-
-                // Identity
-                document.getElementById('view-cin').innerText = currentUser.cin || '-';
-                document.getElementById('view-cef').innerText = currentUser.cef || '-';
-
-                document.getElementById('edit-cin').value = currentUser.cin || '';
-                document.getElementById('edit-cef').value = currentUser.cef || '';
-
-                // Contact
-                document.getElementById('view-email').innerText = currentUser.email || '-';
-                document.getElementById('view-tel').innerText = currentUser.tel || '-';
-
-                document.getElementById('edit-email').value = currentUser.email || '';
-                document.getElementById('edit-tel').value = currentUser.tel || '';
-            }
-
-            function toggleProfileEdit() {
-                isProfileEditing = !isProfileEditing;
-
-                const viewIds = ['view-bio', 'view-pole', 'view-niveau', 'view-filiere', 'view-year', 'view-option', 'view-cin', 'view-cef', 'view-email', 'view-tel'];
-                const editIds = ['edit-bio', 'edit-pole', 'edit-niveau', 'edit-filiere', 'edit-year', 'edit-option', 'edit-cin', 'edit-cef', 'edit-email', 'edit-tel'];
-
-                viewIds.forEach(id => {
-                    const el = document.getElementById(id);
-                    if (el) el.classList.toggle('hidden', isProfileEditing);
-                });
-                editIds.forEach(id => {
-                    const el = document.getElementById(id);
-                    if (el) el.classList.toggle('hidden', !isProfileEditing);
-                });
-
-                document.getElementById('profile-edit-btn').classList.toggle('hidden', isProfileEditing);
-                document.getElementById('profile-save-btn').classList.toggle('hidden', !isProfileEditing);
-            }
-
-            function saveProfileChanges() {
-                currentUser.bio = document.getElementById('edit-bio').value;
-                currentUser.pole = document.getElementById('edit-pole').value;
-                currentUser.niveau = document.getElementById('edit-niveau').value;
-                currentUser.filiere = document.getElementById('edit-filiere').value;
-                currentUser.year = document.getElementById('edit-year').value;
-                currentUser.option = document.getElementById('edit-option').value;
-                currentUser.cin = document.getElementById('edit-cin').value;
-                currentUser.cef = document.getElementById('edit-cef').value;
-                currentUser.email = document.getElementById('edit-email').value;
-                currentUser.tel = document.getElementById('edit-tel').value;
-
-                updateProfileView();
-                toggleProfileEdit();
-                alert("Profil mis à jour avec succès !");
-            }
-
-            // --- AUTH STATE PERSISTENCE ---
-            const initAuth = async () => {
-                const auth = window.fbAuth;
-                const db = window.fbDb;
-                if (!auth || !db) {
-                    setTimeout(initAuth, 100);
-                    return;
-                }
-
-                const { onAuthStateChanged, getDoc, doc, getRedirectResult, setDoc, serverTimestamp } = window.fbActions;
-
-                // --- HANDLE GOOGLE REDIRECT RESULT ---
-                try {
-                    const result = await getRedirectResult(auth);
-                    const mode = sessionStorage.getItem('auth_mode');
-
-                    if (result && result.user) {
-                        const user = result.user;
-                        const userSnap = await getDoc(doc(db, "users", user.uid));
-                        
-                        // ONLY create profile if we are in signup mode AND have the temp data
-                        if (mode === 'signup' && !userSnap.exists()) {
-                            const rawData = localStorage.getItem('temp_registration_data');
-                            if (rawData) {
-                                const savedData = JSON.parse(rawData);
-                                await setDoc(doc(db, "users", user.uid), {
-                                    ...savedData,
-                                    email: user.email,
-                                    uid: user.uid,
-                                    role: 'stagiaire',
-                                    createdAt: serverTimestamp()
-                                });
-                                localStorage.removeItem('temp_registration_data');
-                                alert("Compte créé avec succès ! Bienvenue au Lab.");
-                            }
-                        }
-                    }
-                    sessionStorage.removeItem('auth_mode');
-                } catch (err) {
-                    console.error("Redirect Result Error:", err);
-                }
-
-            // --- AUTH STATE CHANGES HANDLE PROFILE SYNC ---
-
-            // --- LISTEN FOR AUTH STATE CHANGES ---
-            onAuthStateChanged(auth, async (user) => {
-                if (user) {
-                    try {
-                        const userSnap = await getDoc(doc(db, "users", user.uid));
-                        if (userSnap.exists()) {
-                            currentUser = userSnap.data();
-                            console.log("Logged in with profile:", currentUser.email);
-
-                            const currentScreen = ['home-screen', 'login-screen', 'role-selection-screen', 'stagiaire-screen']
-                                .find(id => {
-                                    const el = document.getElementById(id);
-                                    return el && !el.classList.contains('hidden');
-                                });
-
-                            if (currentScreen) {
-                                showDashboardScreen();
-                                switchTab('scan');
-                            }
-                        } else {
-                            // AUTHENTICATED BUT NO PROFILE: Force Role Selection
-                            console.warn("No profile found. Sending to selection...");
-                            // Only switch if we are not already on a registration/selection screen
-                            const isAlreadyOnReg = ['role-selection-screen', 'stagiaire-screen', 'create-account-screen'].some(id => {
-                                const el = document.getElementById(id);
-                                return el && !el.classList.contains('hidden');
-                            });
-
-                            if (!isAlreadyOnReg) {
-                                showRoleSelection();
-                            }
-                        }
-                    } catch (err) {
-                        console.error("Auth status sync error:", err);
-                    }
-                } else {
-                    currentUser = {};
-                    isUserInLab = false;
-                    // Removed automatic home redirect on auth state change
-                    console.log("User is signed out or auth state is null.");
-                }
-            });
-            };
-
-            window.addEventListener('load', initAuth);
-
-            function handleProjectImages(input) {
-                const previewContainer = document.getElementById('project-images-preview');
-                const files = input.files;
-
-                if (files.length > 2) {
-                    alert("Maximum 2 images autorisées.");
-                    input.value = "";
-                    return;
-                }
-
-                previewContainer.innerHTML = '';
-
-                Array.from(files).forEach(file => {
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                        const div = document.createElement('div');
-                        div.className = "rounded-2xl overflow-hidden shadow-md h-full";
-                        div.innerHTML = `<img src="${e.target.result}" class="w-full h-full object-cover">`;
-                        previewContainer.appendChild(div);
-                    };
-                    reader.readAsDataURL(file);
-                });
-
-                if (files.length === 1) {
-                    const placeholder = document.createElement('div');
-                    placeholder.className = "border-2 border-dashed border-midnight-blue/10 bg-midnight-blue/5 rounded-2xl flex items-center justify-center text-midnight-blue/20 h-full";
-                    placeholder.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>`;
-                    previewContainer.appendChild(placeholder);
-                }
-            }
+            // Initialization
+            window.addEventListener('load', () => showHomeScreen());
         </script>
 </body>
 
