@@ -8,76 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/html5-qrcode"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'midnight-blue': '#133853',
-                        'primary-blue-top': '#2B7FFF',
-                        'primary-blue-bottom': '#1A66FF',
-                    },
-                    fontFamily: {
-                        montserrat: ['Montserrat', 'sans-serif'],
-                    },
-                    backgroundImage: {
-                        'main-gradient': 'linear-gradient(to bottom, #BDE3F2 0%, #E2F1F8 40%, #FFFFFF 100%)',
-                        'button-gradient': 'linear-gradient(to bottom, #2B7FFF 0%, #1A66FF 100%)',
-                    },
-                }
-            }
-        }
-    </script>
-    <style>
-        body {
-            font-family: 'Montserrat', sans-serif;
-        }
-
-        .main-container {
-            background: linear-gradient(to bottom, #BDE3F2 0%, #E2F1F8 40%, #FFFFFF 100%);
-        }
-
-        /* --- PHONE STYLES --- */
-        @media screen and (max-width: 767px) {
-            .mobile-padding {
-                padding: 1rem !important;
-                margin-top: -5vh !important;
-                /* This moves the ENTIRE home screen contents up */
-            }
-
-            .illustration-container {
-                margin-top: 4vh !important;
-            }
-
-            .logo-header {
-                margin-top: -2rem !important;
-                width: 110px !important;
-            }
-        }
-
-        /* --- DESKTOP STYLES --- */
-        @media screen and (min-width: 768px) {
-            .illustration-container {
-                margin-top: 0 !important;
-            }
-
-            .logo-header {
-                margin-top: 0rem !important;
-                width: 140px !important;
-            }
-        }
-
-        /* KILL THE SCROLLBAR GLOBALLY */
-        html,
-        body {
-            scrollbar-width: none !important;
-            -ms-overflow-style: none !important;
-        }
-
-        ::-webkit-scrollbar {
-            display: none !important;
-        }
-    </style>
+    <link rel="stylesheet" href="index.css">
 </head>
 
 <body class="main-container h-screen flex flex-col items-center justify-center p-0 md:p-12 overflow-hidden">

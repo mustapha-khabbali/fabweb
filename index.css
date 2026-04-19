@@ -1,0 +1,48 @@
+body {
+    font-family: 'Montserrat', sans-serif;
+}
+
+.main-container {
+    background: linear-gradient(to bottom, #BDE3F2 0%, #E2F1F8 40%, #FFFFFF 100%);
+}
+
+/* --- PHONE STYLES --- */
+@media screen and (max-width: 767px) {
+    .mobile-padding {
+        padding: 1rem !important;
+        margin-top: -5vh !important;
+        /* This moves the ENTIRE home screen contents up */
+    }
+
+    .illustration-container {
+        margin-top: 4vh !important;
+    }
+
+    .logo-header {
+        margin-top: -2rem !important;
+        width: 110px !important;
+    }
+}
+
+/* --- DESKTOP STYLES --- */
+@media screen and (min-width: 768px) {
+    .illustration-container {
+        margin-top: 0 !important;
+    }
+
+    .logo-header {
+        margin-top: 0rem !important;
+        width: 140px !important;
+    }
+}
+
+/* KILL THE SCROLLBAR GLOBALLY */
+html,
+body {
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+}
+
+::-webkit-scrollbar {
+    display: none !important;
+}
