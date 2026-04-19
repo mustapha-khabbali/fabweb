@@ -850,7 +850,7 @@
                     window.checkAuthState();
                 } catch (err) {
                     console.error("Auth Error:", err);
-                    alert("Erreur technique de connexion au serveur.");
+                    alert("Erreur Firebase (" + err.code + "): " + err.message);
                 }
             } else {
                 error.style.opacity = '1';
