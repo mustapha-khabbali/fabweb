@@ -951,6 +951,9 @@
         window.fbDb = db;
         window.googleProvider = new GoogleAuthProvider();
         window.microsoftProvider = new OAuthProvider('microsoft.com');
+        window.microsoftProvider.setCustomParameters({
+            prompt: 'select_account'
+        });
         window.fbActions = { onAuthStateChanged, signOut, GoogleAuthProvider, OAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, setDoc, getDoc, addDoc, doc, collection, serverTimestamp, query, where, orderBy, limit, onSnapshot };
     </script>
 
