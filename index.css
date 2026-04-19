@@ -7,8 +7,11 @@ body {
                       radial-gradient(circle at 0% 0%, #E2E8F0 0%, transparent 50%);
     min-height: 100vh;
     min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
 }
 
+/* --- MOBILE SPECIFIC FIXES --- */
 @media screen and (max-width: 767px) {
     .mobile-padding {
         padding: 1.5rem !important;
@@ -50,11 +53,25 @@ body {
     display: none !important;
 }
 
+/* Tab Navigation Styling */
+.nav-item {
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+/* Custom Scrollbar */
 .custom-scrollbar::-webkit-scrollbar {
     width: 4px;
 }
-
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
 .custom-scrollbar::-webkit-scrollbar-thumb {
     background: rgba(15, 23, 42, 0.1);
     border-radius: 10px;
+}
+
+/* Modals */
+#login-modal, #feedback-modal, #scan-objective-modal {
+    transition: opacity 0.3s ease;
 }
