@@ -1254,24 +1254,10 @@
                     alert("Erreur d'authentification : " + err.message);
                 }
             }
-
-            // Verify if user exists in Firestore and has admin role
-            const userSnap = await getDoc(doc(db, "users", user.uid));
-
-            if (userSnap.exists() && userSnap.data().role === 'admin') {
-                // User is authorized admin, redirect to admin dashboard
-                // Note: fablab-cmc.web.app is the hosted admin target
-                window.location.href = "https://fablab-cmc.web.app";
-            } else {
-                // Not an admin or not registered
-                alert("Accès refusé. Vous n'avez pas les droits d'administrateur.");
-                await auth.signOut();
-                showRoleSelectionScreen();
-            }
                 } catch (err) {
-                console.error("Admin Auth Error:", err);
-                alert("Erreur d'authentification : " + err.message);
-            }
+                    console.error("Admin Auth Error:", err);
+                    alert("Erreur d'authentification : " + err.message);
+                }
             }
 
             async function handleOutlookAuth(mode = 'login') {
@@ -1316,12 +1302,6 @@
                         alert("Erreur d'authentification : " + err.message);
                     }
                 }
-            }
-            console.error("Google Auth Error:", err);
-            if (err.code === 'auth/unauthorized-domain') {
-                alert("Erreur : Ce domaine n'est pas autorisé dans Firebase Console. Si vous testez localement, utilisez localhost.");
-            } else {
-                alert("Erreur d'authentification : " + err.message);
             }
                 }
             }
