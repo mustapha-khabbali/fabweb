@@ -1,5 +1,7 @@
 body {
     font-family: 'Montserrat', sans-serif;
+    min-height: 100vh;
+    min-height: 100dvh; /* Support for iPhone dynamic toolbar */
 }
 
 .main-container {
@@ -9,9 +11,8 @@ body {
 /* --- PHONE STYLES --- */
 @media screen and (max-width: 767px) {
     .mobile-padding {
-        padding: 1rem !important;
-        margin-top: -5vh !important;
-        /* This moves the ENTIRE home screen contents up */
+        padding: 1.5rem !important;
+        margin-top: 0 !important;
     }
 
     .illustration-container {
