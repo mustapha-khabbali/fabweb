@@ -138,7 +138,7 @@
                 class="w-full py-4 bg-midnight-blue text-white font-bold text-lg rounded-xl shadow-lg hover:brightness-110 hover:-translate-y-1 transition-all duration-300 active:scale-95">
                 Formateur
             </button>
-            <button onclick="handleAdminLogin()"
+            <button
                 class="w-full py-4 bg-midnight-blue text-white font-bold text-lg rounded-xl shadow-lg hover:brightness-110 hover:-translate-y-1 transition-all duration-300 active:scale-95">
                 Administrateur
             </button>
@@ -1243,20 +1243,6 @@
                 }, 150);
             }
 
-            async function handleAdminLogin() {
-                try {
-                    const { signInWithRedirect } = window.fbActions;
-                    const auth = window.fbAuth;
-                    const provider = window.googleProvider;
-
-                    // Set mode for redirect
-                    sessionStorage.setItem('auth_mode', 'admin_login');
-                    await signInWithRedirect(auth, provider);
-                } catch (err) {
-                    console.error("Admin Auth Error:", err);
-                    alert("Erreur d'authentification : " + err.message);
-                }
-            }
 
             window.handleGoogleAuth = async function(mode = 'login') {
                 try {
@@ -1618,19 +1604,7 @@
                     const result = await getRedirectResult(auth);
                     if (result && result.user) {
                         const user = result.user;
-                        const mode = sessionStorage.getItem('auth_mode');
                         const userSnap = await getDoc(doc(db, "users", user.uid));
-
-                        if (mode === 'admin_login') {
-                            if (userSnap.exists() && userSnap.data().role === 'admin') {
-                                window.location.href = "https://fablab-cmc.web.app";
-                                return;
-                            } else {
-                                alert("Accès refusé. Vous n'avez pas les droits d'administrateur.");
-                                await auth.signOut();
-                                showRoleSelectionScreen();
-                            }
-                        } else if (!userSnap.exists() && mode === 'signup' && currentUser.prenom) {
                             // User coming from registration flow: save profile
                             await setDoc(doc(db, "users", user.uid), {
                                 ...currentUser,
