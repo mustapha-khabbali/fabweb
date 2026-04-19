@@ -1,11 +1,16 @@
 body {
     font-family: 'Montserrat', sans-serif;
-    min-height: 100vh;
-    min-height: 100dvh; /* Support for iPhone dynamic toolbar */
+    margin: 0;
+    padding: 0;
+    background-color: #F8FAFC;
 }
 
 .main-container {
-    background: linear-gradient(to bottom, #BDE3F2 0%, #E2F1F8 40%, #FFFFFF 100%);
+    min-height: 100vh;
+    min-height: 100dvh;
+    position: relative;
+    background-image: radial-gradient(circle at 100% 100%, #E2E8F0 0%, transparent 50%),
+                      radial-gradient(circle at 0% 0%, #E2E8F0 0%, transparent 50%);
 }
 
 /* --- PHONE STYLES --- */
@@ -16,34 +21,34 @@ body {
     }
 
     .illustration-container {
-        margin-top: 4vh !important;
+        max-width: 280px !important;
+        margin: 10px 0 !important;
     }
 
     .logo-header {
-        margin-top: -2rem !important;
-        width: 110px !important;
+        width: 180px !important;
+        margin-bottom: -20px !important;
     }
 }
 
-/* --- DESKTOP STYLES --- */
-@media screen and (min-width: 768px) {
-    .illustration-container {
-        margin-top: 0 !important;
-    }
-
-    .logo-header {
-        margin-top: 0rem !important;
-        width: 140px !important;
-    }
+.logo-header {
+    width: 280px;
+    margin-bottom: -50px;
 }
 
-/* KILL THE SCROLLBAR GLOBALLY */
-html,
-body {
-    scrollbar-width: none !important;
-    -ms-overflow-style: none !important;
+.illustration-container {
+    max-width: 380px;
+    margin: 20px 0;
 }
 
-::-webkit-scrollbar {
-    display: none !important;
+/* Custom Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(15, 23, 42, 0.1);
+    border-radius: 10px;
 }
