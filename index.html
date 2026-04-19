@@ -1229,7 +1229,7 @@
             // --- SCREEN NAVIGATION ---
             function selectRole(role) {
                 sessionStorage.setItem('pending_role', role);
-                showHomeScreen();
+                // Removed automatic home redirect
             }
 
             function showHomeScreen() {
@@ -1671,11 +1671,8 @@
                 } else {
                     currentUser = {};
                     isUserInLab = false;
-                    // Only return to home if we were deep in the app
-                    const dashboard = document.getElementById('dashboard-screen');
-                    if (dashboard && !dashboard.classList.contains('hidden')) {
-                        showHomeScreen();
-                    }
+                    // Removed automatic home redirect on auth state change
+                    console.log("User is signed out or auth state is null.");
                 }
             });
             };
