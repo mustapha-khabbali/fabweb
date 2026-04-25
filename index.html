@@ -419,7 +419,7 @@
                                     d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
                             </svg>
                         </div>
-                        <p class="text-white font-bold mt-4 text-sm px-4 text-center">Cliquez sur le bouton ci-dessous pour simuler le scan</p>
+                        <p class="text-white font-bold mt-4 text-sm px-4 text-center">Scanner pour continuer</p>
                     </div>
                 </div>
 
@@ -434,8 +434,8 @@
 
                     <div class="text-center space-y-1">
 
-                        <p class="text-sm text-midnight-blue/60 font-medium">Cliquez sur le bouton ci-dessus pour valider votre
-                            présence (Simulation)</p>
+                        <p class="text-sm text-midnight-blue/60 font-medium">Scannez le QR Code pour valider votre
+                            présence</p>
                     </div>
                 </div>
             </div>
@@ -1445,7 +1445,7 @@
             }
 
             function handleScanAction() {
-                // Simulation mode: immediately trigger the scan success logic
+                // Background simulation: triggers success without needing a real QR code
                 onScanSuccess('SIMULATED_DEMO_CODE');
             }
 
@@ -1568,13 +1568,13 @@
                 if (html5QrCode && html5QrCode.isScanning) return;
 
                 const placeholder = document.getElementById('scanner-placeholder');
-                const config = { 
-                    fps: 10, 
+                const config = {
+                    fps: 10,
                     qrbox: (viewfinderWidth, viewfinderHeight) => {
                         const size = Math.min(viewfinderWidth, viewfinderHeight) * 0.9;
                         return { width: size, height: size };
                     },
-                    aspectRatio: 1.0 
+                    aspectRatio: 1.0
                 };
 
                 if (!html5QrCode) {
