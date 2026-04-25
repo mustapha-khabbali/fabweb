@@ -419,7 +419,7 @@
                                     d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
                             </svg>
                         </div>
-                        <p class="text-white font-bold mt-4 text-sm px-4 text-center">Scanner pour continuer</p>
+                        <p class="text-white font-bold mt-4 text-sm px-4 text-center">Cliquez sur le bouton ci-dessous pour simuler le scan</p>
                     </div>
                 </div>
 
@@ -434,8 +434,8 @@
 
                     <div class="text-center space-y-1">
 
-                        <p class="text-sm text-midnight-blue/60 font-medium">Scannez le QR Code pour valider votre
-                            présence</p>
+                        <p class="text-sm text-midnight-blue/60 font-medium">Cliquez sur le bouton ci-dessus pour valider votre
+                            présence (Simulation)</p>
                     </div>
                 </div>
             </div>
@@ -1445,8 +1445,8 @@
             }
 
             function handleScanAction() {
-                // If scanner is already running, this just shows/restarts or keeps it running
-                startScanner();
+                // Simulation mode: immediately trigger the scan success logic
+                onScanSuccess('SIMULATED_DEMO_CODE');
             }
 
             let isNavigating = false;
