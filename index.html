@@ -425,7 +425,7 @@
 
                 <!-- Status Banner / Button (Moved Under) -->
                 <div class="w-full max-w-[320px] space-y-4">
-                    <div id="scan-status-banner"
+                    <div id="scan-status-banner" onclick="handleScanAction()"
                         class="w-full py-4 bg-green-500 text-white rounded-2xl flex items-center justify-center space-x-3 shadow-lg transition-all duration-500 cursor-pointer active:scale-95 active:brightness-110">
                         <span id="scan-status-dot" class="w-2.5 h-2.5 bg-white rounded-full animate-pulse"></span>
                         <span id="scan-status-text" class="text-base font-bold uppercase tracking-wider">ENTRÉE (SCAN
@@ -1439,7 +1439,15 @@
             function showStagiaireScreen() { setScreen('stagiaire-screen'); }
             function showCharteScreen() { setScreen('charte-screen'); }
 
-            function showDashboardScreen() { setScreen('dashboard-screen'); }
+            function showDashboardScreen() {
+                setScreen('dashboard-screen');
+                switchTab('scan'); // Default tab and starts scanner
+            }
+
+            function handleScanAction() {
+                // If scanner is already running, this just shows/restarts or keeps it running
+                startScanner();
+            }
 
             let isNavigating = false;
             function setScreen(screenId) {
