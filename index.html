@@ -1196,38 +1196,38 @@
                     class="scan-obj-btn w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl text-left text-sm font-bold text-midnight-blue hover:border-midnight-blue transition-all">Stage</button>
                 <button onclick="setScanObjective('Autre', this)"
                     class="scan-obj-btn w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl text-left text-sm font-bold text-midnight-blue hover:border-midnight-blue transition-all">Autre</button>
+            </div>
 
-                <!-- Conditional Project Branch -->
-                <div id="scan-project-branch" class="hidden space-y-4 pt-4 border-t border-gray-100 mt-4">
-                    <div class="space-y-1">
-                        <label class="text-[10px] font-bold text-midnight-blue/40 uppercase px-1">Nom de
-                            projet</label>
-                        <input id="scan-project-name" type="text" placeholder="Nom du projet"
-                            class="w-full p-4 bg-white border border-gray-200 rounded-2xl outline-none focus:border-midnight-blue text-sm font-bold transition-all">
-                    </div>
-                    <div class="space-y-1">
-                        <label class="text-[10px] font-bold text-midnight-blue/40 uppercase px-1">Accompagné
-                            par</label>
-                        <select id="scan-project-companion"
-                            class="w-full p-4 bg-white border border-gray-200 rounded-2xl outline-none focus:border-midnight-blue text-sm font-bold transition-all">
-                            <option value="Responsable FAB LAB">Responsable FAB LAB</option>
-                            <option value="Responsable Entrepreneuriat">Responsable Entrepreneuriat</option>
-                            <option value="Formateur">Formateur</option>
-                        </select>
-                    </div>
-                    <div class="space-y-1">
-                        <label class="text-[10px] font-bold text-midnight-blue/40 uppercase px-1">Phase de
-                            projet</label>
-                        <select id="scan-project-phase"
-                            class="w-full p-4 bg-white border border-gray-200 rounded-2xl outline-none focus:border-midnight-blue text-sm font-bold transition-all">
-                            <option value="Prototypage POC">Prototypage POC</option>
-                            <option value="Prototypage MVP">Prototypage MVP</option>
-                            <option value="Prototypage READY MARKET">Prototypage READY MARKET</option>
-                            <option value="Compétition">Compétition</option>
-                            <option value="Réunion / Feedback">Réunion / Feedback</option>
-                            <option value="Autre">Autre</option>
-                        </select>
-                    </div>
+            <!-- Conditional Project Branch (Moved Outside Scroll for Visibility) -->
+            <div id="scan-project-branch" class="hidden space-y-4 pt-4 border-t border-gray-100 mt-4">
+                <div class="space-y-1">
+                    <label class="text-[10px] font-bold text-midnight-blue/40 uppercase px-1">Nom de
+                        projet</label>
+                    <input id="scan-project-name" type="text" placeholder="Nom du projet"
+                        class="w-full p-4 bg-white border border-gray-200 rounded-2xl outline-none focus:border-midnight-blue text-sm font-bold transition-all">
+                </div>
+                <div class="space-y-1">
+                    <label class="text-[10px] font-bold text-midnight-blue/40 uppercase px-1">Accompagné
+                        par</label>
+                    <select id="scan-project-companion"
+                        class="w-full p-4 bg-white border border-gray-200 rounded-2xl outline-none focus:border-midnight-blue text-sm font-bold transition-all">
+                        <option value="Responsable FAB LAB">Responsable FAB LAB</option>
+                        <option value="Responsable Entrepreneuriat">Responsable Entrepreneuriat</option>
+                        <option value="Formateur">Formateur</option>
+                    </select>
+                </div>
+                <div class="space-y-1">
+                    <label class="text-[10px] font-bold text-midnight-blue/40 uppercase px-1">Phase de
+                        projet</label>
+                    <select id="scan-project-phase"
+                        class="w-full p-4 bg-white border border-gray-200 rounded-2xl outline-none focus:border-midnight-blue text-sm font-bold transition-all">
+                        <option value="Prototypage POC">Prototypage POC</option>
+                        <option value="Prototypage MVP">Prototypage MVP</option>
+                        <option value="Prototypage READY MARKET">Prototypage READY MARKET</option>
+                        <option value="Compétition">Compétition</option>
+                        <option value="Réunion / Feedback">Réunion / Feedback</option>
+                        <option value="Autre">Autre</option>
+                    </select>
                 </div>
             </div>
 
@@ -1643,48 +1643,47 @@
                     return;
                 }
 
-                try {
-                    const { addDoc, collection, serverTimestamp } = window.fbActions;
-                    const db = window.fbDb;
+                const logEntry = {
+                    userId: currentUser.uid || 'guest',
+                    userName: `${currentUser.prenom || ''} ${currentUser.nom || ''}`.trim(),
+                    type: 'in',
+                    objective: scanSelectedObjective,
+                    timestamp: new Date().toISOString()
+                };
 
-                    const logEntry = {
-                        userId: currentUser.uid || 'guest',
-                        userName: `${currentUser.firstName || ''} ${currentUser.lastName || ''}`.trim(),
-                        type: 'in',
-                        objective: scanSelectedObjective,
-                        timestamp: serverTimestamp()
-                    };
+                if (scanSelectedObjective === 'Projet en cours') {
+                    logEntry.project = document.getElementById('scan-project-name').value;
+                    logEntry.companion = document.getElementById('scan-project-companion').value;
+                    logEntry.phase = document.getElementById('scan-project-phase').value;
 
-                    if (scanSelectedObjective === 'Projet en cours') {
-                        logEntry.project = document.getElementById('scan-project-name').value;
-                        logEntry.companion = document.getElementById('scan-project-companion').value;
-                        logEntry.phase = document.getElementById('scan-project-phase').value;
-
-                        // Update user's active context
-                        currentUser.activeProject = logEntry.project;
-                        currentUser.activeCompanion = logEntry.companion;
-                        currentUser.activePhase = logEntry.phase;
+                    if (!logEntry.project) {
+                        alert("Veuillez entrer le nom du projet.");
+                        return;
                     }
 
-                    await addDoc(collection(db, "attendance"), logEntry);
-
-                    // UI Update
-                    isUserInLab = true;
-                    updateScanUI();
-
-                    const modal = document.getElementById('scan-objective-modal');
-                    const content = document.getElementById('scan-objective-content');
-                    modal.classList.add('opacity-0');
-                    content.classList.add('scale-95');
-
-                    setTimeout(() => {
-                        modal.classList.add('hidden');
-                        alert("ENTRÉE RÉUSSIE ! Bienvenue dans le Lab.");
-                        switchTab('my-project');
-                    }, 300);
-                } catch (error) {
-                    alert("Scan-in error: " + error.message);
+                    currentUser.activeProject = logEntry.project;
+                    currentUser.activeCompanion = logEntry.companion;
+                    currentUser.activePhase = logEntry.phase;
                 }
+
+                // Simulation: save to localStorage
+                let attendance = JSON.parse(localStorage.getItem('lab_attendance') || '[]');
+                attendance.unshift(logEntry);
+                localStorage.setItem('lab_attendance', JSON.stringify(attendance));
+
+                // UI Update
+                isUserInLab = true;
+                updateScanUI();
+
+                const modal = document.getElementById('scan-objective-modal');
+                const content = document.getElementById('scan-objective-content');
+                modal.classList.add('opacity-0');
+                content.classList.add('scale-95');
+
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                    alert("Entrée enregistrée avec succès !");
+                }, 300);
             }
 
             function updateScanUI() {
