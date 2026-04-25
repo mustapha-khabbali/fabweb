@@ -77,6 +77,29 @@
         ::-webkit-scrollbar {
             display: none !important;
         }
+
+        /* Rich Text Styling */
+        .rich-text-content ul {
+            list-style-type: disc;
+            padding-left: 1.5rem;
+            margin: 0.5rem 0;
+        }
+
+        .rich-text-content ol {
+            list-style-type: decimal;
+            padding-left: 1.5rem;
+            margin: 0.5rem 0;
+        }
+
+        .rich-text-content b,
+        .rich-text-content strong {
+            font-weight: 800;
+        }
+
+        .overflow-wrap-anywhere {
+            overflow-wrap: anywhere !important;
+            word-break: break-word !important;
+        }
     </style>
 </head>
 
@@ -263,7 +286,7 @@
 
             <!-- Charter Agreement -->
             <div class="flex items-start space-x-3 pt-4">
-                <input type="checkbox"
+                <input id="charte-checkbox" type="checkbox"
                     class="mt-1 w-5 h-5 flex-shrink-0 rounded border-gray-300 text-midnight-blue focus:ring-midnight-blue cursor-pointer">
                 <p class="text-[13px] text-midnight-blue leading-relaxed">
                     J'accepte de respecter <button onclick="showCharteScreen()"
@@ -273,7 +296,7 @@
 
             <!-- Reproduction Agreement -->
             <div class="flex items-start space-x-3 pt-2">
-                <input type="checkbox"
+                <input id="reproduction-checkbox" type="checkbox"
                     class="mt-1 w-5 h-5 flex-shrink-0 rounded border-gray-300 text-midnight-blue focus:ring-midnight-blue cursor-pointer">
                 <p class="text-[13px] text-midnight-blue leading-relaxed">
                     J'Autorise la reproduction sur tout support et par tous procédés et à diffuser, à titre gratuit et
@@ -283,10 +306,10 @@
         </div>
 
         <!-- Continue Button -->
-        <div class="pt- text-center">
+        <div class="pt-4 text-center">
             <button onclick="validateStagiaireForm()"
                 class="w-full max-w-[280px] py-4 bg-button-gradient text-white font-bold text-lg rounded-xl shadow-[0_8px_20px_-5px_rgba(26,102,255,0.4)] hover:shadow-[0_12px_25px_-5px_rgba(26,102,255,0.5)] hover:-translate-y-1 transition-all duration-300 active:scale-95">
-                Continue <span class="ml-2">→</span>
+                créer un compte <span class="ml-2">→</span>
             </button>
         </div>
 
@@ -294,75 +317,6 @@
             class="text-midnight-blue/60 font-medium hover:text-midnight-blue transition-colors text-center pb-10">
             &larr; Back to Selection
         </button>
-    </div>
-
-    <!-- Create Account Screen -->
-    <div id="create-account-screen" class="hidden flex flex-col w-full max-w-md mx-auto p-6 space-y-8 opacity-0">
-        <div class="text-left pt-8">
-            <h2 class="text-3xl font-bold text-midnight-blue leading-tight">C'est parti !</h2>
-        </div>
-
-        <div class="space-y-6">
-            <!-- Mot de passe -->
-            <div class="space-y-1.5">
-                <label class="text-sm font-semibold text-midnight-blue px-1">mot de passe</label>
-                <div class="relative">
-                    <input id="password-input" type="password" placeholder="mot de passe"
-                        class="w-full p-4 bg-white border border-gray-300 rounded-xl outline-none focus:border-midnight-blue focus:ring-1 focus:ring-midnight-blue transition-all pr-12">
-                    <button onclick="togglePasswordVisibility('password-input')"
-                        class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-midnight-blue transition-colors">
-                        <svg id="password-eye" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
-                            viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                        </svg>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Confirmation -->
-            <div class="space-y-1.5">
-                <label class="text-sm font-semibold text-midnight-blue px-1">réécrire votre mot de passe</label>
-                <div class="relative">
-                    <input id="confirm-password-input" type="password" placeholder="mot de passe"
-                        class="w-full p-4 bg-white border border-gray-300 rounded-xl outline-none focus:border-midnight-blue focus:ring-1 focus:ring-midnight-blue transition-all pr-12">
-                    <button onclick="togglePasswordVisibility('confirm-password-input')"
-                        class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-midnight-blue transition-colors">
-                        <svg id="confirm-password-eye" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
-                            viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                        </svg>
-                    </button>
-                </div>
-                <p id="password-error" class="hidden text-xs text-red-500 px-1 mt-1 font-medium"></p>
-            </div>
-        </div>
-
-        <div class="pt-8 text-center flex flex-col items-center space-y-6">
-            <button onclick="handleGoogleAuth('signup')"
-                class="w-full max-w-[300px] py-4 bg-white text-midnight-blue font-bold text-lg rounded-xl border border-gray-200 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 active:scale-95 flex items-center justify-center space-x-3">
-                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="w-6 h-6"
-                    alt="Google">
-                <span>Continuer avec Google</span>
-            </button>
-
-            <!-- Continue with Outlook Button -->
-            <button onclick="handleOutlookAuth('signup')"
-                class="w-full max-w-[300px] py-4 bg-white text-midnight-blue font-bold text-lg rounded-xl border border-gray-200 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 active:scale-95 flex items-center justify-center space-x-3">
-                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/microsoft.svg" class="w-6 h-6"
-                    alt="Microsoft">
-                <span>Continuer avec Outlook</span>
-            </button>
-            <button onclick="showStagiaireScreen()"
-                class="text-midnight-blue/60 font-medium hover:text-midnight-blue transition-colors">
-                &larr; Retour
-            </button>
-        </div>
     </div>
 
     <!-- Charte Screen -->
@@ -373,7 +327,7 @@
         </div>
 
         <div
-            class="space-y-6 overflow-y-auto max-h-[30vh] px-4 custom-scrollbar text-midnight-blue/90 leading-relaxed font-medium">
+            class="space-y-6 overflow-y-auto max-h-[60vh] px-4 custom-scrollbar text-midnight-blue/90 leading-relaxed font-medium">
             <section class="space-y-2">
                 <h3 class="text-lg font-bold text-midnight-blue">Qu'est-ce qu'un Fab Lab ?</h3>
                 <p>Les Fab Labs sont un réseau mondial de laboratoires locaux, qui dopent l'inventivité en donnant accès
@@ -440,39 +394,10 @@
         </div>
     </div>
 
-    <!-- Login Screen -->
-    <div id="login-screen" class="hidden flex flex-col w-full max-w-md mx-auto p-6 space-y-8 opacity-0">
-        <div class="text-left pt-8">
-            <h2 class="text-3xl font-bold text-midnight-blue leading-tight">Fab-Lab CMC BMK</h2>
-        </div>
 
-        <div class="space-y-6 py-4">
-            <button onclick="handleGoogleAuth('login')"
-                class="w-full py-4 bg-white text-midnight-blue font-bold text-lg rounded-[20px] border border-gray-200 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 active:scale-95 flex items-center justify-center space-x-3">
-                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="w-6 h-6"
-                    alt="Google">
-                <span>Continuer avec Google</span>
-            </button>
-
-            <!-- Continue with Outlook Button -->
-            <button onclick="handleOutlookAuth('login')"
-                class="w-full py-4 bg-white text-midnight-blue font-bold text-lg rounded-[20px] border border-gray-200 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 active:scale-95 flex items-center justify-center space-x-3">
-                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/microsoft.svg" class="w-6 h-6"
-                    alt="Microsoft">
-                <span>Continuer avec Outlook</span>
-            </button>
-        </div>
-
-        <div class="text-center">
-            <button onclick="showHomeScreen()"
-                class="text-midnight-blue/60 font-medium hover:text-midnight-blue transition-colors">
-                &larr; Retour
-            </button>
-        </div>
-    </div>
 
     <!-- Dashboard Screen -->
-    <div id="dashboard-screen" class="hidden flex-col w-full h-screen opacity-0 overflow-hidden">
+    <div id="dashboard-screen" class="hidden flex flex-col w-full h-screen opacity-0 overflow-hidden">
         <!-- Tab Content Area -->
         <div class="flex-1 overflow-y-auto custom-scrollbar relative">
 
@@ -538,54 +463,339 @@
             </div>
 
             <!-- My Project Tab -->
-            <div id="tab-my-project" class="tab-content hidden flex-col p-6 space-y-6 overflow-y-auto custom-scrollbar">
-                <h2 class="text-2xl font-bold text-midnight-blue px-2 pt-4">Mon Projet</h2>
-
-                <div class="bg-white/60 backdrop-blur-md rounded-3xl p-6 border border-white/50 shadow-sm space-y-0">
-                    <div class="space-y-4">
-                        <div class="space-y-1.5">
-                            <label class="text-xs font-bold text-midnight-blue/40 uppercase px-1">Titre du
-                                Projet</label>
-                            <input id="project-title" type="text" placeholder="Entrez le titre..."
-                                class="w-full p-4 bg-white border border-gray-100 rounded-2xl outline-none focus:border-midnight-blue text-midnight-blue font-bold shadow-sm transition-all">
+            <!-- My Project Tab -->
+            <div id="tab-my-project" class="tab-content hidden flex-col h-full">
+                <div id="project-main-container" class="flex flex-col h-full">
+                    <!-- Project Home View -->
+                    <div id="project-home-view" class="flex flex-col h-full">
+                        <!-- Sticky Header -->
+                        <div class="sticky top-0 z-20 bg-[#F8FAFC] pt-8 pb-4 px-6 shrink-0 border-b border-gray-100/50">
+                            <h2 class="text-2xl font-bold text-midnight-blue">Mon Projet</h2>
                         </div>
 
-                        <div class="space-y-1.5">
-                            <label class="text-xs font-bold text-midnight-blue/40 uppercase px-1">Description</label>
-                            <textarea id="project-description" placeholder="Parle-nous de votre projet..." rows="4"
-                                class="w-full p-4 bg-white border border-gray-100 rounded-2xl outline-none focus:border-midnight-blue text-midnight-blue font-medium shadow-sm transition-all custom-scrollbar"></textarea>
+                        <!-- Scrollable Grid Section -->
+                        <div class="flex-1 overflow-y-auto custom-scrollbar px-6 py-6">
+                            <div class="space-y-6">
+                                <h3 class="text-[10px] font-bold text-midnight-blue/30 uppercase tracking-[0.2em] px-1">
+                                    Mes Dossiers</h3>
+                                <div id="project-grid" class="grid grid-cols-3 gap-x-4 gap-y-6">
+                                    <!-- Projects will be injected here as squares -->
+                                    <div class="col-span-3 text-center py-10 text-midnight-blue/20 italic text-sm">Aucun
+                                        projet</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sticky Bottom Actions Bar -->
+                        <div
+                            class="sticky bottom-0 z-20 bg-white/90 backdrop-blur-xl p-6 shrink-0 border-t border-gray-100 flex items-center justify-between gap-3 shadow-[0_-10px_20px_rgba(0,0,0,0.02)]">
+                            <button onclick="showProjectCreateForm()"
+                                class="flex-1 flex flex-col items-center justify-center p-4 bg-white border border-gray-100 rounded-[28px] shadow-sm space-y-2 hover:bg-gray-50 transition-all active:scale-95">
+                                <div class="p-2 bg-blue-50 text-blue-600 rounded-xl">
+                                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                            d="M12 4v16m8-8H4" />
+                                    </svg>
+                                </div>
+                                <span class="text-[10px] font-bold text-midnight-blue uppercase tracking-tight">Créer
+                                    Projet</span>
+                            </button>
+                            <button onclick="showArticleHome()"
+                                class="flex-1 flex flex-col items-center justify-center p-4 bg-white border border-gray-100 rounded-[28px] shadow-sm space-y-2 hover:bg-gray-50 transition-all active:scale-95">
+                                <div class="p-2 bg-emerald-50 text-emerald-600 rounded-xl">
+                                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                            d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                                    </svg>
+                                </div>
+                                <span
+                                    class="text-[10px] font-bold text-midnight-blue uppercase tracking-tight text-center">Articles</span>
+                            </button>
+                            <button onclick="showRecycleBin()"
+                                class="flex-1 flex flex-col items-center justify-center p-4 bg-white border border-gray-100 rounded-[28px] shadow-sm space-y-2 hover:bg-gray-50 transition-all active:scale-95">
+                                <div class="p-2 bg-red-50 text-red-600 rounded-xl">
+                                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                    </svg>
+                                </div>
+                                <span
+                                    class="text-[10px] font-bold text-midnight-blue uppercase tracking-tight">Corbeille</span>
+                            </button>
                         </div>
                     </div>
 
-                    <!-- Project Images -->
-                    <div class="space-y-3">
-                        <div class="flex justify-between items-center px-1">
-                            <span class="text-xs font-bold text-midnight-blue/40 uppercase">Photos du Projet (Max
-                                2)</span>
-                            <label
-                                class="cursor-pointer bg-[#3B5FE6] text-white px-4 py-2 rounded-xl text-xs font-bold hover:brightness-110 shadow-md transition-all">
-                                <input type="file" class="hidden" accept="image/*" multiple
-                                    onchange="handleProjectImages(this)">
-                                Uploader
-                            </label>
+                    <!-- Project Creation Form -->
+                    <div id="project-create-view" class="hidden flex flex-col space-y-6">
+                        <div class="flex items-center space-x-4 pt-4">
+                            <button onclick="showProjectHome()"
+                                class="p-2 text-midnight-blue/40 hover:text-midnight-blue transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                        d="M15 19l-7-7 7-7" />
+                                </svg>
+                            </button>
+                            <h2 class="text-2xl font-bold text-midnight-blue">Nouveau Projet</h2>
                         </div>
-                        <div id="project-images-preview" class="grid grid-cols-2 gap-3 h-32">
-                            <!-- Previews will appear here -->
-                            <div
-                                class="border-2 border-dashed border-midnight-blue/10 bg-midnight-blue/5 rounded-2xl flex items-center justify-center text-midnight-blue/20">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                </svg>
+
+                        <div class="bg-white rounded-[32px] p-6 shadow-sm border border-gray-100 space-y-6">
+                            <div class="space-y-1.5">
+                                <label
+                                    class="text-[10px] font-bold text-midnight-blue/40 uppercase tracking-widest px-1">Titre
+                                    du Projet</label>
+                                <input id="new-project-title" type="text" placeholder="Entrez le titre..."
+                                    class="w-full p-4 bg-gray-50 border border-transparent rounded-2xl focus:bg-white focus:border-midnight-blue outline-none transition-all font-bold text-midnight-blue">
                             </div>
-                            <div
-                                class="border-2 border-dashed border-midnight-blue/10 bg-midnight-blue/5 rounded-2xl flex items-center justify-center text-midnight-blue/20">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            <div class="space-y-1.5">
+                                <div class="flex justify-between px-1">
+                                    <label
+                                        class="text-[10px] font-bold text-midnight-blue/40 uppercase tracking-widest">Description</label>
+                                    <span id="char-count"
+                                        class="text-[10px] font-bold text-midnight-blue/20">0/255</span>
+                                </div>
+                                <textarea id="new-project-desc" rows="5" maxlength="255"
+                                    placeholder="Décrivez votre idée, vos objectifs..."
+                                    oninput="document.getElementById('char-count').innerText = this.value.length + '/255'"
+                                    class="w-full p-4 bg-gray-50 border border-transparent rounded-2xl focus:bg-white focus:border-midnight-blue outline-none transition-all custom-scrollbar text-midnight-blue font-medium"></textarea>
+                            </div>
+                            <button onclick="createNewProject()"
+                                class="w-full py-5 bg-midnight-blue text-white font-bold text-lg rounded-2xl shadow-xl hover:brightness-110 active:scale-[0.98] transition-all">Créer
+                                le projet</button>
+                        </div>
+                    </div>
+
+                    <!-- Project Detail View (With Hamburger Menu) -->
+                    <div id="project-detail-view" class="hidden flex flex-col space-y-6 pb-24 relative">
+                        <!-- Header with Hamburger -->
+                        <div class="flex items-center justify-between pt-4 px-2">
+                            <button onclick="showProjectHome()"
+                                class="p-2 text-midnight-blue/40 hover:text-midnight-blue transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                        d="M15 19l-7-7 7-7" />
                                 </svg>
+                            </button>
+                            <h2 id="detail-project-title-header"
+                                class="text-xl font-bold text-midnight-blue truncate max-w-[150px]">Titre</h2>
+                            <button onclick="toggleProjectMenu()"
+                                class="p-2 text-midnight-blue hover:bg-gray-100 rounded-full transition-colors relative">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                        d="M4 6h16M4 12h16m-7 6h7" />
+                                </svg>
+                            </button>
+                        </div>
+
+                        <!-- Content Area -->
+                        <div id="project-detail-content" class="space-y-6">
+                            <!-- Injected Dynamically -->
+                        </div>
+
+                        <!-- Dropdown Menu -->
+                        <div id="project-hamburger-menu"
+                            class="hidden absolute top-16 right-4 w-48 bg-white border border-gray-100 rounded-2xl shadow-2xl z-50 overflow-hidden">
+                            <button onclick="showModifySection()"
+                                class="w-full p-4 text-left text-sm font-bold text-midnight-blue hover:bg-gray-50 border-b border-gray-50 flex items-center space-x-3">
+                                <svg class="h-4 w-4 text-blue-500" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                </svg>
+                                <span>Modifier</span>
+                            </button>
+                            <button onclick="showJournalForm()"
+                                class="w-full p-4 text-left text-sm font-bold text-midnight-blue hover:bg-gray-50 border-b border-gray-50 flex items-center space-x-3">
+                                <svg class="h-4 w-4 text-emerald-500" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 4v16m8-8H4" />
+                                </svg>
+                                <span>Ajouter Journal</span>
+                            </button>
+                            <button onclick="confirmRemoveProject()"
+                                class="w-full p-4 text-left text-sm font-bold text-red-500 hover:bg-red-50 flex items-center space-x-3">
+                                <svg class="h-4 w-4 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                </svg>
+                                <span>Supprimer</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Recycle Bin View -->
+                    <div id="recycle-bin-view" class="hidden flex flex-col h-full bg-[#F8FAFC]">
+                        <div class="pt-10 pb-6 px-6 shrink-0">
+                            <div class="flex items-center space-x-4">
+                                <button onclick="showProjectHome()"
+                                    class="p-2 -ml-2 text-midnight-blue/40 hover:text-midnight-blue transition-colors">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                            d="M15 19l-7-7 7-7" />
+                                    </svg>
+                                </button>
+                                <h2 class="text-2xl font-bold text-midnight-blue">Corbeille</h2>
+                            </div>
+                        </div>
+                        <div class="flex-1 overflow-y-auto custom-scrollbar px-6 pb-24">
+                            <div id="recycle-bin-list" class="space-y-4">
+                                <!-- Deleted projects here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Article Home View -->
+                    <div id="article-home-view" class="hidden flex flex-col h-full bg-[#F8FAFC]">
+                        <!-- Header -->
+                        <div class="pt-10 pb-6 px-6">
+                            <div class="flex items-center space-x-4">
+                                <button onclick="showProjectHome()"
+                                    class="p-2 -ml-2 text-midnight-blue/40 hover:text-midnight-blue transition-colors">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                            d="M15 19l-7-7 7-7" />
+                                    </svg>
+                                </button>
+                                <h2 class="text-2xl font-bold text-midnight-blue">Articles</h2>
+                            </div>
+                        </div>
+
+                        <!-- Grid (Now Vertical List) -->
+                        <div class="flex-1 overflow-y-auto px-6 py-4">
+                            <div class="flex flex-col gap-6">
+                                <button onclick="showCreateArticleForm()"
+                                    class="w-full aspect-[16/9] bg-white border border-gray-100 rounded-[40px] shadow-sm flex flex-col items-center justify-center space-y-4 hover:shadow-md transition-all active:scale-95 group">
+                                    <div
+                                        class="p-6 bg-blue-50 text-blue-500 rounded-[32px] group-hover:scale-110 transition-transform">
+                                        <svg class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 4v16m8-8H4" />
+                                        </svg>
+                                    </div>
+                                    <div class="text-center">
+                                        <span
+                                            class="block text-sm font-black text-midnight-blue uppercase tracking-[0.15em]">Nouvelle
+                                            demande</span>
+                                        <span
+                                            class="text-[10px] text-midnight-blue/40 font-bold uppercase tracking-widest mt-1">Soumettre
+                                            une requête</span>
+                                    </div>
+                                </button>
+
+                                <button onclick="showPendingArticles()"
+                                    class="w-full aspect-[16/9] bg-white border border-gray-100 rounded-[40px] shadow-sm flex flex-col items-center justify-center space-y-4 hover:shadow-md transition-all active:scale-95 group">
+                                    <div
+                                        class="p-6 bg-orange-50 text-orange-500 rounded-[32px] group-hover:scale-110 transition-transform">
+                                        <svg class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                    </div>
+                                    <div class="text-center">
+                                        <span
+                                            class="block text-sm font-black text-midnight-blue uppercase tracking-[0.15em]">Demandes
+                                            en cours</span>
+                                        <span
+                                            class="text-[10px] text-midnight-blue/40 font-bold uppercase tracking-widest mt-1">Suivre
+                                            mes articles</span>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Article Pending View -->
+                    <div id="article-pending-view" class="hidden flex flex-col h-full bg-[#F8FAFC]">
+                        <div class="pt-10 pb-6 px-6 shrink-0">
+                            <div class="flex items-center space-x-4">
+                                <button onclick="showArticleHome()"
+                                    class="p-2 -ml-2 text-midnight-blue/40 hover:text-midnight-blue transition-colors">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                            d="M15 19l-7-7 7-7" />
+                                    </svg>
+                                </button>
+                                <h2 class="text-2xl font-bold text-midnight-blue">Mes Demandes</h2>
+                            </div>
+                        </div>
+                        <div class="flex-1 overflow-y-auto custom-scrollbar px-6 pb-24">
+                            <div id="pending-articles-list" class="space-y-4">
+                                <!-- Injected requests -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Article Create View -->
+                    <div id="article-create-view" class="hidden flex flex-col h-full bg-[#F8FAFC]">
+                        <div class="pt-10 pb-6 px-6 shrink-0">
+                            <div class="flex items-center space-x-4">
+                                <button onclick="showArticleHome()"
+                                    class="p-2 -ml-2 text-midnight-blue/40 hover:text-midnight-blue transition-colors">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                            d="M15 19l-7-7 7-7" />
+                                    </svg>
+                                </button>
+                                <h2 class="text-2xl font-bold text-midnight-blue">Nouvelle Demande</h2>
+                            </div>
+                        </div>
+
+                        <div class="flex-1 overflow-y-auto custom-scrollbar px-6 pb-24">
+                            <div class="bg-white rounded-[40px] p-8 shadow-sm border border-gray-50 space-y-8">
+                                <div class="space-y-6">
+                                    <div class="space-y-2">
+                                        <label
+                                            class="text-[10px] font-bold text-midnight-blue/40 uppercase tracking-widest px-1">Titre
+                                            de l'article</label>
+                                        <input id="art-title" type="text" placeholder="Ex: Filament PLA 1.75mm"
+                                            class="w-full p-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:border-midnight-blue outline-none transition-all font-bold text-midnight-blue">
+                                    </div>
+                                    <div class="space-y-2">
+                                        <label
+                                            class="text-[10px] font-bold text-midnight-blue/40 uppercase tracking-widest px-1">Description
+                                            / Quantité</label>
+                                        <textarea id="art-desc" rows="4" placeholder="Précisez votre besoin..."
+                                            class="w-full p-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:border-midnight-blue outline-none transition-all font-medium text-midnight-blue resize-none"></textarea>
+                                    </div>
+                                    <div class="space-y-2">
+                                        <label
+                                            class="text-[10px] font-bold text-midnight-blue/40 uppercase tracking-widest px-1">Lien
+                                            URL (Optionnel)</label>
+                                        <input id="art-url" type="url" placeholder="https://..."
+                                            class="w-full p-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:border-midnight-blue outline-none transition-all font-medium text-midnight-blue">
+                                    </div>
+                                    <div class="space-y-4">
+                                        <div class="flex justify-between items-center px-1">
+                                            <span
+                                                class="text-[10px] font-bold text-midnight-blue/40 uppercase tracking-widest">Image
+                                                de l'article</span>
+                                            <label
+                                                class="cursor-pointer text-[#3B5FE6] text-[10px] font-bold uppercase hover:underline">
+                                                <input id="art-image-input" type="file" class="hidden" accept="image/*"
+                                                    onchange="previewArticleImage(this)">
+                                                Sélectionner
+                                            </label>
+                                        </div>
+                                        <div id="art-image-preview"
+                                            class="w-full h-40 bg-gray-50 rounded-2xl overflow-hidden border-2 border-dashed border-gray-200 flex items-center justify-center group hover:bg-gray-100 transition-colors">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-gray-300"
+                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button onclick="submitArticleRequest()"
+                                    class="w-full py-5 bg-midnight-blue text-white font-bold text-lg rounded-[28px] shadow-xl shadow-midnight-blue/20 hover:brightness-110 active:scale-[0.98] transition-all">Envoyer
+                                    la demande</button>
                             </div>
                         </div>
                     </div>
@@ -618,10 +828,17 @@
                             </svg>
                         </label>
                     </div>
-                    <div class="text-center space-y-1">
-                        <h3 id="profile-display-name" class="text-2xl font-bold text-midnight-blue">Stagiaire OFPPT</h3>
+                    <div class="text-center space-y-2">
+                        <div id="view-name" class="text-2xl font-bold text-midnight-blue">Stagiaire OFPPT</div>
+                        <div id="edit-name-group" class="hidden flex space-x-2 justify-center">
+                            <input id="edit-prenom" placeholder="Prénom"
+                                class="w-1/2 text-sm font-bold text-midnight-blue bg-blue-50/50 rounded-xl outline-none px-4 py-2 border-2 border-transparent focus:border-[#3B5FE6]">
+                            <input id="edit-nom" placeholder="Nom"
+                                class="w-1/2 text-sm font-bold text-midnight-blue bg-blue-50/50 rounded-xl outline-none px-4 py-2 border-2 border-transparent focus:border-[#3B5FE6]">
+                        </div>
                         <p id="profile-level-label"
-                            class="text-midnight-blue/40 font-bold text-sm uppercase tracking-widest">Stagiaire</p>
+                            class="text-midnight-blue/40 font-bold text-sm uppercase tracking-widest">Stagiaire
+                        </p>
                     </div>
                 </div>
 
@@ -629,7 +846,8 @@
                 <div class="space-y-8 pt-4">
                     <!-- BIO Section -->
                     <div class="space-y-3">
-                        <h4 class="text-xs font-bold text-midnight-blue/40 uppercase tracking-widest px-1">À propos</h4>
+                        <h4 class="text-xs font-bold text-midnight-blue/40 uppercase tracking-widest px-1">À
+                            propos</h4>
                         <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-50 group">
                             <div class="flex items-center space-x-3 mb-2">
                                 <div class="text-[#3B5FE6]"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5"
@@ -639,7 +857,8 @@
                                     </svg></div>
                                 <span class="text-[10px] font-bold text-midnight-blue/40 uppercase">Bio</span>
                             </div>
-                            <div id="view-bio" class="text-sm font-medium text-midnight-blue leading-relaxed">Passionné
+                            <div id="view-bio" class="text-sm font-medium text-midnight-blue leading-relaxed">
+                                Passionné
                                 par le Fab Lab et l'innovation technologique.</div>
                             <textarea id="edit-bio"
                                 class="hidden w-full text-sm font-medium text-midnight-blue bg-blue-50/50 rounded-xl outline-none p-3 border-2 border-[#3B5FE6]/20 focus:border-[#3B5FE6] transition-all"
@@ -649,7 +868,8 @@
 
                     <!-- ACADEMIC Section -->
                     <div class="space-y-3">
-                        <h4 class="text-xs font-bold text-midnight-blue/40 uppercase tracking-widest px-1">Parcours
+                        <h4 class="text-xs font-bold text-midnight-blue/40 uppercase tracking-widest px-1">
+                            Parcours
                             Académique</h4>
                         <div class="grid grid-cols-1 gap-3">
                             <!-- POLE Card -->
@@ -664,8 +884,6 @@
                                     <span class="text-[10px] font-bold text-midnight-blue/40 uppercase">Pôle</span>
                                 </div>
                                 <div id="view-pole" class="text-sm font-bold text-midnight-blue">-</div>
-                                <input id="edit-pole"
-                                    class="hidden text-right w-1/2 text-sm font-bold text-midnight-blue bg-blue-50/50 rounded-lg outline-none px-2 py-1">
                             </div>
 
                             <!-- NIVEAU Card -->
@@ -680,8 +898,6 @@
                                     <span class="text-[10px] font-bold text-midnight-blue/40 uppercase">Niveau</span>
                                 </div>
                                 <div id="view-niveau" class="text-sm font-bold text-midnight-blue">-</div>
-                                <input id="edit-niveau"
-                                    class="hidden text-right w-1/2 text-sm font-bold text-midnight-blue bg-blue-50/50 rounded-lg outline-none px-2 py-1">
                             </div>
 
                             <!-- FILIERE Card -->
@@ -697,23 +913,19 @@
                                 </div>
                                 <div id="view-filiere" class="text-sm font-bold text-midnight-blue leading-tight">-
                                 </div>
-                                <input id="edit-filiere"
-                                    class="hidden w-full mt-1 text-sm font-bold text-midnight-blue bg-blue-50/50 rounded-lg outline-none px-2 py-1">
                             </div>
 
                             <!-- ANNEE & OPTION Dynamic -->
                             <div class="grid grid-cols-2 gap-3">
                                 <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-50">
                                     <p class="text-[10px] font-bold text-midnight-blue/40 uppercase">Année</p>
-                                    <div id="view-year" class="text-sm font-bold text-midnight-blue mt-0.5">-</div>
-                                    <input id="edit-year"
-                                        class="hidden w-full text-sm font-bold text-midnight-blue bg-blue-50/50 rounded-lg outline-none px-2 py-0.5 mt-1">
+                                    <div id="view-year" class="text-sm font-bold text-midnight-blue mt-0.5">-
+                                    </div>
                                 </div>
                                 <div id="card-option" class="bg-white p-4 rounded-2xl shadow-sm border border-gray-50">
                                     <p class="text-[10px] font-bold text-midnight-blue/40 uppercase">Option</p>
-                                    <div id="view-option" class="text-sm font-bold text-midnight-blue mt-0.5">-</div>
-                                    <input id="edit-option"
-                                        class="hidden w-full text-sm font-bold text-midnight-blue bg-blue-50/50 rounded-lg outline-none px-2 py-0.5 mt-1">
+                                    <div id="view-option" class="text-sm font-bold text-midnight-blue mt-0.5">-
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -721,7 +933,8 @@
 
                     <!-- IDENTITY Section -->
                     <div class="space-y-3">
-                        <h4 class="text-xs font-bold text-midnight-blue/40 uppercase tracking-widest px-1">Identifiants
+                        <h4 class="text-xs font-bold text-midnight-blue/40 uppercase tracking-widest px-1">
+                            Identifiants
                         </h4>
                         <div
                             class="bg-white p-5 rounded-3xl shadow-sm border border-gray-100 flex items-center justify-between">
@@ -730,15 +943,15 @@
                                     <span class="text-[10px] font-bold text-midnight-blue/40 uppercase">CIN</span>
                                     <div id="view-cin" class="text-sm font-bold text-midnight-blue uppercase">AB123456
                                     </div>
-                                    <input id="edit-cin"
-                                        class="hidden text-right w-1/3 text-sm font-bold text-midnight-blue bg-blue-50/50 rounded-lg outline-none px-2">
+                                    <input id="edit-cin" placeholder="AB123456"
+                                        class="hidden text-right w-1/2 text-sm font-bold text-midnight-blue bg-blue-50/50 rounded-lg outline-none px-2 py-1 border border-transparent focus:border-midnight-blue">
                                 </div>
                                 <div class="h-[1px] bg-gray-50 w-full"></div>
                                 <div class="flex items-center justify-between">
                                     <span class="text-[10px] font-bold text-midnight-blue/40 uppercase">CEF</span>
-                                    <div id="view-cef" class="text-sm font-bold text-midnight-blue">12345678</div>
-                                    <input id="edit-cef"
-                                        class="hidden text-right w-1/3 text-sm font-bold text-midnight-blue bg-blue-50/50 rounded-lg outline-none px-2">
+                                    <div id="view-cef" class="text-sm font-bold text-midnight-blue">2006062400264</div>
+                                    <input id="edit-cef" type="number" placeholder="2006062400264"
+                                        class="hidden text-right w-1/2 text-sm font-bold text-midnight-blue bg-blue-50/50 rounded-lg outline-none px-2 py-1 border border-transparent focus:border-midnight-blue">
                                 </div>
                             </div>
                         </div>
@@ -746,7 +959,8 @@
 
                     <!-- CONTACT Section -->
                     <div class="space-y-3">
-                        <h4 class="text-xs font-bold text-midnight-blue/40 uppercase tracking-widest px-1">Contact</h4>
+                        <h4 class="text-xs font-bold text-midnight-blue/40 uppercase tracking-widest px-1">
+                            Contact</h4>
                         <div class="bg-white p-1 rounded-3xl shadow-sm border border-gray-100 divide-y divide-gray-50">
                             <!-- Email -->
                             <div class="p-4 flex items-center space-x-4">
@@ -778,7 +992,8 @@
                                     </svg>
                                 </div>
                                 <div class="flex-1">
-                                    <p class="text-[10px] font-bold text-midnight-blue/40 uppercase">Téléphone</p>
+                                    <p class="text-[10px] font-bold text-midnight-blue/40 uppercase">Téléphone
+                                    </p>
                                     <div id="view-tel" class="text-sm font-bold text-midnight-blue leading-tight">
                                         0612345678</div>
                                     <input id="edit-tel"
@@ -872,7 +1087,8 @@
             id="feedback-content">
             <div class="text-center space-y-2">
                 <h3 class="text-2xl font-bold text-midnight-blue">Comment était votre séance ?</h3>
-                <p class="text-sm text-midnight-blue/60 font-medium leading-relaxed">Merci de noter votre expérience au
+                <p class="text-sm text-midnight-blue/60 font-medium leading-relaxed">Merci de noter votre
+                    expérience au
                     Fab Lab aujourd'hui !</p>
             </div>
 
@@ -958,7 +1174,8 @@
             id="scan-objective-content">
             <div class="text-center space-y-2">
                 <h3 class="text-2xl font-bold text-midnight-blue">Objectif de la visite</h3>
-                <p class="text-sm text-midnight-blue/60 font-medium leading-relaxed">Pourquoi visitez-vous le Lab
+                <p class="text-sm text-midnight-blue/60 font-medium leading-relaxed">Pourquoi visitez-vous le
+                    Lab
                     aujourd'hui ?</p>
             </div>
 
@@ -983,12 +1200,14 @@
                 <!-- Conditional Project Branch -->
                 <div id="scan-project-branch" class="hidden space-y-4 pt-4 border-t border-gray-100 mt-4">
                     <div class="space-y-1">
-                        <label class="text-[10px] font-bold text-midnight-blue/40 uppercase px-1">Nom de projet</label>
+                        <label class="text-[10px] font-bold text-midnight-blue/40 uppercase px-1">Nom de
+                            projet</label>
                         <input id="scan-project-name" type="text" placeholder="Nom du projet"
                             class="w-full p-4 bg-white border border-gray-200 rounded-2xl outline-none focus:border-midnight-blue text-sm font-bold transition-all">
                     </div>
                     <div class="space-y-1">
-                        <label class="text-[10px] font-bold text-midnight-blue/40 uppercase px-1">Accompagné par</label>
+                        <label class="text-[10px] font-bold text-midnight-blue/40 uppercase px-1">Accompagné
+                            par</label>
                         <select id="scan-project-companion"
                             class="w-full p-4 bg-white border border-gray-200 rounded-2xl outline-none focus:border-midnight-blue text-sm font-bold transition-all">
                             <option value="Responsable FAB LAB">Responsable FAB LAB</option>
@@ -1151,9 +1370,9 @@
                 const container = document.getElementById('option-container');
                 const select = document.getElementById('option-select');
 
-                if (year === "2ème année" && pole && niveau && filiereName) {
+                if (year === "2ème année" && pole && niveau && filiereName && filiereName !== "N") {
                     const filiere = trainingData[pole][niveau].find(f => f.name === filiereName);
-                    if (filiere && filiere.options && filiere.options.length > 0) {
+                    if (filiere && filiere.options && filiere.options.length > 0 && !filiere.options.includes("N")) {
                         select.innerHTML = '<option value="" disabled selected hidden>Sélectionner une option</option>';
                         filiere.options.forEach(o => {
                             const opt = document.createElement('option');
@@ -1181,9 +1400,38 @@
                 const tel = document.getElementById('tel-input').value;
                 const email = document.getElementById('email-input').value;
 
-                currentUser = { prenom, nom, cin, pole, niveau, filiere, year, option, tel, email };
+                const charteAccepted = document.getElementById('charte-checkbox').checked;
+                const reproductionAccepted = document.getElementById('reproduction-checkbox').checked;
+
+                if (!prenom || !nom || !cin || !pole || !niveau || !filiere || !year || !tel || !email) {
+                    alert("Veuillez remplir tous les champs obligatoires.");
+                    return;
+                }
+
+                // Email validation
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    alert("Veuillez entrer une adresse email valide.");
+                    return;
+                }
+
+                // Phone validation
+                const telRegex = /^(06|07)\d{8}$/;
+                if (!telRegex.test(tel)) {
+                    alert("Le numéro de téléphone doit commencer par 06 ou 07 et contenir 10 chiffres au total.");
+                    return;
+                }
+
+                if (!charteAccepted || !reproductionAccepted) {
+                    alert("Veuillez accepter la charte et l'autorisation de reproduction pour continuer.");
+                    return;
+                }
+
+                currentUser = { prenom, nom, cin, pole, niveau, filiere, year, option, tel, email, role: 'stagiaire' };
                 localStorage.setItem('temp_registration_data', JSON.stringify(currentUser));
-                showCreateAccountScreen();
+
+                alert("Account is created!");
+                showDashboardScreen();
             }
 
             function showRoleSelection() { setScreen('role-selection-screen'); }
@@ -1191,7 +1439,6 @@
             function showStagiaireScreen() { setScreen('stagiaire-screen'); }
             function showCharteScreen() { setScreen('charte-screen'); }
 
-            function showLoginScreen() { setScreen('login-screen'); }
             function showDashboardScreen() { setScreen('dashboard-screen'); }
 
             let isNavigating = false;
@@ -1202,7 +1449,7 @@
                     return;
                 }
 
-                const screens = ['home-screen', 'role-selection-screen', 'stagiaire-screen', 'charte-screen', 'login-screen', 'dashboard-screen'];
+                const screens = ['home-screen', 'role-selection-screen', 'stagiaire-screen', 'charte-screen', 'dashboard-screen'];
                 screens.forEach(id => {
                     const el = document.getElementById(id);
                     if (!el) return;
@@ -1261,6 +1508,8 @@
                         currentUser = {
                             prenom: "Test",
                             nom: "User",
+                            cin: "AB123456",
+                            cef: "2006062400264",
                             role: "stagiaire",
                             niveau: "Technicien Spécialisé",
                             filiere: "Développement Digital"
@@ -1294,6 +1543,7 @@
                 }
                 if (tabId === 'my-project') {
                     document.getElementById('tab-' + tabId).classList.add('flex');
+                    showProjectHome();
                 }
                 if (tabId === 'profile') {
                     document.getElementById('tab-' + tabId).classList.add('flex');
@@ -1505,8 +1755,11 @@
                 if (!currentUser.prenom) return;
 
                 // Header: Name + Level
-                document.getElementById('profile-display-name').innerText = `${currentUser.prenom} ${currentUser.nom}`;
+                document.getElementById('view-name').innerText = `${currentUser.prenom} ${currentUser.nom}`;
                 document.getElementById('profile-level-label').innerText = currentUser.niveau || 'Stagiaire';
+
+                document.getElementById('edit-prenom').value = currentUser.prenom || '';
+                document.getElementById('edit-nom').value = currentUser.nom || '';
 
                 // Bio
                 document.getElementById('view-bio').innerText = currentUser.bio || "Passionné par le Fab Lab et l'innovation technologique.";
@@ -1518,12 +1771,6 @@
                 document.getElementById('view-filiere').innerText = currentUser.filiere || '-';
                 document.getElementById('view-year').innerText = currentUser.year || '-';
                 document.getElementById('view-option').innerText = currentUser.option && currentUser.option !== 'N' ? currentUser.option : 'Non applicable';
-
-                document.getElementById('edit-pole').value = currentUser.pole || '';
-                document.getElementById('edit-niveau').value = currentUser.niveau || '';
-                document.getElementById('edit-filiere').value = currentUser.filiere || '';
-                document.getElementById('edit-year').value = currentUser.year || '';
-                document.getElementById('edit-option').value = currentUser.option || '';
 
                 document.getElementById('card-option').classList.toggle('hidden', !currentUser.option || currentUser.option === 'N');
 
@@ -1545,8 +1792,8 @@
             function toggleProfileEdit() {
                 isProfileEditing = !isProfileEditing;
 
-                const viewIds = ['view-bio', 'view-pole', 'view-niveau', 'view-filiere', 'view-year', 'view-option', 'view-cin', 'view-cef', 'view-email', 'view-tel'];
-                const editIds = ['edit-bio', 'edit-pole', 'edit-niveau', 'edit-filiere', 'edit-year', 'edit-option', 'edit-cin', 'edit-cef', 'edit-email', 'edit-tel'];
+                const viewIds = ['view-name', 'view-bio', 'view-cin', 'view-cef', 'view-email', 'view-tel'];
+                const editIds = ['edit-name-group', 'edit-bio', 'edit-cin', 'edit-cef', 'edit-email', 'edit-tel'];
 
                 viewIds.forEach(id => {
                     const el = document.getElementById(id);
@@ -1562,58 +1809,521 @@
             }
 
             function saveProfileChanges() {
+                const email = document.getElementById('edit-email').value;
+                const tel = document.getElementById('edit-tel').value;
+
+                // Email validation
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    alert("Veuillez entrer une adresse email valide.");
+                    return;
+                }
+
+                // Phone validation
+                const telRegex = /^(06|07)\d{8}$/;
+                if (!telRegex.test(tel)) {
+                    alert("Le numéro de téléphone doit commencer par 06 ou 07 et contenir 10 chiffres au total.");
+                    return;
+                }
+
+                currentUser.prenom = document.getElementById('edit-prenom').value;
+                currentUser.nom = document.getElementById('edit-nom').value;
                 currentUser.bio = document.getElementById('edit-bio').value;
-                currentUser.pole = document.getElementById('edit-pole').value;
-                currentUser.niveau = document.getElementById('edit-niveau').value;
-                currentUser.filiere = document.getElementById('edit-filiere').value;
-                currentUser.year = document.getElementById('edit-year').value;
-                currentUser.option = document.getElementById('edit-option').value;
                 currentUser.cin = document.getElementById('edit-cin').value;
                 currentUser.cef = document.getElementById('edit-cef').value;
-                currentUser.email = document.getElementById('edit-email').value;
-                currentUser.tel = document.getElementById('edit-tel').value;
+                currentUser.email = email;
+                currentUser.tel = tel;
+
+                // Save to local storage for persistence in simulation
+                localStorage.setItem('user_profile_data', JSON.stringify(currentUser));
 
                 updateProfileView();
                 toggleProfileEdit();
                 alert("Profil mis à jour avec succès !");
             }
 
-            // --- AUTH INITIALIZATION ---
+            // --- PROJECT MANAGEMENT (MOBILE GRID VERSION) ---
+            let userProjects = JSON.parse(localStorage.getItem('user_projects') || '[]');
+            let recycleBin = JSON.parse(localStorage.getItem('recycle_bin') || '[]');
+            let currentProjectId = null;
+
+            function showProjectHome() {
+                document.getElementById('project-home-view').classList.remove('hidden');
+                document.getElementById('project-create-view').classList.add('hidden');
+                document.getElementById('project-detail-view').classList.add('hidden');
+                document.getElementById('recycle-bin-view').classList.add('hidden');
+                document.getElementById('article-home-view').classList.add('hidden');
+                document.getElementById('article-pending-view').classList.add('hidden');
+                document.getElementById('article-create-view').classList.add('hidden');
+                renderProjectGrid();
+            }
+
+            function showProjectCreateForm() {
+                document.getElementById('project-home-view').classList.add('hidden');
+                document.getElementById('project-create-view').classList.remove('hidden');
+            }
+
+            function showRecycleBin() {
+                document.getElementById('project-home-view').classList.add('hidden');
+                document.getElementById('recycle-bin-view').classList.remove('hidden');
+                renderRecycleBin();
+            }
+
+            function createNewProject() {
+                const title = document.getElementById('new-project-title').value;
+                const desc = document.getElementById('new-project-desc').value;
+
+                if (!title || !desc) {
+                    alert("Titre et description requis.");
+                    return;
+                }
+
+                const newProject = {
+                    id: Date.now(),
+                    title: title,
+                    description: desc,
+                    image: null,
+                    journals: [],
+                    color: '#3B5FE6'
+                };
+
+                userProjects.push(newProject);
+                localStorage.setItem('user_projects', JSON.stringify(userProjects));
+
+                document.getElementById('new-project-title').value = '';
+                document.getElementById('new-project-desc').value = '';
+                showProjectHome();
+            }
+
+            function renderProjectGrid() {
+                const grid = document.getElementById('project-grid');
+                if (userProjects.length === 0) {
+                    grid.innerHTML = '<div class="col-span-3 text-center py-10 text-midnight-blue/20 italic text-sm">Aucun projet</div>';
+                    return;
+                }
+
+                grid.innerHTML = userProjects.map(p => `
+                    <button onclick="showProjectDetail(${p.id})" class="flex flex-col items-center space-y-2 group transition-all active:scale-95">
+                        <div class="w-full aspect-square flex items-center justify-center group-hover:scale-105 transition-transform duration-300 relative">
+                            <!-- Folder Shape SVG -->
+                            <svg class="w-full h-full text-[#FFCD29] drop-shadow-md" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M10 4H4C2.89 4 2.01 4.89 2.01 6L2 18C2 19.11 2.89 20 4 20H20C21.11 20 22 19.11 22 18V8C22 6.89 21.11 6 20 6H12L10 4Z" />
+                            </svg>
+                            <!-- Folder Detail (Optional) -->
+                            <div class="absolute inset-0 flex items-center justify-center pt-2">
+                                <svg class="h-6 w-6 text-white/40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                </svg>
+                            </div>
+                        </div>
+                        <span class="text-[11px] font-bold text-midnight-blue/80 text-center truncate w-full px-1 capitalize">${p.title}</span>
+                    </button>
+                `).join('');
+            }
+
+            function showProjectDetail(id) {
+                currentProjectId = id;
+                const project = userProjects.find(p => p.id === id);
+                if (!project) return;
+
+                document.getElementById('detail-project-title-header').innerText = project.title;
+                const detailView = document.getElementById('project-detail-view');
+                document.getElementById('project-home-view').classList.add('hidden');
+                detailView.classList.remove('hidden');
+
+                const contentArea = document.getElementById('project-detail-content');
+                contentArea.innerHTML = `
+                    <!-- Project Info -->
+                    <div class="bg-white rounded-[32px] p-6 shadow-sm border border-gray-100 space-y-4 mx-2">
+                        <div class="space-y-1">
+                            <h3 class="text-[10px] font-bold text-midnight-blue/30 uppercase tracking-[0.2em]">Description</h3>
+                            <p class="text-sm text-midnight-blue/80 font-medium leading-relaxed whitespace-pre-wrap break-words overflow-wrap-anywhere">${project.description}</p>
+                        </div>
+                        ${project.image ? `<div class="w-full h-48 rounded-2xl overflow-hidden shadow-sm mt-2"><img src="${project.image}" class="w-full h-full object-cover"></div>` : ''}
+                    </div>
+
+                    <!-- Journal Section -->
+                    <div class="space-y-4 px-2">
+                        <h3 class="text-[10px] font-bold text-midnight-blue/30 uppercase tracking-[0.2em] px-2">Journaux</h3>
+                        <div class="space-y-4">
+                            ${renderJournalEntries(project.journals)}
+                        </div>
+                    </div>
+
+                    <!-- Journal Modal Overlay -->
+                    <div id="journal-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-6 bg-midnight-blue/60 backdrop-blur-sm">
+                        <div class="bg-white w-full max-w-lg rounded-[32px] p-8 shadow-2xl flex flex-col h-[85vh] overflow-hidden">
+                            <div class="flex items-center justify-between mb-6">
+                                <h3 class="text-2xl font-bold text-midnight-blue">Nouveau Journal</h3>
+                                <button onclick="closeJournalModal()" class="p-2 text-gray-400 hover:text-midnight-blue transition-colors">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                                </button>
+                            </div>
+                            
+                            <div class="flex-1 overflow-y-auto space-y-6 px-1 custom-scrollbar">
+                                <div class="space-y-1.5">
+                                    <label class="text-[10px] font-bold text-midnight-blue/40 uppercase tracking-widest px-1">Date</label>
+                                    <input id="journal-date" type="date" class="w-full p-4 bg-gray-50 border border-transparent rounded-2xl focus:bg-white focus:border-midnight-blue outline-none transition-all font-bold text-midnight-blue">
+                                </div>
+
+                                <div class="space-y-1.5">
+                                    <label class="text-[10px] font-bold text-midnight-blue/40 uppercase tracking-widest px-1">Compte-rendu</label>
+                                    <div class="flex items-center bg-gray-50 border-b border-gray-100 rounded-t-2xl p-2 space-x-1">
+                                        <button onclick="formatJournalDoc('bold')" class="p-2 hover:bg-gray-200 rounded-lg text-midnight-blue"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M6 4a1 1 0 011-1h6a4 4 0 110 8H7a1 1 0 01-1-1V4zm3 3h4a1 1 0 110 2H9V7z" clip-rule="evenodd" /><path d="M9 11h3a1 1 0 110 2H9v-2z" /></svg></button>
+                                        <button onclick="formatJournalDoc('italic')" class="p-2 hover:bg-gray-200 rounded-lg text-midnight-blue italic font-serif text-xs">I</button>
+                                        <button onclick="formatJournalDoc('underline')" class="p-2 hover:bg-gray-200 rounded-lg text-midnight-blue underline text-xs">U</button>
+                                        <button onclick="formatJournalDoc('insertUnorderedList')" class="p-2 hover:bg-gray-200 rounded-lg text-midnight-blue"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg></button>
+                                    </div>
+                                    <div id="journal-text-editor" contenteditable="true" class="w-full min-h-[150px] p-4 bg-gray-50 rounded-b-2xl focus:bg-white focus:border-midnight-blue border border-transparent outline-none transition-all text-midnight-blue text-sm font-medium custom-scrollbar overflow-y-auto"></div>
+                                </div>
+
+                                <div class="space-y-3">
+                                    <div class="flex justify-between items-center px-1">
+                                        <span class="text-[10px] font-bold text-midnight-blue/40 uppercase tracking-widest">Photo</span>
+                                        <label class="cursor-pointer text-[#3B5FE6] text-[10px] font-bold uppercase hover:underline">
+                                            <input id="journal-image-input" type="file" class="hidden" accept="image/*" onchange="previewJournalImage(this)">
+                                            Sélectionner
+                                        </label>
+                                    </div>
+                                    <div id="journal-image-preview" class="w-full h-32 bg-gray-50 rounded-2xl overflow-hidden border-2 border-dashed border-gray-100 flex items-center justify-center">
+                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                                    </div>
+                                </div>
+                            </div>
+                            <button onclick="saveJournalEntry()" class="w-full py-4 mt-6 bg-emerald-500 text-white font-bold text-lg rounded-2xl shadow-xl hover:brightness-110 active:scale-[0.98] transition-all">Enregistrer</button>
+                        </div>
+                    </div>
+
+                    <!-- Modify Section (Overlay style) -->
+                    <div id="modify-section" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-6 bg-midnight-blue/60 backdrop-blur-sm">
+                        <div class="bg-white w-full max-w-lg rounded-[32px] p-8 shadow-2xl flex flex-col space-y-6">
+                            <h3 class="text-2xl font-bold text-midnight-blue">Modifier Projet</h3>
+                            <div class="space-y-4">
+                                <input id="edit-title" type="text" value="${project.title}" class="w-full p-4 bg-gray-50 rounded-2xl outline-none focus:border-midnight-blue border border-transparent font-bold">
+                                <div class="space-y-1">
+                                    <div class="flex justify-between px-1">
+                                        <span class="text-[10px] font-bold text-midnight-blue/40 uppercase">Description</span>
+                                        <span id="edit-char-count" class="text-[10px] font-bold text-midnight-blue/20">${project.description.length}/255</span>
+                                    </div>
+                                    <textarea id="edit-desc" rows="4" maxlength="255"
+                                        oninput="document.getElementById('edit-char-count').innerText = this.value.length + '/255'"
+                                        class="w-full p-4 bg-gray-50 rounded-2xl outline-none focus:border-midnight-blue border border-transparent font-medium">${project.description}</textarea>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-[10px] font-bold text-midnight-blue/40 uppercase">Image Principale</span>
+                                    <label class="bg-blue-500 text-white px-4 py-2 rounded-xl text-xs font-bold cursor-pointer">
+                                        <input type="file" class="hidden" onchange="updateProjectMainImage(this)">
+                                        Changer
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="flex space-x-3">
+                                <button onclick="hideModifySection()" class="flex-1 py-4 bg-gray-100 text-midnight-blue font-bold rounded-2xl">Annuler</button>
+                                <button onclick="saveProjectEdits()" class="flex-1 py-4 bg-midnight-blue text-white font-bold rounded-2xl">Sauvegarder</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // Set date
+                setTimeout(() => {
+                    const dateInput = document.getElementById('journal-date');
+                    if (dateInput) dateInput.valueAsDate = new Date();
+                }, 100);
+            }
+
+            function toggleProjectMenu() {
+                const menu = document.getElementById('project-hamburger-menu');
+                menu.classList.toggle('hidden');
+            }
+
+            function showModifySection() {
+                document.getElementById('modify-section').classList.remove('hidden');
+                toggleProjectMenu();
+            }
+
+            function hideModifySection() {
+                document.getElementById('modify-section').classList.add('hidden');
+            }
+
+            function saveProjectEdits() {
+                const project = userProjects.find(p => p.id === currentProjectId);
+                if (project) {
+                    project.title = document.getElementById('edit-title').value;
+                    project.description = document.getElementById('edit-desc').value;
+                    localStorage.setItem('user_projects', JSON.stringify(userProjects));
+                    hideModifySection();
+                    showProjectDetail(currentProjectId);
+                }
+            }
+
+            function updateProjectMainImage(input) {
+                const file = input.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const project = userProjects.find(p => p.id === currentProjectId);
+                    if (project) {
+                        project.image = e.target.result;
+                        localStorage.setItem('user_projects', JSON.stringify(userProjects));
+                        alert("Image mise à jour");
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+
+            function confirmRemoveProject() {
+                if (confirm("Are you sure you want to remove this project?")) {
+                    const index = userProjects.findIndex(p => p.id === currentProjectId);
+                    if (index > -1) {
+                        const project = userProjects.splice(index, 1)[0];
+                        recycleBin.unshift(project);
+                        localStorage.setItem('user_projects', JSON.stringify(userProjects));
+                        localStorage.setItem('recycle_bin', JSON.stringify(recycleBin));
+                        alert("Projet déplacé vers la corbeille");
+                        showProjectHome();
+                    }
+                }
+                toggleProjectMenu();
+            }
+
+            function renderRecycleBin() {
+                const list = document.getElementById('recycle-bin-list');
+                if (recycleBin.length === 0) {
+                    list.innerHTML = '<div class="text-center py-10 text-midnight-blue/20 italic text-sm">La corbeille est vide</div>';
+                    return;
+                }
+
+                list.innerHTML = recycleBin.map(p => `
+                    <div class="bg-white p-4 rounded-3xl shadow-sm border border-gray-100 flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 flex items-center justify-center flex-shrink-0 relative">
+                                <svg class="w-full h-full text-[#FFCD29]" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M10 4H4C2.89 4 2.01 4.89 2.01 6L2 18C2 19.11 2.89 20 4 20H20C21.11 20 22 19.11 22 18V8C22 6.89 21.11 6 20 6H12L10 4Z" />
+                                </svg>
+                            </div>
+                            <span class="font-bold text-midnight-blue truncate max-w-[120px]">${p.title}</span>
+                        </div>
+                        <div class="flex space-x-1">
+                            <button onclick="restoreProject(${p.id})" class="p-2 text-emerald-500 hover:bg-emerald-50 rounded-xl transition-colors"><svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg></button>
+                            <button onclick="permanentlyDelete(${p.id})" class="p-2 text-red-500 hover:bg-red-50 rounded-xl transition-colors"><svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg></button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            function restoreProject(id) {
+                const index = recycleBin.findIndex(p => p.id === id);
+                if (index > -1) {
+                    const project = recycleBin.splice(index, 1)[0];
+                    userProjects.push(project);
+                    localStorage.setItem('user_projects', JSON.stringify(userProjects));
+                    localStorage.setItem('recycle_bin', JSON.stringify(recycleBin));
+                    renderRecycleBin();
+                    alert("Projet restauré");
+                }
+            }
+
+            // --- ARTICLE MANAGEMENT ---
+            let userArticles = JSON.parse(localStorage.getItem('user_articles') || '[]');
+            let tempArticleImage = null;
+
+            function showArticleHome() {
+                hideAllProjectViews();
+                document.getElementById('article-home-view').classList.remove('hidden');
+            }
+
+            function showPendingArticles() {
+                hideAllProjectViews();
+                document.getElementById('article-pending-view').classList.remove('hidden');
+                renderPendingArticles();
+            }
+
+            function showCreateArticleForm() {
+                hideAllProjectViews();
+                document.getElementById('article-create-view').classList.remove('hidden');
+                tempArticleImage = null;
+                document.getElementById('art-image-preview').innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>`;
+            }
+
+            function hideAllProjectViews() {
+                document.getElementById('project-home-view').classList.add('hidden');
+                document.getElementById('project-create-view').classList.add('hidden');
+                document.getElementById('project-detail-view').classList.add('hidden');
+                document.getElementById('recycle-bin-view').classList.add('hidden');
+                document.getElementById('article-home-view').classList.add('hidden');
+                document.getElementById('article-pending-view').classList.add('hidden');
+                document.getElementById('article-create-view').classList.add('hidden');
+            }
+
+            function previewArticleImage(input) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    tempArticleImage = e.target.result;
+                    document.getElementById('art-image-preview').innerHTML = `<img src="${tempArticleImage}" class="w-full h-full object-cover">`;
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+
+            function submitArticleRequest() {
+                const title = document.getElementById('art-title').value;
+                const desc = document.getElementById('art-desc').value;
+                const url = document.getElementById('art-url').value;
+
+                if (!title || !desc) {
+                    alert("Titre et description requis.");
+                    return;
+                }
+
+                const newRequest = {
+                    id: Date.now(),
+                    title,
+                    description: desc,
+                    url,
+                    image: tempArticleImage,
+                    status: 'En attente', // 'En attente', 'Validé', 'Refusé'
+                    date: new Date().toISOString()
+                };
+
+                userArticles.unshift(newRequest);
+                localStorage.setItem('user_articles', JSON.stringify(userArticles));
+
+                // Clear fields
+                document.getElementById('art-title').value = '';
+                document.getElementById('art-desc').value = '';
+                document.getElementById('art-url').value = '';
+
+                alert("Demande envoyée avec succès !");
+                showArticleHome();
+            }
+
+            function renderPendingArticles() {
+                const list = document.getElementById('pending-articles-list');
+                if (userArticles.length === 0) {
+                    list.innerHTML = '<div class="text-center py-10 text-midnight-blue/20 italic text-sm">Aucune demande en cours</div>';
+                    return;
+                }
+
+                list.innerHTML = userArticles.map(a => `
+                    <div class="bg-white p-5 rounded-3xl shadow-sm border border-gray-100 space-y-4">
+                        <div class="flex justify-between items-start">
+                            <div class="space-y-1">
+                                <h4 class="font-bold text-midnight-blue">${a.title}</h4>
+                                <p class="text-[10px] text-midnight-blue/40 uppercase tracking-widest">${new Date(a.date).toLocaleDateString()}</p>
+                            </div>
+                            <span class="px-3 py-1 rounded-full text-[10px] font-bold uppercase ${a.status === 'Validé' ? 'bg-emerald-50 text-emerald-600' :
+                        a.status === 'Refusé' ? 'bg-red-50 text-red-600' :
+                            'bg-orange-50 text-orange-600'
+                    }">${a.status}</span>
+                        </div>
+                        <p class="text-xs text-midnight-blue/60 leading-relaxed">${a.description}</p>
+                        ${a.url ? `<a href="${a.url}" target="_blank" class="block text-[10px] font-bold text-[#3B5FE6] hover:underline truncate">Lien article →</a>` : ''}
+                        ${a.image ? `<div class="w-full h-32 rounded-2xl overflow-hidden mt-2"><img src="${a.image}" class="w-full h-full object-cover"></div>` : ''}
+                    </div>
+                `).join('');
+            }
+
+            // --- SHARED JOURNAL LOGIC ---
+            let tempJournalImage = null;
+            function showJournalForm() {
+                document.getElementById('journal-modal').classList.remove('hidden');
+                document.getElementById('journal-modal').classList.add('flex');
+                tempJournalImage = null;
+                toggleProjectMenu();
+            }
+            function closeJournalModal() { document.getElementById('journal-modal').classList.add('hidden'); }
+            function formatJournalDoc(cmd) { document.execCommand(cmd, false, null); }
+            function previewJournalImage(input) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    tempJournalImage = e.target.result;
+                    document.getElementById('journal-image-preview').innerHTML = `<img src="${tempJournalImage}" class="w-full h-full object-cover">`;
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+            function saveJournalEntry() {
+                const date = document.getElementById('journal-date').value;
+                const content = document.getElementById('journal-text-editor').innerHTML;
+                const project = userProjects.find(p => p.id === currentProjectId);
+                if (project && content && content !== '<br>') {
+                    project.journals.unshift({ id: Date.now(), date, content, image: tempJournalImage });
+                    localStorage.setItem('user_projects', JSON.stringify(userProjects));
+                    closeJournalModal();
+                    showProjectDetail(currentProjectId);
+                }
+            }
+            function renderJournalEntries(journals) {
+                if (!journals || journals.length === 0) return '<div class="col-span-3 text-center py-6 text-midnight-blue/20 italic text-sm">Aucun journal</div>';
+
+                const jColors = ['#FF6B6B', '#4ECDC4', '#3B5FE6', '#FF9F43', '#10AC84', '#EE5253', '#5F27CD', '#222F3E'];
+
+                return `
+                    <div class="col-span-3 grid grid-cols-3 gap-x-4 gap-y-6">
+                        ${journals.map((j, idx) => `
+                            <button onclick="showJournalDetailModal(${j.id})" class="flex flex-col items-center space-y-2 group transition-all active:scale-95">
+                                <div class="w-full aspect-square rounded-[20px] shadow-md flex items-center justify-center group-hover:rotate-2 transition-transform" style="background-color: ${jColors[idx % jColors.length]}">
+                                    <svg class="h-8 w-8 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M19 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M7 9H17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M7 14H13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </div>
+                                <span class="text-[9px] font-bold text-midnight-blue/60 text-center uppercase tracking-tighter">${new Date(j.date).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' })}</span>
+                            </button>
+                        `).join('')}
+                    </div>
+
+                    <!-- Journal Reader Modal -->
+                    <div id="journal-reader-modal" class="fixed inset-0 z-[110] hidden flex items-center justify-center p-6 bg-midnight-blue/60 backdrop-blur-sm">
+                        <div class="bg-white w-full max-w-lg rounded-[32px] p-8 shadow-2xl flex flex-col max-h-[80vh] overflow-hidden">
+                            <div class="flex items-center justify-between mb-6">
+                                <span id="reader-date" class="text-[10px] font-bold text-[#3B5FE6] uppercase bg-blue-50 px-3 py-1 rounded-full">Date</span>
+                                <button onclick="closeJournalReader()" class="p-2 text-gray-400 hover:text-midnight-blue transition-colors">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                                </button>
+                            </div>
+                            <div class="flex-1 overflow-y-auto custom-scrollbar space-y-6">
+                                <div id="reader-content" class="text-midnight-blue text-sm font-medium leading-relaxed rich-text-content break-words overflow-wrap-anywhere"></div>
+                                <div id="reader-image-container" class="hidden w-full rounded-2xl overflow-hidden shadow-sm">
+                                    <img id="reader-image" src="" class="w-full h-auto">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            function showJournalDetailModal(journalId) {
+                const project = userProjects.find(p => p.id === currentProjectId);
+                if (!project) return;
+                const journal = project.journals.find(j => j.id === journalId);
+                if (!journal) return;
+
+                document.getElementById('reader-date').innerText = new Date(journal.date).toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+                document.getElementById('reader-content').innerHTML = journal.content;
+
+                const imgContainer = document.getElementById('reader-image-container');
+                if (journal.image) {
+                    document.getElementById('reader-image').src = journal.image;
+                    imgContainer.classList.remove('hidden');
+                } else {
+                    imgContainer.classList.add('hidden');
+                }
+
+                document.getElementById('journal-reader-modal').classList.remove('hidden');
+                document.getElementById('journal-reader-modal').classList.add('flex');
+            }
+
+            function closeJournalReader() {
+                document.getElementById('journal-reader-modal').classList.add('hidden');
+                document.getElementById('journal-reader-modal').classList.remove('flex');
+            }
+
+            // --- APP INITIALIZATION ---
             window.addEventListener('load', () => {
                 showHomeScreen();
                 console.log("App initialized in Simulation Mode");
             });
-
-            function handleProjectImages(input) {
-                const previewContainer = document.getElementById('project-images-preview');
-                const files = input.files;
-
-                if (files.length > 2) {
-                    alert("Maximum 2 images autorisées.");
-                    input.value = "";
-                    return;
-                }
-
-                previewContainer.innerHTML = '';
-
-                Array.from(files).forEach(file => {
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                        const div = document.createElement('div');
-                        div.className = "rounded-2xl overflow-hidden shadow-md h-full";
-                        div.innerHTML = `<img src="${e.target.result}" class="w-full h-full object-cover">`;
-                        previewContainer.appendChild(div);
-                    };
-                    reader.readAsDataURL(file);
-                });
-
-                if (files.length === 1) {
-                    const placeholder = document.createElement('div');
-                    placeholder.className = "border-2 border-dashed border-midnight-blue/10 bg-midnight-blue/5 rounded-2xl flex items-center justify-center text-midnight-blue/20 h-full";
-                    placeholder.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>`;
-                    previewContainer.appendChild(placeholder);
-                }
-            }
         </script>
 </body>
 
