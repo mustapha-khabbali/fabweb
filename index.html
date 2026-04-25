@@ -1568,7 +1568,14 @@
                 if (html5QrCode && html5QrCode.isScanning) return;
 
                 const placeholder = document.getElementById('scanner-placeholder');
-                const config = { fps: 10, qrbox: 250, aspectRatio: 1.0 };
+                const config = { 
+                    fps: 10, 
+                    qrbox: (viewfinderWidth, viewfinderHeight) => {
+                        const size = Math.min(viewfinderWidth, viewfinderHeight) * 0.9;
+                        return { width: size, height: size };
+                    },
+                    aspectRatio: 1.0 
+                };
 
                 if (!html5QrCode) {
                     html5QrCode = new Html5Qrcode("reader");
