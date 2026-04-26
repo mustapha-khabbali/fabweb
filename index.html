@@ -1701,7 +1701,15 @@
         function showHomeScreen() { setScreen('home-screen'); }
         function showStagiaireScreen() { setScreen('stagiaire-screen'); }
         function showRoleRegistrationScreen(role) {
-            document.getElementById('role-registration-title').innerText = 'Welcome ' + role;
+            const titleEl = document.getElementById('role-registration-title');
+            titleEl.innerText = 'Welcome ' + role;
+
+            if (role === 'Administrateur') {
+                titleEl.className = "text-xl sm:text-2xl font-bold text-midnight-blue tracking-tight leading-none";
+            } else {
+                titleEl.className = "text-2xl font-bold text-midnight-blue";
+            }
+
             sessionStorage.setItem('pending_role', role);
             setScreen('role-registration-screen');
         }
