@@ -116,7 +116,22 @@
             </div>
 
             <div class="w-full drop-shadow-2xl illustration-container">
-                <img src="intro.webp" alt="Innovation Illustration" class="w-full h-auto object-contain">
+                <script>
+                    const introImages = ['intro.webp', 'intro1.webp', 'intro2.webp', 'intro3.webp', 'intro4.webp', 'intro5.webp', 'intro6.webp', 'intro7.webp', 'intro8.webp'];
+                    const initialRandomIndex = Math.floor(Math.random() * introImages.length);
+                    document.write('<img id="intro-image" src="' + introImages[initialRandomIndex] + '" alt="Innovation Illustration" class="w-full h-auto object-contain cursor-pointer transition-opacity duration-300 hover:opacity-90" onclick="randomizeIntroImage()">');
+
+                    function randomizeIntroImage() {
+                        const imgElement = document.getElementById('intro-image');
+                        let newImage;
+                        const currentSrc = imgElement.getAttribute('src');
+                        do {
+                            const newRandomIndex = Math.floor(Math.random() * introImages.length);
+                            newImage = introImages[newRandomIndex];
+                        } while (newImage === currentSrc);
+                        imgElement.src = newImage;
+                    }
+                </script>
             </div>
 
             <div class="text-center">
