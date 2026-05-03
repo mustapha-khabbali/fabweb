@@ -1,0 +1,142 @@
+@import "tailwindcss";
+
+/* ===========================
+   CUSTOM THEME (Tailwind v4)
+   =========================== */
+@theme {
+  --color-midnight-blue: #133853;
+  --color-primary-blue-top: #2B7FFF;
+  --color-primary-blue-bottom: #1A66FF;
+  --color-accent-blue: #3B5FE6;
+
+  --font-family-montserrat: 'Montserrat', sans-serif;
+}
+
+/* ===========================
+   BASE STYLES
+   =========================== */
+html, body {
+  font-family: 'Montserrat', sans-serif;
+  margin: 0;
+  padding: 0;
+  height: 100dvh;
+  width: 100vw;
+  overflow: hidden;
+  background-color: #ffffff;
+}
+
+#root {
+  height: 100%;
+  width: 100%;
+}
+
+.main-container {
+  background: linear-gradient(to bottom, #BDE3F2 0%, #E2F1F8 40%, #FFFFFF 100%);
+}
+
+/* --- PHONE STYLES --- */
+@media screen and (max-width: 767px) {
+  .mobile-padding {
+    padding: 1rem !important;
+    margin-top: 0 !important;
+  }
+
+  .illustration-container {
+    margin-top: 4vh !important;
+  }
+
+  .logo-header {
+    margin-top: 0 !important;
+    width: 110px !important;
+  }
+}
+
+/* --- DESKTOP STYLES --- */
+@media screen and (min-width: 768px) {
+  .illustration-container {
+    margin-top: 0 !important;
+  }
+
+  .logo-header {
+    margin-top: 0rem !important;
+    width: 140px !important;
+  }
+}
+
+/* KILL THE SCROLLBAR GLOBALLY */
+html,
+body {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+*:not(.always-visible-scrollbar)::-webkit-scrollbar {
+  display: none !important;
+}
+
+/* Rich Text Styling */
+.rich-text-content ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin: 0.5rem 0;
+}
+
+.rich-text-content ol {
+  list-style-type: decimal;
+  padding-left: 1.5rem;
+  margin: 0.5rem 0;
+}
+
+.rich-text-content b,
+.rich-text-content strong {
+  font-weight: 800;
+}
+
+.overflow-wrap-anywhere {
+  overflow-wrap: anywhere !important;
+  word-break: break-word !important;
+}
+
+/* Button gradient utility */
+.bg-button-gradient {
+  background: linear-gradient(to bottom, #2B7FFF 0%, #1A66FF 100%);
+}
+
+/* Custom scrollbar for internal scroll regions (hidden) */
+.custom-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Always visible scrollbar for specific screens */
+.always-visible-scrollbar {
+  scrollbar-width: thin !important;
+  scrollbar-color: #133853 rgba(19, 56, 83, 0.1) !important;
+  -ms-overflow-style: auto !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+.always-visible-scrollbar::-webkit-scrollbar {
+  display: block !important;
+  width: 6px !important;
+  -webkit-appearance: none !important;
+}
+
+.always-visible-scrollbar::-webkit-scrollbar-track {
+  background: rgba(19, 56, 83, 0.1) !important;
+  border-radius: 10px !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.always-visible-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #133853 !important;
+  border-radius: 10px !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
