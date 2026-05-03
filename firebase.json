@@ -2,11 +2,26 @@
   "hosting": [
     {
       "target": "visitor",
+<<<<<<< HEAD
       "public": "dist",
       "ignore": [
         "firebase.json",
         "**/.*",
         "**/node_modules/**"
+=======
+      "public": ".",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**",
+        "dashboard.html",
+        "*.bat",
+        "*.ps1",
+        "*.xml",
+        "*.txt",
+        "*.sql",
+        "*.rules"
+>>>>>>> eba0375daadbb100d294e2003d1d20ff75e336dd
       ],
       "rewrites": [
         {
@@ -14,6 +29,36 @@
           "destination": "/index.html"
         }
       ]
+<<<<<<< HEAD
     }
   ]
+=======
+    },
+    {
+      "target": "admin",
+      "public": ".",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**",
+        "index.html",
+        "*.bat",
+        "*.ps1",
+        "*.xml",
+        "*.txt",
+        "*.sql",
+        "*.rules"
+      ],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/dashboard.html"
+        }
+      ]
+    }
+  ],
+  "firestore": {
+    "rules": "firestore.rules"
+  }
+>>>>>>> eba0375daadbb100d294e2003d1d20ff75e336dd
 }
